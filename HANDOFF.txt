@@ -1,0 +1,317 @@
+EGFR Evidence Lab - 터미널 / 새 세션 인수인계
+작성일: 2026-10-19 (Asia/Seoul)
+
+이 파일은 대화 기록 없이 프로젝트 작업을 이어가기 위한 상태 기록이다.
+명령을 전부 일괄 실행하는 스크립트가 아니다. 완료 상태와 다음 작업을 구분한다.
+실제 파일·Git 상태가 이 기록보다 바뀌었다면 최신 상태를 먼저 확인한다.
+
+============================================================
+1. 프로젝트 위치와 목적
+============================================================
+
+현재 Mac의 프로젝트 루트:
+/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab
+
+GitHub:
+https://github.com/HYonthePark-retrospect/egfr-evidence-lab
+
+공개 범위: PUBLIC. 사용자가 포트폴리오용 공개 저장소를 명시적으로 요청했다.
+기본 브랜치: main
+인수인계 문서 추가 전 기준 커밋: 5d9da73
+
+목적:
+ChEMBL의 인간 EGFR(CHEMBL203) 공개 실험 자료를 정제하고,
+분자 구조로 IC50를 변환한 pIC50를 예측하며,
+실험·변이·문헌 근거를 추적하는 연구 포트폴리오를 만든다.
+
+계획된 발전 순서:
+P0 데이터 감사·학습 코호트 확정
+P1 기준 ML 모델·통계 검증
+P2 D-MPNN 비교·별도 논문 재현
+P3 문헌 검색·RAG와 인용 평가
+P4 도구 선택 Agent와 평가
+P5 추론 서비스 클라우드 배포
+
+주의: 이 폴더는 상위 '사이드 프로젝트' 폴더와 별도의 Git 저장소다.
+Git 명령은 반드시 egfr-evidence-lab 루트에서 실행한다.
+상위 폴더의 다른 프로젝트는 이번 작업 대상이 아니다.
+
+============================================================
+2. 완료된 작업 / 아직 안 된 작업
+============================================================
+
+완료:
+- 독립 Git 저장소 생성, 공개 GitHub main 브랜치에 초기 뼈대 push.
+- VS Code workspace, Python 인터프리터·디버그·테스트 task 설정.
+- 로컬 .venv 생성: Python 3.12.14.
+- 표준 라이브러리 기반 설정 점검 CLI.
+- 정확값 IC50를 pIC50로 변환하는 함수와 CLI.
+- 단위·부등호·비정상 값·일부 연구 정책에 대한 테스트 3개 통과.
+- 설계·도메인 학습·기술 스택·재현 계획·참고문헌 작성.
+- 한국어 도메인 학습 PDF 14쪽 생성, 렌더링과 텍스트·링크 점검.
+
+미완료:
+- ChEMBL 실제 수집과 최종 표본 수 확인.
+- 실험·변이 검토, RDKit 기반 화학 구조 정제.
+- 전체 ML/DL 의존성 설치·호환성 검증·lock 파일 생성.
+- ML/DL 학습, 성능 수치, bootstrap 통계 결과.
+- 논문 벤치마크 수치 재현.
+- 문헌 수집·인덱스·RAG·Agent 실제 구현.
+- 실제 추론 API·Docker 이미지·AWS 리소스·클라우드 배포.
+
+src/egfr_lab의 data/features/modeling/evaluation/literature/agent는
+현재 역할 설명을 담은 패키지 뼈대다. 기능 구현이 완료된 것으로 해석하지 않는다.
+
+============================================================
+3. 같은 Mac에서 터미널을 새로 열었을 때
+============================================================
+
+아래 순서로 프로젝트 위치와 현재 상태를 확인한다.
+
+cd '/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab'
+pwd
+git rev-parse --show-toplevel
+git status -sb
+git log -3 --oneline
+.venv/bin/python --version
+
+기존 .venv는 그대로 사용한다. 다른 세션이라고 새로 만들 필요는 없다.
+현재 동작 확인 명령:
+
+PYTHONPATH=src .venv/bin/python -m egfr_lab check-config
+PYTHONPATH=src .venv/bin/python -m egfr_lab plan
+PYTHONPATH=src .venv/bin/python -m egfr_lab convert-ic50 --value 10 --unit nM
+PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+
+기대 결과:
+- check-config: 설정 유효. 데이터·모델·배포 검증 완료라는 뜻은 아님.
+- plan: P0-P5가 planned인 목록 출력.
+- convert-ic50: {"pIC50": 8.0}
+- unittest: 테스트 메서드 3개 통과(구현 진척에 따라 이후 수는 증가 가능).
+
+PYTHONPATH=src는 위 각 명령에 명시했으므로 셸 환경이 달라도 실행할 수 있다.
+가상환경을 activate했다는 가정에 의존하지 않는다.
+현재 시스템 python3는 프로젝트 권장 버전과 다를 수 있으므로 .venv/bin/python을 쓴다.
+
+VS Code에서 열기:
+code egfr-evidence-lab.code-workspace
+
+code 명령이 PATH에 없다면 Mac에서:
+open -a 'Visual Studio Code' egfr-evidence-lab.code-workspace
+
+============================================================
+4. 다른 컴퓨터 또는 새 clone에서 시작할 때
+============================================================
+
+작업할 상위 디렉터리로 이동한 후:
+
+git clone https://github.com/HYonthePark-retrospect/egfr-evidence-lab.git
+cd egfr-evidence-lab
+python3.12 -m venv .venv
+PYTHONPATH=src .venv/bin/python -m egfr_lab check-config
+PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+
+Python 3.11 또는 3.12를 준비한다. 위 명령의 python3.12는 설치한 버전에 맞춘다.
+.venv는 Git에 들어 있지 않으므로 새 컴퓨터에서는 다시 만들어야 한다.
+Windows에서는 .venv/Scripts/python.exe와 해당 셸의 환경변수 문법으로 조정한다.
+
+위 뼈대 점검에는 외부 패키지 설치가 필요 없다.
+실제 데이터·ML 작업을 시작할 때만 다음 설치를 수행한다:
+
+.venv/bin/python -m pip install '.[ml]'
+.venv/bin/python -m pip check
+.venv/bin/python -c 'import httpx, pandas, numpy, scipy, sklearn, rdkit, pyarrow; print("ML imports OK")'
+
+설치·import 확인이 끝나면 환경 버전 기록과 재현 가능한 lock 방식을 정한다.
+현재 pyproject.toml의 optional-dependencies는 후보이며 검증된 lock이 아니다.
+deep/literature/agent/cloud extras는 필요한 단계에서 따로 설치한다.
+이 문서를 만드는 작업에서는 위 ML 패키지 설치를 실행하지 않았다.
+
+============================================================
+5. 먼저 읽을 문서와 구조
+============================================================
+
+필독 순서(프로젝트 루트 기준):
+1) README.md
+2) docs/01_blueprint.md - 데이터 감사·정제·평가 정책과 완료 기준
+3) configs/project.json - 현재 설정과 단계 상태
+4) docs/02_bio_medical_primer.md - 생물학·측정값의 기본
+5) docs/03_tech_stack.md - 도입할 기술과 검증 범위
+6) docs/04_reproduction.md - 방법 적용과 논문 재현의 구분
+7) docs/05_references.md - 근거·출처 목록
+
+학습 PDF:
+output/pdf/egfr_domain_study_guide_ko.pdf
+
+PDF 원고:
+docs/06_domain_study_guide.md
+
+PDF 생성 스크립트:
+scripts/build_domain_guide.py
+
+주요 파일:
+src/egfr_lab/__main__.py  - 현재 CLI
+src/egfr_lab/config.py    - 설정 정책 검사
+src/egfr_lab/labels.py    - 정확값 IC50 -> pIC50
+tests/test_contracts.py   - 현재 수치·정책 테스트
+reports/scaffold_validation.md - 수행한 검증 기록
+deployment/README.md     - 배포 계획(실제 배포 아님)
+
+데이터 경로:
+data/raw/       원 응답·release·요청 조건·해시 매니페스트
+data/interim/   실험·변이 검토와 제외 사유
+data/processed/ 정제 테이블·고정 분할
+artifacts/      모델·실행 메타데이터
+reports/        데이터 감사·모델 평가·문헌 평가·재현 보고서
+
+============================================================
+6. 다음 세션에서 수행할 첫 작업: P0
+============================================================
+
+목표: 모델 학습 전에 ChEMBL EGFR 자료를 실제로 수집하고,
+어떤 실험 코호트로 무엇을 예측할 수 있는지 확인한다.
+
+권장 구현 순서:
+1) 공식 API 응답을 소량 조회해 필드와 스키마를 확인한다.
+2) target CHEMBL203 / 인간 / IC50 조건의 수집기를 작성한다.
+3) 페이지네이션·재시도·타임아웃·진행 기록·재실행 시 중복 방지를 넣는다.
+4) ChEMBL release, 시각, 요청 조건, 원자료 파일 SHA-256을 기록한다.
+   수집 중 release가 바뀌면 고정 release 자료 또는 재수집을 검토한다.
+5) activity / molecule / assay / document / variant의 연결을 확인한다.
+   API에 로컬 분석 스키마와 같은 이름의 열이 있다고 가정하지 않는다.
+6) 원 행 수, 고유 분자·실험·문헌 수, 결측·부등호·단위·중복을 집계한다.
+7) 생화학/세포 형식, 정상형/명시 변이/불명확을 구분하는 검토표를 만든다.
+8) 실험 맥락이 해석 가능한 하나의 학습 코호트를 제안한다.
+   정상형 생화학 실험은 첫 후보이며, 표본 감사 전에 확정된 것은 아니다.
+9) 실제 표본 수·scaffold 수·라벨 범위·문헌 편중을 보고한다.
+10) 그 결과로 다음 모델링 단계의 범위를 결정한다.
+
+P0 산출물 목표:
+- 수집 코드와 재실행 가능한 CLI(명령 이름은 실제 구현 시 문서화)
+- 원자료 및 release/요청/해시 매니페스트
+- data/interim/assay_review.csv
+- reports/data_audit.md
+- reports/dataset_card.md
+
+collect, audit, train 등의 CLI는 아직 없다.
+문서에 적힌 계획 명령을 구현된 기능인 것처럼 실행하거나 성공했다고 기록하지 않는다.
+
+현재 권한 요청이 필요한 항목이 발생하더라도, 가능한 문서·코드 작성과
+로컬 검증을 먼저 완료하고 실제 차단 이유를 구체적으로 보고한다.
+
+============================================================
+7. 바꾸지 말아야 할 과학적 구분
+============================================================
+
+- CHEMBL203만으로 정상형/변이형을 구분할 수 없다.
+  variant 메타데이터와 assay 설명·필요 시 원 논문을 확인한다.
+  미상·충돌 자료를 정상형으로 임의 분류하지 않는다.
+- IC50, Ki, Kd를 하나의 회귀 정답값으로 무조건 합치지 않는다.
+- 생화학 실험과 세포 성장·생존 실험을 하나의 라벨로 합치지 않는다.
+- 부등호 측정은 정확값 회귀 정답으로 만들지 않고 보존·별도 처리한다.
+- confidence=9가 모든 실험 조건의 동질성을 보장하지 않는다.
+- pIC50 = -log10(IC50 [mol/L]); nM라면 9-log10(IC50 [nM]).
+- 화학 정규화에서 원 SMILES·입체정보와 처리 정책을 보존한다.
+- 동일 분자 또는 반복 측정의 학습/테스트 누수를 막는다.
+- 주 평가는 scaffold 분할, random 분할은 비교용이다.
+- 최종 테스트를 튜닝·모델 선택에 사용하지 않는다.
+- 주 지표는 MAE, 보조 RMSE·Spearman이다.
+- 모델 비교의 paired 평가와 scaffold cluster 재표집은 계획 상태다.
+  scipy bootstrap의 paired=True만으로 cluster bootstrap이 되지는 않는다.
+- 모델 seed 변동과 테스트 표본 재표집 불확실성을 구분한다.
+- EGFR IC50 예측을 환자 효과·임상 내성·TPD 분해 효능 예측으로 부르지 않는다.
+- 예측값, 실제 관측값, 문헌 설명과 정보 부족을 구분해 출력한다.
+- 논문의 모델을 EGFR에 적용한 것과 원 논문 성능 재현은 다르다.
+
+============================================================
+8. 이후 기술 확장과 범위
+============================================================
+
+P1: RDKit Morgan fingerprint + Dummy / Random Forest.
+P2: Chemprop v2/PyTorch D-MPNN을 같은 분할에서 비교.
+    별도 재현 후보는 Heid 2024의 SAMPL 벤치마크.
+    재현용 v1.6.1 코드/환경과 주 프로젝트 v2 환경을 분리.
+    원 SI·실제 데이터·설정을 대조하기 전 목표 수치를 만들지 않는다.
+P3: Europe PMC 기반 문헌 조회, 정확 ID·키워드/BM25부터 시작.
+    dense/hybrid 검색은 평가 결과를 보고 추가.
+P4: LangGraph 기반 단일 Agent; 예측·측정 조회·문헌 검색·근거 조회.
+    현재 max_tool_calls=6, 검색 재시도=2는 조정 가능한 설계값.
+P5: FastAPI/Docker 추론 서비스, AWS ECS Fargate/S3/CloudWatch.
+    현재 클라우드 자격증명·리소스·예산은 구성되지 않았다.
+
+현재 범위에 대규모 분자 생성, 도킹, 3D 모델, 실제 치료 추천을 추가하지 않는다.
+새 기술을 붙이기 전에 해당 단계의 데이터·평가 근거를 먼저 확보한다.
+
+============================================================
+9. 근거와 출처 기록
+============================================================
+
+사용자는 기술 선택·도메인 설명에 검증 가능한 근거와 인용을 계속 요구했다.
+공식 문서와 원 논문을 우선하고, 확인된 사실과 프로젝트 제안을 구분한다.
+수치 성과·재현 성공·데이터 규모는 실제 실행 결과 없이 작성하지 않는다.
+아래 링크의 정책과 스키마는 실행 시점에 다시 확인할 수 있다.
+
+ChEMBL assay/activity:
+https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions
+ChEMBL variant/target:
+https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/target-questions
+ChEMBL schema:
+https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/schema-questions-and-sql-examples
+ChEMBL API:
+https://www.ebi.ac.uk/chembl/api/data/docs
+Chemprop:
+https://chemprop.readthedocs.io/en/latest/index.html
+재현용 저자 저장소:
+https://github.com/chemprop/chemprop_benchmark
+
+전체 출처는 docs/05_references.md와 학습 PDF의 참고문헌을 확인한다.
+ChEMBL 데이터 공개 시 공식 라이선스·출처·release·가공 이력을 기록한다.
+공개 논문도 원문 재사용 조건과 수집 API 정책을 별도로 확인한다.
+
+============================================================
+10. Git / 공개 저장소 / 환경 관리
+============================================================
+
+- .venv, tmp, 원자료·중간 데이터, 큰 모델 파일과 .env는 기본 Git 제외다.
+- 실험·데이터 공개가 필요하면 범위·라이선스·파일 크기를 검토한다.
+- 비밀키나 인증 토큰을 파일·로그·커밋에 넣지 않는다.
+- .DS_Store는 연구 파일이 아니며 커밋하지 않는다.
+- 작업 시작 시 git status와 변경 파일을 읽고 다른 세션의 변경을 보존한다.
+- 동시에 같은 코드를 수정하지 않도록 작업 범위를 구분한다.
+- 새 작업 브랜치를 만들면 기본 prefix는 codex/를 사용한다.
+- 사용자 요청 범위에서 커밋·push하고, 원격 변경이 있으면 먼저 확인한다.
+  force push나 다른 변경의 삭제로 동기화하지 않는다.
+- 새 터미널에서 인증 문제가 나면 GitHub CLI/SSH 인증을 확인한다.
+  이 파일에 인증정보를 저장하지 않는다.
+
+PDF 재생성은 선택 작업이다. 원고 수정이 없다면 기존 PDF를 그대로 사용한다.
+재생성할 때 PDF 의존성과 임베딩 가능한 한글 TTF를 준비하고 렌더링을 검토한다.
+폰트와 도구가 현재 Mac에 있다고 다른 컴퓨터에도 있다고 가정하지 않는다.
+
+============================================================
+11. 새 세션에 붙여넣을 시작 요청
+============================================================
+
+EGFR Evidence Lab 작업을 이어서 진행해줘.
+먼저 HANDOFF.txt, README.md, docs/01_blueprint.md, configs/project.json을 읽고
+현재 Git 상태와 실제 구현 범위를 확인해줘.
+현재 단계는 프로젝트 뼈대이며 데이터 수집·학습은 미실행 상태야.
+다음 목표는 P0: ChEMBL 인간 EGFR(CHEMBL203) IC50 자료 수집과
+실험·변이·단위·중복·문헌 분포에 대한 데이터 감사야.
+공식 문서로 실제 API 필드와 release를 확인하고,
+재실행 가능한 수집기·원자료 매니페스트·assay 검토표·data_audit 보고서를 만들어줘.
+정상형/변이형, 생화학/세포 실험, IC50/Ki/Kd, 부등호 관측을 구분하고
+데이터 감사 전에 학습 표본 수나 모델 성능을 단정하지 마.
+설계 선택에는 근거·출처를 붙이고 현재 파일의 다른 변경은 보존해줘.
+
+============================================================
+12. 작업 종료 시 이 기록을 업데이트할 항목
+============================================================
+
+- 새 커밋·브랜치와 실행 환경/lock 상태.
+- 실제 수집한 release·표본·고유 분자·실험·문헌 수.
+- 완료된 CLI와 정확한 재실행 명령.
+- 테스트 결과와 데이터/모델 결과를 구분한 검증 기록.
+- 아직 해결하지 못한 실험·변이 분류와 다음 작업.
+
+끝.
