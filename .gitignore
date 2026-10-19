@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+!.env.example
+*.egg-info/
+build/
+dist/
+data/raw/*
+data/interim/*
+data/processed/*
+artifacts/*
+mlruns/
+mlflow.db
+tmp/
+!**/.gitkeep

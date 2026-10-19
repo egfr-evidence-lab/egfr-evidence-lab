@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "EGFR: inspect project plan",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "egfr_lab",
+      "args": ["plan"],
+      "cwd": "${workspaceFolder}",
+      "env": {"PYTHONPATH": "${workspaceFolder}/src"},
+      "console": "integratedTerminal"
+    }
+  ]
+}

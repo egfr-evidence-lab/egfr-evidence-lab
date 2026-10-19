@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "egfr-evidence-lab"
+version = "0.1.0"
+description = "EGFR bioactivity prediction and literature evidence project scaffold"
+requires-python = ">=3.11"
+dependencies = []
+
+# Candidate dependencies, not an installed or locked environment.
+[project.optional-dependencies]
+ml = ["httpx", "pandas", "numpy", "scipy", "scikit-learn", "rdkit", "pyarrow", "matplotlib", "joblib"]
+deep = ["chemprop>=2,<3"]
+literature = ["httpx", "rank-bm25", "pydantic"]
+dense = ["sentence-transformers", "faiss-cpu"]
+agent = ["langgraph", "pydantic"]
+tracking = ["mlflow"]
+app = ["fastapi", "uvicorn", "streamlit"]
+cloud = ["boto3"]
+pdf = ["reportlab", "pypdf", "pillow"]
+
+[project.scripts]
+egfr-lab = "egfr_lab.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,49 @@
+{
+  "project": "EGFR Evidence Lab",
+  "target": {
+    "chembl_id": "CHEMBL203",
+    "organism": "Homo sapiens",
+    "endpoint": "IC50",
+    "label": "pIC50",
+    "training_cohort": "pending_assay_and_variant_audit"
+  },
+  "curation": {
+    "relation": "=",
+    "canonical_unit": "nM",
+    "assay_confidence_candidate": 9,
+    "format": "biochemical_candidate_pending_audit",
+    "variant_policy": "review_metadata_and_description_exclude_unresolved",
+    "unknown_variant_is_wild_type": false,
+    "pool_cell_and_biochemical_assays": false,
+    "pool_ic50_ki_kd": false,
+    "retain_raw_and_exclusion_reasons": true
+  },
+  "evaluation": {
+    "primary_split": "scaffold",
+    "secondary_split": "random_molecule_grouped",
+    "seed": 42,
+    "training_seeds": [42, 123, 2026],
+    "fractions": [0.7, 0.15, 0.15],
+    "primary_metric": "MAE",
+    "secondary_metrics": ["RMSE", "Spearman"],
+    "bootstrap_resamples": 2000,
+    "bootstrap_unit": "scaffold_cluster",
+    "confidence_level": 0.95,
+    "test_used_for_tuning": false
+  },
+  "agent": {
+    "max_tool_calls": 6,
+    "max_search_retries": 2,
+    "tools": ["predict_activity", "lookup_measurements", "search_literature", "fetch_evidence"],
+    "require_source_ids": true,
+    "llm_may_invent_measurements": false
+  },
+  "phases": [
+    {"id": "P0", "name": "데이터 감사와 코호트 확정", "status": "planned"},
+    {"id": "P1", "name": "기준 모델과 통계 검증", "status": "planned"},
+    {"id": "P2", "name": "D-MPNN 비교와 논문 방법 검토", "status": "planned"},
+    {"id": "P3", "name": "문헌 검색과 인용 평가", "status": "planned"},
+    {"id": "P4", "name": "도구 호출 Agent와 평가", "status": "planned"},
+    {"id": "P5", "name": "컨테이너 추론 서비스의 클라우드 배포", "status": "planned"}
+  ]
+}
