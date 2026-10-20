@@ -1,0 +1,53 @@
+{
+  "version": "portfolio-scope-v1",
+  "accepted_on": "2026-10-20",
+  "authorization": "사용자가 적합성 보고서의 추가 범위를 프로젝트에 포함하고 순서대로 진행하도록 요청",
+  "active_milestone": "M1",
+  "milestones": [
+    {
+      "id": "M1", "name": "확정 데이터와 기준 모델 실험", "phases": ["P0", "P1"],
+      "status": "in_progress", "depends_on": [],
+      "completion_evidence": ["원문 근거가 연결된 코호트 결정과 제외·보류표", "분자·scaffold 누출 검사와 고정 분할", "Dummy와 Morgan-RF의 동일 시험 자료 평가", "오차·불확실성·실패 사례·적용 범위 보고"],
+      "current_limit": "45건 상세법·human유래 대기. OA 연결은 ChEMBL 파생 데이터셋으로 원문 검증 아님. WT특허64건의 원MS35관측 점검 중13질량 경보. 자료·3분할·구조거리 진단 완료, 새 학습 승인0건. M1 완료 아님",
+      "progress_report": "reports/cohort_scope_evidence_ko.md",
+      "acquisition_report": "reports/main_cohort_acquisition_ko.md",
+      "educational_baseline_report": "reports/apsel_review_and_baseline_ko.md",
+      "prior_review_report": "reports/wt_expansion_review_ko.md",
+      "source_review_holds_path": "configs/source_review_holds.json"
+    },
+    {
+      "id": "M2", "name": "D-MPNN 비교", "phases": ["P2"],
+      "status": "planned", "depends_on": ["M1"],
+      "completion_evidence": ["M1과 같은 데이터·분할·평가 지표", "검증 자료만 사용한 명시적 튜닝 예산", "seed·학습 시간·환경·RF 대비 paired 차이 기록", "성능 우세를 전제하지 않는 결과 해석"]
+    },
+    {
+      "id": "M3", "name": "저자 공개 벤치마크 한 개 재현", "phases": ["P2"],
+      "status": "planned", "depends_on": ["M2"],
+      "completion_evidence": ["저자 데이터·분할·commit·환경·설정 출처", "단일 벤치마크의 실제 실행 기록", "원 결과와 재현 결과의 차이와 한계", "주 프로젝트의 방법 적용과 분리된 재현 환경"]
+    },
+    {
+      "id": "M4", "name": "기업 관련 EGFR 내성·분해제 문헌 사례", "phases": ["P0", "P3"],
+      "status": "in_progress", "depends_on": [],
+      "completion_evidence": ["원문 또는 SI의 세포·변이·시간·지표 정의와 근거 위치", "WT·변이 및 IC50·GI50·DC50·Dmax 구분", "기전 대조 실험과 미확인 항목 기록", "초록 확인·문헌 해석·실험 재현의 구분"],
+      "current_limit": "HBE-843 초록·메타데이터 카드까지만 확인; 본문·SI 전체 검토 전"
+    },
+    {
+      "id": "M5", "name": "근거 조회와 도구 선택 Agent", "phases": ["P3", "P4"],
+      "status": "planned", "depends_on": ["M3", "M4"],
+      "completion_evidence": ["예측·측정 조회·문헌 검색의 실제 도구 연결", "개발·최종 평가 질문 분리", "도구 선택·주장별 인용·정보 부족·오류·종료 평가", "호출 trace와 모델·prompt·출처 버전 기록"]
+    },
+    {
+      "id": "M6", "name": "컨테이너 추론 API와 클라우드 실행", "phases": ["P5"],
+      "status": "planned", "depends_on": ["M5"],
+      "completion_evidence": ["버전이 고정된 추론 API·컨테이너", "실제 클라우드 요청·응답과 모델 버전", "오류·로그·재시작·지연시간·비용 기록"],
+      "current_limit": "클라우드 계정·리소스·실제 비용 조건은 미구성"
+    }
+  ],
+  "constraints": {
+    "universal_egfr_numeric_passmark": false,
+    "filter_training_labels_at_100nM": false,
+    "pool_inhibition_and_degradation_labels": false,
+    "claim_model_reproduction_from_table_crosscheck": false,
+    "additional_large_scope": "분자 생성·도킹·전체 PK·대규모 다중 Agent는 포함하지 않음"
+  }
+}

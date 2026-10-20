@@ -1,0 +1,60 @@
+{
+  "version": "main-cohort-source-review-v1",
+  "review_date": "2026-10-20",
+  "status": "source_crosschecks_completed_training_data_pending",
+  "purpose": "기존 고정 보류 목록과 교육 실험 입력을 변경하지 않는 후속 원문 검토 등록부",
+  "crosscheck_manifest": "data/interim/main_cohort_review_20261020/manifest.json",
+  "candidate_inventory_manifest": "data/interim/main_cohort_inventory_20261020/manifest.json",
+  "source_holds_additional": [
+    {
+      "assay_chembl_id": "CHEMBL5733991",
+      "reason": "source_interval_midpoints_are_not_exact_IC50",
+      "decision": "정확값 회귀에서 보류. 원문 A–E 범주를 정확한 IC50로 사용하지 않음",
+      "evidence": "US9987276B2 Example271/Table16",
+      "details": "181건의 DB 정확값 후보 중 180건에서 원 구간 중간값 연결 확인, 1건 원 키 미확정. A≤10, B10–100, C100–1000, D1000–10000, E≥10000nM. 원 ChEMBL 값은 변경하지 않음"
+    },
+    {
+      "assay_chembl_id": "CHEMBL3705421",
+      "reason": "same_source_alias_block_and_species_variant_structure_review",
+      "related_assay": "CHEMBL5729820",
+      "decision": "두 ID의 동일 문헌·분자·관계·값 173행 블록을 독립 실험으로 세지 않음",
+      "release_condition": "유래·WT·구조와 다중 원 화합물 키를 해소한 뒤 원 관측 연결을 보존하며 중복 처리"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5729820",
+      "reason": "same_source_alias_block_and_species_variant_structure_review",
+      "related_assay": "CHEMBL3705421",
+      "decision": "173행 별도 독립 실험 승인 안 함"
+    },
+    {
+      "assay_chembl_id": "CHEMBL4038017",
+      "reason": "source_enzyme_concentration_ambiguity_and_graph_differences",
+      "evidence": "10.1021/acs.jmedchem.7b01612 SI S2–S3·저자CSV",
+      "details": "54개 합성 화합물 수치 일치, isomeric graph52개 일치·2개 차이. 별도 대조약1건 CSV 미수록. 정제 단백질 Z'-LYTE로 형식 재검토 근거 확보. SI의 EGFR0.287ug/uL와 final10uL의 kinase0.002ng 관계 미확정",
+      "release_condition": "효소 농도의 의미와 두 구조 차이를 원문 근거로 해결; 재표현·tautomer 가능성을 오류로 단정하지 않음"
+    },
+    {
+      "assay_chembl_id": "CHEMBL4041412",
+      "reason": "source_numeric_and_graph_differences",
+      "evidence": "10.1021/acs.jmedchem.7b00515 저자CSV",
+      "details": "31건 중 수치24·isomeric graph23건 일치. 1f/1m의 수치·일부 구조 차이는 결합·시간·집계 등의 의미 검토 전 보류. CSV 미수록 대조약을 불일치 오류로 세지 않음"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5382277",
+      "reason": "referenced_primary_method_not_available",
+      "evidence": "PMC9969398 Methods 및 ref28:10.1021/acs.jmedchem.9b00722",
+      "details": "저자CSV49개 중 IC50숫자45·단일농도 억제율4. 45개 구조 일치·43개 숫자 일치·2개 작은 정밀도 차이. WT와GST-G696–G1022·Kinase-Glo는 현 원문 확인, 상세법은2019논문참조. 2019저장소 PDF 링크는 권리 안내 HTML로서 원문 확보 아님",
+      "release_condition": "2019 실험법 원문 또는 명시적 대체 원문에서 human 유래·ATP·효소·반응 조건 확인. 기존 DB 설명만으로 조건 확인 표시하지 않음"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5737421",
+      "reason": "patent_compound_structures_not_independently_reviewed_and_narrow_labels",
+      "evidence": "US11155546B2 TestExample3/Table3 및 PV3872 공식 catalog",
+      "details": "64건 관계·수치 일치(정확50·>10000nM14). WT·10uM ATP·0.8ng/uL enzyme·2uM Tyr04·25C60분은 원문 확인. human·GST·668–1210은 해당 catalog 근거, 실제lot미확인. 정확50건에48isomeric구조·47connectivity·30scaffold, IC50범위1002–9011nM",
+      "release_condition": "원 특허의 개별 G번호 구조와 DB 구조 대조. 약한 활성 영역에 제한된 목적과 검증 가능성을 결정. 넓은EGFR성능평가를 위한 기존22건과 자동 병합하지 않음"
+    }
+  ],
+  "training_approved_rows": 0,
+  "human_independent_second_review_completed": false,
+  "cross_assay_pooling_newly_approved_pairs": 0
+}

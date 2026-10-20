@@ -9,8 +9,9 @@ description = "EGFR bioactivity prediction and literature evidence project scaff
 requires-python = ">=3.11"
 dependencies = []
 
-# Candidate dependencies, not an installed or locked environment.
+# P0 is validated separately; later-stage extras remain candidates.
 [project.optional-dependencies]
+p0 = ["httpx", "pandas", "numpy", "rdkit", "pyarrow"]
 ml = ["httpx", "pandas", "numpy", "scipy", "scikit-learn", "rdkit", "pyarrow", "matplotlib", "joblib"]
 deep = ["chemprop>=2,<3"]
 literature = ["httpx", "rank-bm25", "pydantic"]

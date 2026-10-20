@@ -1,0 +1,338 @@
+{
+  "전체 검사 통과": true,
+  "checks": [
+    {
+      "check": "조회 성공",
+      "passed": true,
+      "detail": {
+        "실패한 요청": [],
+        "요청 수": 37
+      }
+    },
+    {
+      "check": "원 응답 SHA-256",
+      "passed": true,
+      "detail": {
+        "activities_approximate": true,
+        "activities_censored": true,
+        "activities_exact": true,
+        "activities_page1": true,
+        "activities_page2": true,
+        "activities_relation_missing": true,
+        "activities_target_only": true,
+        "activities_variant_ic50": true,
+        "activity_schema": true,
+        "assay_CHEMBL615325": true,
+        "assay_CHEMBL621151": true,
+        "assay_CHEMBL674637": true,
+        "assay_CHEMBL674643": true,
+        "assay_CHEMBL677833": true,
+        "assay_CHEMBL939338": true,
+        "assay_CHEMBL939339": true,
+        "document_CHEMBL1124610": true,
+        "document_CHEMBL1134862": true,
+        "document_CHEMBL1145114": true,
+        "document_CHEMBL1145498": true,
+        "europepmc_documents": true,
+        "molecule_CHEMBL137635": true,
+        "molecule_CHEMBL306988": true,
+        "molecule_CHEMBL387187": true,
+        "molecule_CHEMBL66879": true,
+        "molecule_CHEMBL68920": true,
+        "molecule_CHEMBL69960": true,
+        "molecule_CHEMBL77085": true,
+        "release_notes": true,
+        "status_after": true,
+        "status_before": true,
+        "target": true,
+        "target_by_accession": true,
+        "uniprot": true,
+        "variant_assays": true,
+        "variant_ic50_CHEMBL1015942": true,
+        "variant_ic50_CHEMBL1015943": true
+      }
+    },
+    {
+      "check": "조회 전후 release",
+      "passed": true,
+      "detail": {
+        "이전": {
+          "activities": 24527044,
+          "chembl_db_version": "ChEMBL_37",
+          "chembl_release_date": "2026-05-01",
+          "compound_records": 3824604,
+          "disinct_compounds": 2921148,
+          "publications": 101100,
+          "status": "UP",
+          "targets": 18552
+        },
+        "이후": {
+          "activities": 24527044,
+          "chembl_db_version": "ChEMBL_37",
+          "chembl_release_date": "2026-05-01",
+          "compound_records": 3824604,
+          "disinct_compounds": 2921148,
+          "publications": 101100,
+          "status": "UP",
+          "targets": 18552
+        }
+      }
+    },
+    {
+      "check": "API와 고정 release notes 전역 건수",
+      "passed": true,
+      "detail": {
+        "disinct_compounds": true,
+        "compound_records": true,
+        "activities": true,
+        "targets": true,
+        "publications": true
+      }
+    },
+    {
+      "check": "ChEMBL・UniProt 표적 동일성",
+      "passed": true,
+      "detail": {
+        "표적": "CHEMBL203",
+        "UniProt": "P00533",
+        "분류 ID": 9606
+      }
+    },
+    {
+      "check": "UniProt accession 역방향 조회",
+      "passed": true,
+      "detail": {
+        "단일 단백질 표적": [
+          "CHEMBL203"
+        ]
+      }
+    },
+    {
+      "check": "페이지 경계와 ID 중복",
+      "passed": true,
+      "detail": {
+        "측정 ID": [
+          32260,
+          32263,
+          32265,
+          32267,
+          32270,
+          32272,
+          32680,
+          32770,
+          32772,
+          32780
+        ],
+        "주의": "앞 두 페이지만 점검; 전체 누락 검증 아님"
+      }
+    },
+    {
+      "check": "인간 조건 추가 전후 API 건수",
+      "passed": true,
+      "detail": {
+        "표적만 지정": 26600,
+        "인간 조건 추가": 26600
+      }
+    },
+    {
+      "check": "측정·분자·실험·문헌 연결",
+      "passed": true,
+      "detail": [
+        {
+          "activity_id": 32260,
+          "passed": true
+        },
+        {
+          "activity_id": 32263,
+          "passed": true
+        },
+        {
+          "activity_id": 32265,
+          "passed": true
+        },
+        {
+          "activity_id": 32267,
+          "passed": true
+        },
+        {
+          "activity_id": 32270,
+          "passed": true
+        },
+        {
+          "activity_id": 32272,
+          "passed": true
+        },
+        {
+          "activity_id": 32680,
+          "passed": true
+        },
+        {
+          "activity_id": 32770,
+          "passed": true
+        },
+        {
+          "activity_id": 32772,
+          "passed": true
+        },
+        {
+          "activity_id": 32780,
+          "passed": true
+        },
+        {
+          "activity_id": 2136929,
+          "passed": true
+        },
+        {
+          "activity_id": 2136930,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "원 단위・표준 단위・pChEMBL 수치",
+      "passed": true,
+      "detail": [
+        {
+          "activity_id": 32260,
+          "passed": true,
+          "pic50": 7.3872161432802645,
+          "pchembl_rounding_error": 0.002783856719735134
+        },
+        {
+          "activity_id": 32263,
+          "passed": true,
+          "pic50": 6.522878745280337,
+          "pchembl_rounding_error": 0.0028787452803378244
+        },
+        {
+          "activity_id": 32265,
+          "passed": true,
+          "pic50": 5.106793246940152,
+          "pchembl_rounding_error": 0.0032067530598487437
+        },
+        {
+          "activity_id": 32267,
+          "passed": true,
+          "pic50": 6.769551078621726,
+          "pchembl_rounding_error": 0.00044892137827368117
+        },
+        {
+          "activity_id": 32270,
+          "passed": true,
+          "pic50": 7.3979400086720375,
+          "pchembl_rounding_error": 0.0020599913279628623
+        },
+        {
+          "activity_id": 32272,
+          "passed": true,
+          "pic50": 6.356547323513812,
+          "pchembl_rounding_error": 0.0034526764861881887
+        },
+        {
+          "activity_id": 32680,
+          "passed": true,
+          "pic50": 5.031517051446064,
+          "pchembl_rounding_error": 0.001517051446064066
+        },
+        {
+          "activity_id": 32770,
+          "passed": true,
+          "pic50": 3.3010299956639813,
+          "pchembl_rounding_error": null
+        },
+        {
+          "activity_id": 32772,
+          "passed": true,
+          "pic50": 2.5228787452803374,
+          "pchembl_rounding_error": null
+        },
+        {
+          "activity_id": 32780,
+          "passed": true,
+          "pic50": 4.017728766960432,
+          "pchembl_rounding_error": 0.002271233039567555
+        },
+        {
+          "activity_id": 2136929,
+          "passed": true,
+          "pic50": 7.200659450546418,
+          "pchembl_rounding_error": 0.0006594505464176947
+        },
+        {
+          "activity_id": 2136930,
+          "passed": true,
+          "pic50": 8.397940008672037,
+          "pchembl_rounding_error": 0.0020599913279628623
+        }
+      ]
+    },
+    {
+      "check": "변이 서열과 UniProt 기준 서열",
+      "passed": true,
+      "detail": [
+        {
+          "assay": "CHEMBL939338",
+          "expected": [
+            "L858R"
+          ],
+          "observed": [
+            "L858R"
+          ],
+          "passed": true
+        },
+        {
+          "assay": "CHEMBL939339",
+          "expected": [
+            "L861Q"
+          ],
+          "observed": [
+            "L861Q"
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "Europe PMC 문헌 메타데이터",
+      "passed": true,
+      "detail": [
+        {
+          "document": "CHEMBL1124610",
+          "PMID": 2552117,
+          "passed": true
+        },
+        {
+          "document": "CHEMBL1134862",
+          "PMID": 12127526,
+          "passed": true
+        },
+        {
+          "document": "CHEMBL1145114",
+          "PMID": 13678409,
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "API 집계": {
+    "전체": 26600,
+    "정확값 관계 =": 19719,
+    "부등호 < > <= >=": 5471,
+    "관계값 null": 1398,
+    "근사 관계 ~": 1,
+    "나머지 관계 미확인": 11
+  },
+  "변이 문자열 non-null IC50 기록": 5025,
+  "주 표본": {
+    "측정": 10,
+    "분자": 6,
+    "실험": 5,
+    "문헌": 3,
+    "형식": {
+      "single protein format": 6,
+      "cell-based format": 4
+    }
+  },
+  "연결 검증 표본": 12,
+  "제한": "비무작위 소량 표본. 전체 데이터 품질·논문 원문 수치·학습 적격성은 검증하지 않음."
+}

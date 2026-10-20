@@ -6,9 +6,18 @@
 
 ## 채용·회사 맥락
 
-- 사용자 첨부 이미지 2장: AI 연구원의 주요업무·필수·우대요건의 직접 근거. 외부 URL 없음.
-- [회사 게시 신약개발 연구원 공고](https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=54544319): AI 신약설계, ADC/DAC/TPD, ADC 연구와 PK/DMPK 업무. 이번 AI 직무의 내부 스택은 명시하지 않음.
+- 사용자 첨부 이미지 2장: 초기 AI 연구원 요건 확인 자료. 2026-10-20에 아래 실제 AI 공고 본문과 대조함.
+- [AI 연구원 공고](https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=55253770), [상세 본문](https://www.saramin.co.kr/zf_user/jobs/relay/view-detail?rec_idx=55253770): 이번 직무의 직접 근거. 다섯 우대사항·주요업무·자격을 2026-10-20에 확인하고 원문 해시 보관. 회사 내부 기술 스택을 의미하지 않음.
+- [별도 ADC/PK 연구원 공고](https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=54544319): 같은 기업의 별도 직무 맥락이며 AI 직무 우대사항의 직접 근거로 사용하지 않음.
 - [대표 인터뷰, 한경 JOB&JOY, 2025-08-20](https://magazine.hankyung.com/job-joy/article/202508201631d): EGFR·KRAS 관련 연구 방향에 관한 당시 공개 자료. 현재 개발 단계의 독립 검증 자료로 사용하지 않음.
+- [한독 공식 EGFR 분해제 공동연구 발표](https://www.handok.co.kr/en/board/en_pressView?idx=4276&lang=en&listSize=9&page=1&type=media): 회사 연구 연관성. 2026-10-20 추가 검토.
+- Baig et al. **HBE-843, a Novel, Potent, and Selective EGFR Targeting PROTAC for the Treatment of Non-Small-Cell Lung Cancer.** Archiv der Pharmazie 2026;359:e70193. DOI [10.1002/ardp.70193](https://doi.org/10.1002/ardp.70193), [PMID:41635121](https://pubmed.ncbi.nlm.nih.gov/41635121/). 2026-10-20에 출판사 초록·메타데이터 대조. 본문/SI 전수 검토나 실험 재현은 아님. [검토 카드](../reports/company_paper_case_hbe843.md).
+
+## 기준의 적용 범위 — 2026-10-20 추가 검토
+
+- [SGC-UNC chemical probe 기준](https://www.sgc-unc.org/main-st): 연구 도구 화합물의 활성·선택성·세포 활성·비활성 대조약·공개 이용 기준. EGFR 공통 학습 필터나 임상 승인 기준으로 사용하지 않음.
+- Hartung et al. **Expanding Chemical Probe Space: Quality Criteria for Covalent and Degrader Probes.** J Med Chem 2023;66:9297–9312. DOI [10.1021/acs.jmedchem.3c00550](https://doi.org/10.1021/acs.jmedchem.3c00550). 공유결합·분해제에 맞춘 저자 제안이며 보편 합격선과 구분.
+- [OECD QSAR 검증 원칙](https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/assessment-of-chemicals/oecd-principles-for-the-validation-for-regulatory-purposes-of-quantitative-structure-activity-relationship-models.pdf): endpoint·알고리즘·적용 범위·통계 검증·가능한 기전 해석. EGFR 공통 MAE/R² 기준을 정하는 자료가 아님.
 
 ## 데이터·생물학
 

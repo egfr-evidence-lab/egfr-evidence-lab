@@ -1,0 +1,160 @@
+{
+  "checked_at_utc": "2026-10-20T00:02:57.435145+00:00",
+  "scope": "P0 실행 환경 검증; 전체 데이터 감사·정제·모델 학습은 미수행",
+  "python": "3.12.14",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "lock_file": "requirements/p0-py312-macos-arm64.txt",
+  "lock_sha256": "cada41e393f34b2430659af2e7a691f1ed74d1659e9d773d0d36daaf77b263b3",
+  "script_sha256": "b5b7cf550537d811f75c075c2e786de24a0e21806695424d26f704603c81d29a",
+  "locked_packages": {
+    "anyio": "4.15.1",
+    "certifi": "2026.10.18",
+    "h11": "0.16.0",
+    "httpcore": "1.0.9",
+    "httpx": "0.28.1",
+    "idna": "3.20",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "pillow": "13.0.0",
+    "pyarrow": "26.0.0",
+    "python-dateutil": "2.9.0.post0",
+    "rdkit": "2026.9.1",
+    "six": "1.17.0",
+    "typing-extensions": "4.16.0"
+  },
+  "online_requested": true,
+  "all_passed": true,
+  "checks": [
+    {
+      "name": "Python·운영체제·가상환경",
+      "passed": true,
+      "detail": {
+        "python": "3.12.14",
+        "platform": "macOS-26.5.2-arm64-arm-64bit",
+        "machine": "arm64",
+        "virtual_environment": true
+      }
+    },
+    {
+      "name": "lock의 정확 버전과 설치 패키지 일치",
+      "passed": true,
+      "detail": {
+        "anyio": "4.15.1",
+        "certifi": "2026.10.18",
+        "h11": "0.16.0",
+        "httpcore": "1.0.9",
+        "httpx": "0.28.1",
+        "idna": "3.20",
+        "numpy": "2.5.4",
+        "pandas": "3.0.6",
+        "pillow": "13.0.0",
+        "pyarrow": "26.0.0",
+        "python-dateutil": "2.9.0.post0",
+        "rdkit": "2026.9.1",
+        "six": "1.17.0",
+        "typing-extensions": "4.16.0"
+      }
+    },
+    {
+      "name": "pip 의존성 충돌 검사",
+      "passed": true,
+      "detail": "No broken requirements found."
+    },
+    {
+      "name": "P0 패키지 import",
+      "passed": true,
+      "detail": [
+        "httpx",
+        "numpy",
+        "pandas",
+        "pyarrow",
+        "rdkit"
+      ]
+    },
+    {
+      "name": "HTTPX 요청 인코딩·JSON 해석",
+      "passed": true,
+      "detail": {
+        "mode": "모의 통신; 네트워크 요청 없음",
+        "query_encoding": true,
+        "json_parsing": true
+      }
+    },
+    {
+      "name": "pandas·PyArrow Parquet 왕복 저장",
+      "passed": true,
+      "detail": {
+        "rows": 3,
+        "nulls_preserved": true,
+        "dtypes_preserved": true,
+        "synthetic": true,
+        "engine": "pyarrow",
+        "version": "26.0.0"
+      }
+    },
+    {
+      "name": "pandas CSV 왕복 저장",
+      "passed": true,
+      "detail": {
+        "rows": 3,
+        "nulls_preserved": true,
+        "dtype_schema_explicit": true,
+        "synthetic": true
+      }
+    },
+    {
+      "name": "RDKit 정상·오류 구조 파싱",
+      "passed": true,
+      "detail": {
+        "valid_smiles": "CCO",
+        "invalid_smiles_rejected": true,
+        "note": "파싱 기능 검사; 화학 정규화 정책 미확정"
+      }
+    },
+    {
+      "name": "RDKit 입체정보 보존",
+      "passed": true,
+      "detail": {
+        "distinct_isomeric_smiles": [
+          "F[C@H](Cl)Br",
+          "F[C@@H](Cl)Br"
+        ]
+      }
+    },
+    {
+      "name": "Morgan fingerprint·NumPy 연동",
+      "passed": true,
+      "detail": {
+        "radius": 2,
+        "bits": 2048,
+        "on_bits": 6,
+        "self_similarity": 1.0,
+        "note": "환경 검사 예시; 모델링 설정 확정 아님"
+      }
+    },
+    {
+      "name": "Murcko scaffold 계산",
+      "passed": true,
+      "detail": {
+        "input": "Cc1ccccc1",
+        "scaffold": "c1ccccc1",
+        "note": "분할 수행 아님; 비고리 분자 정책은 후속 작업"
+      }
+    },
+    {
+      "name": "ChEMBL 실제 HTTPS 상태·표적 조회",
+      "passed": true,
+      "detail": {
+        "mode": "실제 HTTPS; 인증서 검증 유지",
+        "requests": [
+          "https://www.ebi.ac.uk/chembl/api/data/status.json",
+          "https://www.ebi.ac.uk/chembl/api/data/target/CHEMBL203.json"
+        ],
+        "chembl_db_version": "ChEMBL_37",
+        "chembl_release_date": "2026-05-01",
+        "target_chembl_id": "CHEMBL203",
+        "full_collection_performed": false
+      }
+    }
+  ]
+}

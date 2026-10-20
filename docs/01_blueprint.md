@@ -8,7 +8,9 @@
 
 후속 질문: 실제 측정과 예측을 구분하면서 관련 실험·문헌·변이 근거를 조회할 수 있는가?
 
-회사 게시 공고의 AI 신약설계·ADC/DAC/TPD 및 첨부 채용 이미지의 전처리·통계 검증 요구를 고려한 설계입니다. 회사가 이 라이브러리들을 사용한다는 주장은 아닙니다. [회사 공고](https://www.saramin.co.kr/zf_user/jobs/view?rec_idx=54544319)
+실제 AI 연구원 공고의 데이터 전처리·통계 검증 및 다섯 우대사항을 고려한 설계입니다. 회사가 이 라이브러리들을 사용한다는 주장은 아닙니다. [AI 공고](https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=55253770)
+
+2026-10-20 추가 범위를 사용자 요청에 따라 포함했습니다. 기준 ML → D-MPNN 비교 → 단일 공개 benchmark 재현 → Agent → 클라우드 순서로 진행하고, 기업 관련 EGFR 내성·분해제 문헌 사례를 작은 범위로 병행합니다. [실행 순서와 완료 조건](10_execution_plan.md), [범위·상태 설정](../configs/portfolio_scope.json)을 기준으로 관리합니다.
 
 ## 전체 흐름
 
@@ -43,7 +45,7 @@ Agent와 DL은 동일 모델이 아닙니다. 수치 예측은 학습된 모델�
 5. **생화학 실험 중 해석 가능한 단일 변이 상태**를 초기 코호트 후보로 검토합니다. 정상형은 첫 후보이며, 확보 가능성을 확인하기 전에는 확정하지 않습니다.
 6. 주 코호트의 화합물 수, 독립 scaffold 수, 라벨 범위와 문헌 편중을 확인하고 학습 가능 여부를 결정합니다. 보편적인 최소 건수처럼 임의 숫자를 제시하지 않습니다. 작으면 모델 범위를 축소하고 탐색 분석 중심으로 전환합니다.
 
-**감사 산출물:** `reports/data_audit.md`, `data/interim/assay_review.csv`, `reports/dataset_card.md`.
+**감사 산출물:** `reports/data_audit.md`, `data/interim/audit_chembl_full_20261020/assay_review.csv`, `reports/dataset_card.md`. 실행별 폴더로 분리해 검토 기록을 보호한다. [자동 감사와 원문 검토 순서](09_data_audit.md).
 
 ChEMBL에서 정상형과 변이형은 같은 표적 ID를 가질 수 있습니다. `variant_id` 및 실험 설명을 함께 확인합니다. null은 DB의 정상형 구분에 사용되지만 실험 해석이 불분명한 자료까지 정상형이라고 확정하지 않습니다. 자동으로 판별하지 못한 것은 별도 보류합니다. [공식 변이 설명](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/target-questions)
 
@@ -124,4 +126,6 @@ Agent는 단일 Agent로 시작합니다. 허용 도구는 `predict_activity`, `
 | P4 | 도구 호출 trace, 근거 보류·실패 처리, Agent 평가 |
 | P5 | 클라우드 환경에서 추론·로그·모델 버전·재시작 확인 |
 
-현재 위 단계는 모두 계획 상태입니다. 데이터 감사 결과에 따라 다음 단계의 범위를 수정합니다.
+현재 P0는 전체 수집·무결성 검증·자동 감사를 완료하고 주 코호트를 검토 중입니다. [전체 감사 결과](../reports/data_audit.md)에서 측정 26,600건을 전수 검사했습니다. 후속 209건 검토는 전체 보류했고, 기존 단일 assay 22건으로 [교육용 Dummy·RF 실험](../reports/apsel_review_and_baseline_ko.md)을 실행해 P1도 진행 중입니다. 이 파일럿은 사전에 고정한 3-fold 교차검증이며 주 코호트의 최종 시험 설계를 대체하지 않습니다. P2–P5는 계획 상태입니다.
+
+후속 [문헌·실험 조건 검토](../reports/cohort_definition_evidence.md)에서 WT 6개 실험 중 1개 실험의 방법과 22건의 표 수치를 확인했습니다. 15개 실험 쌍은 공통 구조가 최대 1개라 병합을 승인하지 않았습니다. 선정 규칙을 `configs/cohort_policy.json`으로 고정하고 보류 WT 37개 실험·277건의 확대 검토 순서를 만들었습니다. 현재 22건은 조건 확인 파일럿이며 최종 학습·평가 데이터가 아닙니다.

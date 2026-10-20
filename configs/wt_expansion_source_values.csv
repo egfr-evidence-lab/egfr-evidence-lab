@@ -1,0 +1,12 @@
+document_chembl_id,assay_chembl_id,compound_key,reported_value,reported_unit,locator,record_asset,source_asset
+CHEMBL2434822,CHEMBL2439336,WZ4002,9.58,nM,SI S2 Figure S1,zhou_records.json,figshare_4002268.pdf
+CHEMBL2434822,CHEMBL2439336,3q,1.47,nM,SI S2 Figure S1,zhou_records.json,figshare_4002268.pdf
+CHEMBL2434822,CHEMBL2439336,3x,3.67,nM,SI S2 Figure S1,zhou_records.json,figshare_4002268.pdf
+CHEMBL5634191,CHEMBL5638814,1,9.7,pIC50,Main Table 2 ATP 10 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638814,2,9.6,pIC50,Main Table 2 ATP 10 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638814,3,9.6,pIC50,Main Table 2 ATP 10 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638814,12,9.6,pIC50,Main Table 2 ATP 10 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638815,1,9.3,pIC50,Main Table 2 ATP 1000 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638815,2,9.4,pIC50,Main Table 2 ATP 1000 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638815,3,8.6,pIC50,Main Table 2 ATP 1000 uM,pemberton_records.json,PMC11089552.html
+CHEMBL5634191,CHEMBL5638815,12,9.4,pIC50,Main Table 2 ATP 1000 uM,pemberton_records.json,PMC11089552.html

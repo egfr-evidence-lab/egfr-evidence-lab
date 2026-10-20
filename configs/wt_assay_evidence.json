@@ -1,0 +1,76 @@
+{
+  "reviewed_at": "2026-10-20",
+  "reviewer": "Codex 문헌 근거 검토; 사람의 독립 이중 검토 아님",
+  "assays": [
+    {
+      "assay_chembl_id": "CHEMBL2427710",
+      "primary_url": "https://pubs.acs.org/doi/10.1021/jm400822z",
+      "evidence_level": "abstract_and_chembl_description_only",
+      "reaction_minutes_chembl": 50,
+      "readout_chembl": "HTRF",
+      "study_scope_from_abstract": "covalent_design",
+      "decision": "hold_primary_methods_unavailable"
+    },
+    {
+      "assay_chembl_id": "CHEMBL3743367",
+      "primary_url": "https://pubmed.ncbi.nlm.nih.gov/26451770/",
+      "evidence_level": "abstract_and_chembl_description_only",
+      "preincubation_minutes_chembl": 10,
+      "reaction_minutes_chembl": 60,
+      "substrate_chembl": "FAM-labeled peptide",
+      "readout_chembl": "mobility shift",
+      "decision": "hold_primary_methods_unavailable"
+    },
+    {
+      "assay_chembl_id": "CHEMBL3767531",
+      "primary_url": "https://pubmed.ncbi.nlm.nih.gov/26829280/",
+      "evidence_level": "abstract_and_chembl_description_only",
+      "protein_construct_chembl": "cytoplasmic domain; residue range unspecified",
+      "readout_chembl": "Z-Lyte",
+      "decision": "hold_primary_methods_unavailable"
+    },
+    {
+      "assay_chembl_id": "CHEMBL3820192",
+      "primary_url": "https://pubmed.ncbi.nlm.nih.gov/27387355/",
+      "evidence_level": "abstract_and_chembl_description_only",
+      "preincubation_minutes_chembl": 5,
+      "reaction_minutes_chembl": 30,
+      "readout_chembl": "HTRF",
+      "study_scope_from_abstract": "noncovalent_design",
+      "decision": "hold_primary_methods_unavailable"
+    },
+    {
+      "assay_chembl_id": "CHEMBL4258549",
+      "primary_url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6083791/",
+      "primary_locator": "Materials and methods / EGFR kinase activity assay; Tables 1 and 3",
+      "evidence_level": "primary_methods_and_numeric_tables_verified",
+      "atp_uM": 5,
+      "substrate": "poly(Glu,Tyr) 4:1",
+      "substrate_concentration": "20 ug/mL plate coating",
+      "reaction_minutes": 60,
+      "temperature_C": 37,
+      "buffer_pH": 7.4,
+      "readout": "ELISA; absorbance 492 nm",
+      "protein_vendor": "Eurofins",
+      "variant": "WT",
+      "species": null,
+      "species_secondary_chembl": "Homo sapiens",
+      "protein_construct": null,
+      "enzyme_concentration": null,
+      "preincubation_minutes": null,
+      "atp_Km_uM": null,
+      "inhibitor_scope": "targeted_covalent_design; individual time dependence not established by these IC50 measurements",
+      "buffer_details": {"HEPES_mM": 50, "MgCl2_mM": 50, "MnCl2_mM": 0.5, "Na3VO4_mM": 0.2, "DTT_mM": 1},
+      "addition_order": "buffer/inhibitor/ATP, then kinase; separate enzyme-inhibitor preincubation not reported",
+      "replicate_uncertainty": "Tables contain plus-minus values; replicate count and SD/SEM definition not verified",
+      "decision": "context_pilot_only_no_cross_assay_pooling"
+    },
+    {
+      "assay_chembl_id": "CHEMBL6105594",
+      "primary_url": "https://www.sciencedirect.com/science/article/pii/S0223523425001059",
+      "evidence_level": "abstract_and_chembl_description_only",
+      "readout_chembl": "Kinase-Glo",
+      "decision": "hold_primary_methods_unavailable"
+    }
+  ]
+}

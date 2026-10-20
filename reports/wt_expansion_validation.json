@@ -1,0 +1,27 @@
+{
+  "checked_at_utc": "2026-10-20T06:39:27.483715+00:00",
+  "passed": true,
+  "source_response_files_hashed": 50,
+  "si_files_md5_verified": 5,
+  "wt_assays_access_or_review_attempted": 12,
+  "wt_seed_rows_covered": 154,
+  "patent_classification_counts": {
+    "matches_cot_column_only": 928,
+    "no_exact_source_column_match": 46,
+    "non_exact_or_non_numeric_requires_review": 6,
+    "matches_explicit_egfr_column": 1
+  },
+  "original_audit_and_cohort_manifests_unchanged": true,
+  "portfolio_milestones": [
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "M6"
+  ],
+  "source_hold_assays": 5,
+  "validation_scope": "wt_expansion_review_not_later_educational_baseline",
+  "new_training_approved_rows": 0,
+  "model_training_executed_in_this_wt_review": false
+}

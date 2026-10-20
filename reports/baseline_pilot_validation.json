@@ -1,0 +1,19 @@
+{
+  "checked_at_utc": "2026-10-20T08:14:49.094257+00:00",
+  "passed": true,
+  "pilot_measurements": 22,
+  "saved_models_reloaded": 36,
+  "OOF_prediction_rows": 264,
+  "all_samples_evaluated_once_per_scheme_seed_model": true,
+  "primary_scaffold_overlap": 0,
+  "dummy_uses_training_fold_only": true,
+  "metrics_independently_recomputed": true,
+  "apsel_rows_reviewed": 209,
+  "apsel_training_approved": 0,
+  "apsel_in_pilot": 0,
+  "original_pilot_training_ready_unchanged": true,
+  "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "freeze_sha256": "f219ddf89c88c72276c84efb6b9216c8f6e49c40b9ebfd9d6158c3ffb255bf54",
+  "baseline_manifest_sha256": "b8e15d1fcef2b2754994d8a39c0169ee0f69f3901cd611fe1a6e29a62f105530"
+}

@@ -1,0 +1,281 @@
+{
+  "policy": "conservative-screen-v1",
+  "measurements": 26600,
+  "assays": 2425,
+  "molecules": 14776,
+  "measurement_documents": 1298,
+  "distributions": {
+    "standard_relation": {
+      "(결측)": 1398,
+      "<": 2067,
+      "<=": 87,
+      "=": 19719,
+      ">": 3309,
+      ">=": 8,
+      ">>": 11,
+      "~": 1
+    },
+    "standard_units": {
+      "(결측)": 1259,
+      "/uM": 6,
+      "10^-5 mol/L": 1,
+      "10^3 uM": 1,
+      "nM": 25244,
+      "ug.mL-1": 89
+    },
+    "data_validity_comment": {
+      "(결측)": 26090,
+      "Outside typical range": 445,
+      "Potential transcription error": 65
+    },
+    "potential_duplicate": {
+      "0": 23856,
+      "1": 2744
+    },
+    "standard_flag": {
+      "0": 1409,
+      "1": 25191
+    },
+    "src_id": {
+      "1": 17521,
+      "15": 871,
+      "37": 7272,
+      "38": 747,
+      "54": 6,
+      "65": 54,
+      "72": 129
+    },
+    "document_year": {
+      "(결측)": 871,
+      "1989": 72,
+      "1991": 122,
+      "1992": 130,
+      "1993": 132,
+      "1994": 377,
+      "1995": 203,
+      "1996": 300,
+      "1997": 366,
+      "1998": 195,
+      "1999": 220,
+      "2000": 116,
+      "2001": 210,
+      "2002": 178,
+      "2003": 146,
+      "2004": 202,
+      "2005": 260,
+      "2006": 420,
+      "2007": 277,
+      "2008": 1023,
+      "2009": 818,
+      "2010": 570,
+      "2011": 353,
+      "2012": 789,
+      "2013": 790,
+      "2014": 870,
+      "2015": 1007,
+      "2016": 1325,
+      "2017": 2384,
+      "2018": 1398,
+      "2019": 1793,
+      "2020": 1126,
+      "2021": 2717,
+      "2022": 2163,
+      "2023": 1011,
+      "2024": 1200,
+      "2025": 466
+    }
+  },
+  "molecule_type": {
+    "(결측)": 4466,
+    "Oligosaccharide": 5,
+    "Protein": 6,
+    "Small molecule": 9309,
+    "Unknown": 990
+  },
+  "variant_by_assay": {
+    "C797S": 1,
+    "C797S+L858R": 2,
+    "C797S+L858R+T790M": 86,
+    "C797S+T790M": 4,
+    "G719C": 2,
+    "G719S": 1,
+    "L858M+T790M": 1,
+    "L858R": 113,
+    "L858R+T790M": 199,
+    "L861Q": 9,
+    "T790M": 67,
+    "WT": 245,
+    "unresolved": 1695
+  },
+  "format_by_assay": {
+    "biochemical_candidate": 720,
+    "cellular_or_conflict": 681,
+    "unresolved_or_other": 1024
+  },
+  "structure_status": {
+    "missing_smiles": 47,
+    "molecule_type_unconfirmed_hold": 5415,
+    "multiple_fragments_hold": 284,
+    "not_small_molecule_hold": 8,
+    "single_component_candidate": 9022
+  },
+  "overlapping_hold_reasons": {
+    "document_conflict": 1,
+    "format_not_biochemical": 16605,
+    "invalid_value": 1401,
+    "not_exact": 6881,
+    "not_standardized": 1409,
+    "potential_duplicate": 2744,
+    "quality_flag": 510,
+    "species_unclear": 6476,
+    "structure": 10897,
+    "target_link": 7171,
+    "unsupported_unit": 1356,
+    "variant_unresolved": 19918
+  },
+  "exclusive_waterfall": {
+    "candidate": 264,
+    "format_not_biochemical": 2530,
+    "not_exact": 74,
+    "potential_duplicate": 33,
+    "quality_flag": 2,
+    "species_unclear": 6476,
+    "structure": 102,
+    "target_link": 7171,
+    "variant_unresolved": 9948
+  },
+  "cohorts": {
+    "C797S+L858R+T790M": {
+      "measurements": 7,
+      "structures": 7,
+      "molecule_ids": 7,
+      "assays": 2,
+      "documents": 2,
+      "ring_scaffolds": 7,
+      "acyclic_structures": 0,
+      "pIC50_min": 5.102372908709558,
+      "pIC50_median": 7.0695604052333,
+      "pIC50_max": 8.920818753952375,
+      "largest_document": "CHEMBL4266062",
+      "largest_document_fraction": 0.5714285714285714,
+      "top5_document_fraction": 1.0,
+      "structures_with_multiple_assays": 0,
+      "unspecified_stereo_measurements": 0
+    },
+    "L858R": {
+      "measurements": 31,
+      "structures": 31,
+      "molecule_ids": 31,
+      "assays": 4,
+      "documents": 4,
+      "ring_scaffolds": 17,
+      "acyclic_structures": 0,
+      "pIC50_min": 6.320572103387882,
+      "pIC50_median": 8.777283528852417,
+      "pIC50_max": 10.0,
+      "largest_document": "CHEMBL2029259",
+      "largest_document_fraction": 0.7096774193548387,
+      "top5_document_fraction": 1.0,
+      "structures_with_multiple_assays": 0,
+      "unspecified_stereo_measurements": 0
+    },
+    "L858R+T790M": {
+      "measurements": 122,
+      "structures": 104,
+      "molecule_ids": 104,
+      "assays": 11,
+      "documents": 11,
+      "ring_scaffolds": 51,
+      "acyclic_structures": 0,
+      "pIC50_min": 4.895512888687605,
+      "pIC50_median": 8.388381863448501,
+      "pIC50_max": 9.744727494896694,
+      "largest_document": "CHEMBL3638445",
+      "largest_document_fraction": 0.2540983606557377,
+      "top5_document_fraction": 0.8360655737704918,
+      "structures_with_multiple_assays": 4,
+      "unspecified_stereo_measurements": 1
+    },
+    "L861Q": {
+      "measurements": 22,
+      "structures": 22,
+      "molecule_ids": 22,
+      "assays": 1,
+      "documents": 1,
+      "ring_scaffolds": 14,
+      "acyclic_structures": 0,
+      "pIC50_min": 6.077222658071202,
+      "pIC50_median": 8.576213670428944,
+      "pIC50_max": 9.337242168318426,
+      "largest_document": "CHEMBL2029259",
+      "largest_document_fraction": 1.0,
+      "top5_document_fraction": 1.0,
+      "structures_with_multiple_assays": 0,
+      "unspecified_stereo_measurements": 0
+    },
+    "T790M": {
+      "measurements": 32,
+      "structures": 32,
+      "molecule_ids": 32,
+      "assays": 4,
+      "documents": 4,
+      "ring_scaffolds": 18,
+      "acyclic_structures": 0,
+      "pIC50_min": 5.324221658325914,
+      "pIC50_median": 7.757992518666218,
+      "pIC50_max": 9.292429823902063,
+      "largest_document": "CHEMBL2029259",
+      "largest_document_fraction": 0.65625,
+      "top5_document_fraction": 1.0,
+      "structures_with_multiple_assays": 0,
+      "unspecified_stereo_measurements": 0
+    },
+    "WT": {
+      "measurements": 50,
+      "structures": 49,
+      "molecule_ids": 49,
+      "assays": 6,
+      "documents": 6,
+      "ring_scaffolds": 26,
+      "acyclic_structures": 0,
+      "pIC50_min": 4.814741234703415,
+      "pIC50_median": 8.041389080543944,
+      "pIC50_max": 9.327902142064282,
+      "largest_document": "CHEMBL4257480",
+      "largest_document_fraction": 0.44,
+      "top5_document_fraction": 0.98,
+      "structures_with_multiple_assays": 1,
+      "unspecified_stereo_measurements": 1
+    }
+  },
+  "candidate_repeat_contexts": 14,
+  "candidate_repeated_measurements": 28,
+  "all_record_repeat_contexts": 595,
+  "all_record_repeat_context_measurements": 1237,
+  "all_record_identical_value_groups": 185,
+  "all_record_identical_value_measurements": 390,
+  "wt_single_reason_review_pools": {
+    "species_unclear": {
+      "measurements": 277,
+      "assays": 37,
+      "interpretation": "이 사유만으로 보류된 WT 자료. 재판정 전 후보 수에 더하지 않음"
+    },
+    "structure": {
+      "measurements": 72,
+      "assays": 6,
+      "interpretation": "이 사유만으로 보류된 WT 자료. 재판정 전 후보 수에 더하지 않음"
+    }
+  },
+  "pchembl_crosscheck": {
+    "compared": 19378,
+    "difference_over_0_011": 0,
+    "max_absolute_difference": 0.005493477406601777,
+    "interpretation": "표준 농도로 재계산; pChEMBL 반올림 허용차 0.011로 교차 확인"
+  },
+  "manual_review_completed": 0,
+  "training_ready": false,
+  "release": {
+    "chembl_db_version": "ChEMBL_37",
+    "chembl_release_date": "2026-05-01"
+  }
+}

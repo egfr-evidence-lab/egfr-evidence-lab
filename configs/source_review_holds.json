@@ -1,0 +1,42 @@
+{
+  "version": "primary-source-holds-v1",
+  "reviewed_at": "2026-10-20",
+  "purpose": "후속 코호트 선정에서 확인해야 할 원문 검토 보류 목록; 원 ChEMBL 자료를 수정하지 않음",
+  "holds": [
+    {
+      "assay_chembl_id": "CHEMBL2439336",
+      "code": "source_numeric_estimate_difference",
+      "scope": "전체 실험은 검토 보류; SI Figure S1의 3개 관측을 직접 대조",
+      "evidence": "data/interim/wt_expansion_review_20261020_v1/source_numeric_crosscheck.csv",
+      "release_condition": "본문 표와 SI 곡선·반복 집계의 관계 확인, 효소 농도 의미 검토"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5638807",
+      "code": "source_atp_final_concentration_ambiguity",
+      "scope": "12건의 원 측정; species 단독 보류 후보는 1건",
+      "evidence": "configs/wt_expansion_evidence.json",
+      "release_condition": "표 각주의 최종 ATP 12 uM와 혼합 recipe의 6 uM 추론 관계 확인"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5638814",
+      "code": "source_readout_conflict",
+      "scope": "원 측정 4건",
+      "evidence": "data/interim/wt_expansion_review_20261020_v1/source_readout_conflicts.csv",
+      "release_condition": "별도 Z'-LYTE 실험으로 정정 근거·조건·단백질 유래 검토; 주 ADP-Glo 조건을 복사하지 않음"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5638815",
+      "code": "source_readout_conflict",
+      "scope": "원 측정 4건",
+      "evidence": "data/interim/wt_expansion_review_20261020_v1/source_readout_conflicts.csv",
+      "release_condition": "별도 Z'-LYTE 실험으로 정정 근거·조건·단백질 유래 검토; 주 ADP-Glo 조건을 복사하지 않음"
+    },
+    {
+      "assay_chembl_id": "CHEMBL5736995",
+      "code": "source_target_column_mix",
+      "scope": "981건 전체 코호트 승인 보류; 928건 Cot 열 수치 일치, 명시 EGFR 열 일치 1건. 모든 981건을 오류로 판정한 것은 아님",
+      "evidence": "data/interim/patent_target_review_20261020/target_column_crosscheck.csv",
+      "release_condition": "activity·record·특허 화합물·표적 열·구조를 관측별로 재검토. 동일 assay ID가 단일 표적·조건이라는 가정 금지"
+    }
+  ]
+}

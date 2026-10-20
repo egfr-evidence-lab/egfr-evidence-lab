@@ -1,0 +1,19 @@
+{
+  "version": "scope-diagnostics-v1",
+  "purpose": "candidate_data_and_split_diagnostics_not_model_training",
+  "inputs": {
+    "pilot22": "data/interim/cohort_review_20261020/context_pilot.csv",
+    "furan45": "data/interim/furan_candidate_20261020/IC50_candidates_not_training_ready.csv",
+    "patent50": "data/interim/main_cohort_review_20261020/measurement_source_crosscheck.csv"
+  },
+  "fingerprint": {"radius": 2, "size": 2048, "include_chirality": true},
+  "diagnostic_folds": 3,
+  "random_group_split_seed": 42,
+  "primary_group": "Murcko_scaffold_without_chirality",
+  "secondary_group": "connectivity_stereo_grouped",
+  "train_models": false,
+  "assign_training_approval": false,
+  "select_test_split_using_model_performance": false,
+  "tanimoto_confidence_cutoff": null,
+  "scope": "승인 전 후보의 자료 편중·분할 크기·구조적 거리 진단. 모델 MAE·미래 성능 보증·임상 적용 결과가 아님"
+}

@@ -1,0 +1,49 @@
+{
+  "verified_at_utc": "2026-10-20T01:31:27.693827+00:00",
+  "passed": true,
+  "state": "preview_complete",
+  "release": {
+    "chembl_db_version": "ChEMBL_37",
+    "chembl_release_date": "2026-05-01"
+  },
+  "raw_responses": 11,
+  "exports_verified": true,
+  "summary": {
+    "api_total_count": 26600,
+    "activities": 10,
+    "molecules": 6,
+    "assays": 5,
+    "documents": 3,
+    "activity_documents": 3,
+    "relations": {
+      "=": 10
+    },
+    "units": {
+      "nM": 10
+    },
+    "assay_types": {
+      "B": 6,
+      "F": 4
+    },
+    "bao_formats": {
+      "cell-based format": 4,
+      "single protein format": 6
+    },
+    "validity_comments": {
+      "<null>": 8,
+      "Outside typical range": 2
+    },
+    "sources": {
+      "1": 10
+    },
+    "variant_annotation_non_null": 0,
+    "null_reference_counts": {
+      "molecule_chembl_id": 0,
+      "assay_chembl_id": 0,
+      "document_chembl_id": 0
+    },
+    "scientific_curation_complete": false,
+    "training_cohort_approved": false
+  },
+  "limit": "기술적 수집 무결성 확인; 실험·변이 적격성 판단과 구조 정제는 후속 작업"
+}

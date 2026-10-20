@@ -1,0 +1,20 @@
+{
+  "checked_at_utc": "2026-10-20T08:14:46.529197+00:00",
+  "passed": true,
+  "source_response_files_hashed": 57,
+  "provider_md5_files_checked": 12,
+  "inventory_measurements": 26600,
+  "inventory_assays": 2425,
+  "priority_assays": 242,
+  "new_source_crosschecked_observations": 787,
+  "source_interval_midpoints_not_exact": 180,
+  "same_source_173_row_alias_block": true,
+  "WT_patent_numeric_relation_matches": 64,
+  "furan_IC50_candidates": 45,
+  "single_concentration_measurements_separate": 4,
+  "original_audit_cohort_baseline_manifests_unchanged": true,
+  "new_training_approved": 0,
+  "new_model_training_executed": false,
+  "review_manifest_sha256": "ff58f3d9eebd46f7f3456c57b6da287f8abcdef293f7a0f067860d466f1162ff",
+  "candidate_manifest_sha256": "6b674c9f8251b785418c0efd368af6385a824d3d4ca8f152889c3150fd73faa9"
+}

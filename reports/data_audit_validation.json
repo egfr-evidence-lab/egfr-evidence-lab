@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "checked_measurements": 26600,
+  "candidate_measurements": 264,
+  "csv_files": 6,
+  "output_files_hashed": 9,
+  "audit_manifest_sha256": "2b8b8f29895a91ed0eb09f114d54003fd2339fed28398125fba7b5fa8099de80",
+  "checks": [
+    "입력·출력·코드·수집 매니페스트 SHA-256",
+    "CSV 행 수",
+    "전체 활동 ID 보존·유일성",
+    "후보 행 전체 내용 대조",
+    "정확 IC50 농도로 pIC50 독립 재계산",
+    "미해결·보류 후보 혼입 방지",
+    "수동 결정 빈칸",
+    "전체·변이별 집계 합계"
+  ],
+  "limit": "기술적 무결성 검사이며 자동 분류의 과학적 정확도·원문 검토 완료를 뜻하지 않음"
+}

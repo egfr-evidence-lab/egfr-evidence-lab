@@ -1,0 +1,18 @@
+{
+  "checked_at_utc": "2026-10-20T08:14:47.572751+00:00",
+  "passed": true,
+  "new_source_response_files_hashed": 23,
+  "prospective_cohorts": 3,
+  "prospective_folds": 18,
+  "prospective_neighbors": 234,
+  "furan_nearest_training_similarities_independently_recomputed": 90,
+  "connectivity_overlap_all_folds": 0,
+  "primary_scaffold_overlap": 0,
+  "ref28_OA_link_is_derived_dataset_not_article": true,
+  "patent_source_MS_covered_observations": 35,
+  "patent_MS_discrepancy_observations": 13,
+  "new_training_approved": 0,
+  "new_models_trained": 0,
+  "diagnostics_manifest_sha256": "8ffbd3ca8a1ca99a57028c6f030f1b9aff9a6f3667071d00b5f491c7ce7d5f19",
+  "patent_structure_manifest_sha256": "0ab94bc7a2c7072e70ee689dd304f4d6addd72921dd8bad7c5299563f86faf41"
+}

@@ -1,0 +1,83 @@
+{
+  "checked_at_utc": "2026-10-20T05:42:47.925676+00:00",
+  "passed": true,
+  "ai_job_id": "55253770",
+  "preferred_skills_confirmed": [
+    "딥러닝 프레임워크",
+    "의약·바이오 데이터",
+    "논문 구현 및 재현",
+    "클라우드 환경",
+    "Agentic AI"
+  ],
+  "qualifications_confirmed": [
+    "Python 기반 분석",
+    "통계적 검증",
+    "학력무관",
+    "데이터 전처리"
+  ],
+  "company_paper_identity": {
+    "id": "41635121",
+    "doi": "10.1002/ardp.70193",
+    "title": "HBE-843, a Novel, Potent, and Selective EGFR Targeting PROTAC for the Treatment of Non-Small-Cell Lung Cancer.",
+    "pubYear": "2026"
+  },
+  "company_paper_review_scope": "출판사 초록·Europe PMC 메타데이터; 본문/SI 전수 검토 아님",
+  "wt_measurements": 50,
+  "wt_below_100nM": 45,
+  "pilot_measurements": 22,
+  "pilot_below_100nM": 21,
+  "10nM_pIC50": 8.0,
+  "100nM_pIC50": 7.0,
+  "phases": [
+    {
+      "id": "P0",
+      "name": "데이터 감사와 코호트 확정",
+      "status": "in_progress"
+    },
+    {
+      "id": "P1",
+      "name": "기준 모델과 통계 검증",
+      "status": "planned"
+    },
+    {
+      "id": "P2",
+      "name": "D-MPNN 비교와 단일 공개 벤치마크 재현",
+      "status": "planned"
+    },
+    {
+      "id": "P3",
+      "name": "문헌 검색과 인용 평가",
+      "status": "planned"
+    },
+    {
+      "id": "P4",
+      "name": "도구 호출 Agent와 평가",
+      "status": "planned"
+    },
+    {
+      "id": "P5",
+      "name": "컨테이너 추론 서비스의 클라우드 배포",
+      "status": "planned"
+    }
+  ],
+  "implementation_files_checked": [
+    "src/egfr_lab/modeling/__init__.py",
+    "src/egfr_lab/agent/__init__.py",
+    "deployment/README.md",
+    "artifacts/.gitkeep"
+  ],
+  "inputs_sha256": {
+    "data/interim/cohort_review_20261020/context_pilot.csv": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+    "data/interim/cohort_review_20261020/wt_measurement_decisions.csv": "a5a0ed26f398693fcdf7dc02d77f1bd5ebe93b7f38be2af9292c6a790036a664",
+    "configs/project.json": "7d8355cdc1eceab4c5d76e29be04888e3994fb3bfa68089a6105f6b7dc6ed3fe",
+    "data/raw/portfolio_sources_20261020/manifest.json": "3d7ad302e91b596552e2f9a21f024b506bec6edab9f18b6c06931c9e327b8e63"
+  },
+  "source_files_hashed": 4,
+  "claims_not_assessed": [
+    "기업 채용 통과 여부",
+    "사용자 도메인 이해도",
+    "임상 유효성",
+    "새 모델 성능"
+  ],
+  "universal_egfr_numeric_threshold_claimed": false
+}

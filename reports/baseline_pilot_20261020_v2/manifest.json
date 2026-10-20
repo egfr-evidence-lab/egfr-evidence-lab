@@ -1,0 +1,88 @@
+{
+  "created_at_utc": "2026-10-20T05:57:44.711163+00:00",
+  "state": "complete",
+  "purpose": "educational_exploratory",
+  "benchmark_training_cohort_approved": false,
+  "scope": "22건 단일 assay 탐색·교육용; 209건 포함 안 함",
+  "rows": 22,
+  "scaffold_groups": 12,
+  "label_span": 1.6474440996075632,
+  "schemes": [
+    "scaffold",
+    "random_molecule"
+  ],
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "hyperparameter_search": false,
+  "independent_final_test": false,
+  "elapsed_seconds": 4.146099375095218,
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "executable": "/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-ml/bin/python",
+    "versions": {
+      "numpy": "2.5.4",
+      "pandas": "3.0.6",
+      "scipy": "1.18.1",
+      "scikit-learn": "1.9.1",
+      "rdkit": "2026.9.1",
+      "joblib": "1.6.0",
+      "matplotlib": "3.11.2"
+    }
+  },
+  "inputs_sha256": {
+    "data/interim/cohort_review_20261020/context_pilot.csv": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+    "configs/baseline_pilot.json": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+    "configs/source_review_holds.json": "251e24458de89714390a17a6aea776fcd9f7844605d4f79cf1be527add776e8a",
+    "src/egfr_lab/modeling/baseline.py": "f5e6c4a14c3f469bebd3c2a7f9b4c6ffbab579eed280b5836aea07828c4656de"
+  },
+  "model_files": {
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold1_RandomForest_seed123.joblib": "72296c3ce1d04ffa2871f4b34240d97145f8a48da72a426297c4a54abc26f929",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold2_Dummy_seed2026.joblib": "4fbbf52c7627b439c03f444da087a7870833bafdb3023793b16986b53e361de9",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold3_RandomForest_seed2026.joblib": "e93c2be11c37f138ef3c6ea2019a8eaf74e9f47c77928a566fce53c978035ffa",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold2_Dummy_seed2026.joblib": "db46566716c47ce2a59d1595d6924aedbe06adc2b0796f6140a61d98afcedc8f",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold3_RandomForest_seed123.joblib": "8a5aa251ba59815e265fdbcdfce4b3a80f88a8ebde469f33e8f7e28d71e41bbd",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold2_RandomForest_seed42.joblib": "ff45228e9c51c27921bcba6ab79298a93b4851657d27984d84248b797fc2ee07",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold1_Dummy_seed123.joblib": "2368eac1c5e2400d227e908c31a8785b5a49fe92674b16c72f99e72b4c4ebc01",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold1_RandomForest_seed42.joblib": "cfd652ea509f758a22a8b770809197f6bc0ce7481988af7708241face51e8a5e",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold3_RandomForest_seed42.joblib": "4e34b31ece77b75b5d21db0b732112a011c01bc87e0fb32fd88ee8d963688ae4",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold1_RandomForest_seed2026.joblib": "4a72852f3075cfb5262a96ed1dbbc152f1b232da91f3728898324c176f17a018",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold2_RandomForest_seed2026.joblib": "3f8aa1af25d985c69a6488fb8d43b4cd9e5a131e81cbf542fdc2d774d95e5f45",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold2_RandomForest_seed123.joblib": "44dfd7fa8ea7ec571dee8065d982a6efb0d6a35a2e3059931ac65cd3a3f4c4af",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold1_Dummy_seed123.joblib": "adde2784b8e2f49ccb1757b7f93b9caca190a462b1e15187f0e63026ea582190",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold3_Dummy_seed2026.joblib": "8e28dc614507a39f5365ae39b0ea6c5e0f1bc105be35963b10c491a9a71d50b6",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold2_Dummy_seed123.joblib": "db46566716c47ce2a59d1595d6924aedbe06adc2b0796f6140a61d98afcedc8f",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold3_RandomForest_seed2026.joblib": "69e561f182a709152625d4f13ab56bc3bd8b1cc09b202b50a1e1f51e408670d5",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold1_RandomForest_seed123.joblib": "2b62d7bc580132fdeffa3b2d9adfee92051c1b68304c5ed5c3a011b7f362a250",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold2_RandomForest_seed42.joblib": "b04c8bd7c00e3859b7c3e675bfe75e93a2d699e7710e6de3efbe1f98eaf5517f",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold3_Dummy_seed2026.joblib": "d74918445206c0321f5db4dbc1e4267c239819fd4e507f60bdcf501dafeac45a",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold3_Dummy_seed123.joblib": "d74918445206c0321f5db4dbc1e4267c239819fd4e507f60bdcf501dafeac45a",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold1_RandomForest_seed42.joblib": "ca969f9135e3f49a664e3320f739b06aaac5b46ff754aaf77b93442b5f8ce71f",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold1_Dummy_seed42.joblib": "2368eac1c5e2400d227e908c31a8785b5a49fe92674b16c72f99e72b4c4ebc01",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold3_RandomForest_seed123.joblib": "3c385fd8b76eb2c4ea74d83f667c2563e2a084bcc7301828d7df34c0b980f3ad",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold1_Dummy_seed2026.joblib": "adde2784b8e2f49ccb1757b7f93b9caca190a462b1e15187f0e63026ea582190",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold3_Dummy_seed42.joblib": "d74918445206c0321f5db4dbc1e4267c239819fd4e507f60bdcf501dafeac45a",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold1_Dummy_seed2026.joblib": "2368eac1c5e2400d227e908c31a8785b5a49fe92674b16c72f99e72b4c4ebc01",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold2_Dummy_seed42.joblib": "4fbbf52c7627b439c03f444da087a7870833bafdb3023793b16986b53e361de9",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold2_Dummy_seed123.joblib": "4fbbf52c7627b439c03f444da087a7870833bafdb3023793b16986b53e361de9",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold3_Dummy_seed123.joblib": "8e28dc614507a39f5365ae39b0ea6c5e0f1bc105be35963b10c491a9a71d50b6",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold1_RandomForest_seed2026.joblib": "b89e5de1a5310265d2d3cba14a3297a145bcc2aca50b1925e036ee74326770c9",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold2_RandomForest_seed2026.joblib": "07bc6174ffb5eb953d4bab4f2d5aece4fc481de2cc5fa75055590da102a123a4",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold3_Dummy_seed42.joblib": "8e28dc614507a39f5365ae39b0ea6c5e0f1bc105be35963b10c491a9a71d50b6",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold2_Dummy_seed42.joblib": "db46566716c47ce2a59d1595d6924aedbe06adc2b0796f6140a61d98afcedc8f",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold1_Dummy_seed42.joblib": "adde2784b8e2f49ccb1757b7f93b9caca190a462b1e15187f0e63026ea582190",
+    "artifacts/baseline_pilot_20261020_v2/models/random_molecule_fold2_RandomForest_seed123.joblib": "c6e8c4458d2abc18e75a107866bd7e5e16d1a784d86f7086098a17b902d0b0d6",
+    "artifacts/baseline_pilot_20261020_v2/models/scaffold_fold3_RandomForest_seed42.joblib": "ee1fd124b5d37fc7dd1ae2e871e0ca98ff4f3bb3404d5dff87e2da70222a8442"
+  },
+  "report_files": {
+    "reports/baseline_pilot_20261020_v2/predictions.csv": "c3632c748f03108e10449929118584c689840c3fa827905826315b4294a54df0",
+    "reports/baseline_pilot_20261020_v2/metrics.csv": "ea1eec75ac800f1d289c3adacc99662e0bafb1f6898cab58baa92557f1cb714a",
+    "reports/baseline_pilot_20261020_v2/predictions.png": "80d295b6f31365232388e903d70ed81110c6285f4d4e21df681ad9c82b11d804",
+    "reports/baseline_pilot_20261020_v2/split_assignments.csv": "8b51cce479cc58e60822c74c934a8715033019ebd98f6adb6e672ddb25c459d2",
+    "reports/baseline_pilot_20261020_v2/fold_metrics.csv": "60d7a035de4834fe1fefea1ecaafa11b4852b62cc5f2e90b57adab3ee46712ee",
+    "reports/baseline_pilot_20261020_v2/paired_comparison.csv": "1ef6b2b0401dba6300ee60764059f7b36f4e3391c1470d987ca11e6c58368f8e"
+  },
+  "uncertainty_scope": "OOF 예측을 고정한 탐색적 CI; 학습·분할·미래 실험 전체의 불확실성이 아님"
+}

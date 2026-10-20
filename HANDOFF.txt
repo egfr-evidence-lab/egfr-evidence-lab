@@ -5,6 +5,402 @@ EGFR Evidence Lab - 터미널 / 새 세션 인수인계
 명령을 전부 일괄 실행하는 스크립트가 아니다. 완료 상태와 다음 작업을 구분한다.
 실제 파일·Git 상태가 이 기록보다 바뀌었다면 최신 상태를 먼저 확인한다.
 
+최신 furan45 PDB 교차확인 (2026-10-20, 아래 전체 기록보다 우선):
+- 사용자 요청: 클로드 코드 인수인계 브리프(~/Downloads)로 세션 재개, M1 중
+  furan45(ref28=Lin2019) 1차 문헌 확보를 먼저 진행. git commit은 사용자가 직접 수행.
+- ref28 본문은 이번에도 미확보(Europe PMC subscription required, OpenAlex OA링크는
+  BindingDB 순환출처, NYCU 레포지토리 502). ACS 우회 접근 시도 안 함.
+- 대신 PDB 6JZ0(citation이 ref28과 DOI/PMID 일치, 화합물78=DBPR112)을 교차확인:
+  human EGFR(UniProt P00533 696-1021)·WT(858=Leu,790=Thr)·곤충세포 발현.
+  2023년 furan45 논문의 GST-G696-G1022 구성체와 거의 동일 계열(정황 근거).
+  단, 이는 결정학용 단백질 준비 확인이며 효소 IC50 분석 조건의 직접 증거 아님.
+- Coumar 2010 SI(Lin2019 cit28, 화합물2 전신문헌) 12쪽 전체 열람: kinase 효소
+  분석 프로토콜 없음(합성·세포실험·X선·HPLC만). 참고문헌53번 Reaction Biology
+  Corp 인용은 확인했으나 실제 사용 여부는 본문 미확보로 미확인 유지.
+- 새 증거: data/raw/scope_evidence_20261020_v3/manifest.json(해시 포함).
+  configs/cohort_scope_review.json의 furan45에 pdb_6JZ0_cross_check·
+  coumar2010_si_checked 추가. reports/cohort_scope_evidence_ko.md에 7번 섹션 추가.
+  training_ready=false 유지, protocol_fields_still_pending(ATP·효소량·기질·
+  반응시간온도·readout)은 그대로. 기존 v2 파일·검토표는 변경하지 않음.
+- 다음: 본문 확보가 계속 막히면 대체 후보(특허64 구조검토 또는 242 assay 큐)로
+  전환 검토. 커밋·push는 사용자가 직접 수행하므로 이번 세션에서 실행 안 함.
+
+최신 후속 원문·구조·실제 지표·적용 범위 (2026-10-20, 아래보다 우선):
+- 사용자가 이전에 나열한 원문→대체특허구조→적격성/분할→승인 순으로 실행하고,
+  실제 지표·논문 인용·근거에 맞는 적용 범위를 보고하라고 요청했다.
+  reports/cohort_scope_evidence_ko.md / configs/cohort_scope_review.json에 최신 판단.
+  configs/project.json의 latest_scope_review_path와 M1 progress_report를 연결했다.
+- ref28 DOI10.1021/acs.jmedchem.9b00722 상세법은 신규 미확보. EPMC inPMC=N·subscription.
+  OpenAlex의 OA링크10.7270/q21v5jfw는 실제 BindingDB Entry50009645 Dataset이다.
+  DataCite가 ChEMBL·해당논문 파생임을 명시. 논문본문·독립실험검증으로 세지 않음.
+  NHRI·동일ACS실패경로 반복 금지. 새로운 실제 공개원고/정당한 원문이 있어야 재검토.
+- 2023본XML에서 10/1uM 억제율 사전검사→10uM에서>90%인 화합물만6점IC50로
+  선별했음을 확인. 45건은 전체 임의화합물이 아닌 합성·선별히트 범위.
+  human종유래·ATP·효소량·기질·반응조건은 원방법 대기, training_ready=False 유지.
+- scripts/fetch_scope_evidence.py 기본/--supplement: 공식metadata·논문XML/HTML·
+  원특허PNG15개. data/raw/scope_evidence_20261020_v2/ 및 _supplement/에 응답23개 해시.
+  처음scope_evidence_20261020/는DNS실패, 정상결과아님. 승인prefix있음.
+  Yang2019 PMC6727618/10.1021/acs.jcim.9b00237 XML, Mader/Keillor2024
+  PMC11089659/10.1021/acsmedchemlett.4c00054 HTML 확인. 초기후자XML500은 실패보존.
+- scripts/review_patent_structures.py 최신출력은
+  data/interim/patent_structure_review_20261020_v2/이다. v2없는 첫 초안은 사용하지 않음.
+  명시적G번호의 합성표MS만 자동연결. 연속문단의 중간체MS를 최종물에 연결하지 않음.
+  64관측중원MS검사가능35, 큰차이13관측·고유G번호10개(약14–30Da).
+  5관측은한record에여러G번호. G33/G41 원MS499.2/513.2 vs DB계산513.242.
+  source그림일부 확인했으나 원특허그림/분석/키 관계도 불명; DB오류확정·값교정 금지.
+  0.25Da는 작업경보수준으로 보편MS합격선아님. 질량일치도 구조일치보증아님.
+  full_structure_verified=0·학습승인0. 기존64건 수치일치와 구별.
+- configs/scope_diagnostics.json을실행전고정, scripts/diagnose_cohort_scope.py:
+  data/interim/cohort_scope_diagnostics_20261020/에3코호트·18예정fold·최근접234행.
+  학습모델없음·승인없음·최종시험분할아님. Morgan2/2048/chiral, 주scaffold3fold,
+  보조connectivity그룹random3fold seed42. 두방식모두stereo/반복연결구조누출0.
+  pilot22:22/22connectivity/12scaffold·최대50%·inverseSimpson3.67·pIC50폭1.647.
+  furan45:45관측/43connectivity/19scaffold·최대39.5%·inverseSimpson5.39·폭2.723.
+  patent50:50관측/48입체/47connectivity/30scaffold·최대19.1%·inverseSimpson14.83·폭0.954.
+  다양성지수는유효표본수아님. 모든자료독립문헌1·assay1, 병합한학습표아님.
+  furan45 주fold학습/평가28/17·31/14·31/14, 골격중복0. 최근접Tanimoto중앙값0.803,
+  범위0.381–0.986. 보조random은32/45(71.1%)가학습과같은골격·중앙값0.845.
+  골격중복0이어도새계열전체일반화보증아님. 유사도는정확도/성공확률아님.
+- tests/test_scope_diagnostics.py5개추가, 전체52개통과. tmp/cohort_scope_tests.log.
+  scripts/check_cohort_scope.py 독립검증통과. reports/cohort_scope_validation.json:
+  45건최근접90개유사도·최대이웃별도재계산, 분할·중복·MS·원문·해시·상태검사.
+  diagnostics manifest SHA8ffbd3ca8a1ca99a57028c6f030f1b9aff9a6f3667071d00b5f491c7ce7d5f19.
+  기존check_main_cohort_acquisition.py와check_baseline_pilot.py도 재검증한다.
+- 적용:현재자료출처/단위/구조/편향/분할진단. 방법확인후같은선별합성계열·동일WT
+  효소조건의탐색회귀만검토. WTIC50만으로변이선택성·세포CC50·임상약효/안전성주장금지.
+  실제모델수치는기존22건 DummyMAE.3096/RF.2950, RF차이CI[-.0819,+.0506]로0포함.
+  새45·50건성능으로표시하지않음. 새학습승인0·병합0·M1미완료. 원자료와이전manifest보존.
+  다음은실제새일차원문이나독립구조검토근거확보. 없으면동일실패경로반복보다242개
+  대기표의다음공개단일assay검토. 커밋·push·타인연락없음.
+
+최신 주 학습 데이터 확보 절차·첫 실행 (2026-10-20, 아래 기록보다 우선):
+- 사용자가 위 실습을 실행했다고 말하고 주 데이터 확보의 단계별 정리 후 실행 요청.
+  docs/12_main_cohort_acquisition_ko.md: 8단계. reports/main_cohort_acquisition_ko.md:
+  첫 실행 결과·근거·완료/보류 상태. 단계1–5 우선 후보 검토·6의 1차 진단 실행.
+  단계7은 후보 버전만 보존, 주 학습표·최종 분할 미확정. 새 모델 학습 미실행.
+- scripts/prioritize_main_cohort.py: 원26600관측·2425assay 재집계.
+  구조Unknown도 검토용 RDKit 파싱·scaffold 재계산, 원 감사 승인 상태는 보존.
+  data/interim/main_cohort_inventory_20261020/: 전수표·검토 대기242assay·manifest.
+  정확값20건은 검토 표 축소 기준이며 학습 승인 최소 표본 수 아님.
+- scripts/fetch_main_cohort_sources.py: 새 공개 특허·ACS SI·공식record 수집.
+  기본/--followup/--main-text/--reference를 다른 --output-dir에 저장.
+  data/raw/main_cohort_sources_20261020{,_followup,_maintext,_reference}/.
+  응답57파일 SHA검사, PDF6·CSV5·XLS1의 제공자 MD5확인. SI는 원 DOI·라이선스 대조.
+  신규코드 네트워크 승인prefix있음. 기존 다운로드/manifest 덮어쓰지 않음.
+- scripts/review_main_cohort_sources.py: 7assay·787관측 원문 수치·관계·record 연결.
+  data/interim/main_cohort_review_20261020/measurement_source_crosscheck.csv·manifest.
+  CHEMBL3705421/5729820: 동일특허·분자·관계·값173행 블록. 독립346건으로 세지 않음.
+  원HER-1열·uM→nM 맞지만 각7행은 여러 원 화합물 키, human/WT/원구조 미확정.
+  CHEMBL5733991: US9987276B2 Table16은 A–E구간. DB정확값181중180건에서
+  55/550/5500nM가 원B/C/D구간의 산술중간값임을 확인. 나머지1건 원키 미확정.
+  부등호65건도 정확값 회귀 금지. 원자료는 그대로 보존.
+  CHEMBL5737421: US11155546B2 Table3의64건 모두 관계·수치일치(정확50,>10000nM14).
+  원문WT·ATP10uM·enzyme0.8ng/uL·Tyr04 2uM·25C60분. PV3872 공식human·GST668–1210,
+  당시lot미확인. 정확50에48입체구조·47connectivity·30scaffold, IC50 1002–9011nM.
+  개별G번호 원구조 대조 전이며 약한 활성영역 한정으로 주코호트 자동승인 안 함.
+- 저자CSV3개 수치·구조 대조:
+  CHEMBL4038017(7b01612):54합성 수치일치·52구조일치·2구조차이, 대조약1미수록.
+  SI S2–S3의 EGFR0.287ug/uL vs final10uL kinase0.002ng 설명 관계 미해결.
+  CHEMBL4041412(7b00515):31관측 중 수치24/구조23 일치. 1f/1m 수치차이 등 보류.
+  누락대조약·tautomer/입체차이를 원문 오류로 단정하지 않음.
+- 현재 가장 유망한 후보 CHEMBL5382277 / DOI10.1021/acs.jmedchem.2c01434 /
+  PMC9969398. 저자CSV49화합물 중 IC50숫자45, 단일농도억제율4(16/19/22/23).
+  45구조 모두 DB와 isomeric graph일치,43숫자일치. 36=25.3vs25nM,56=24.9vs25nM는
+  정수반올림과 양립하나 원인 미확정. 저자값을 보존, ChEMBL 원값 수정 안 함.
+  45입체구조·43connectivity·19scaffold·최대골격17/43(39.5%), IC50 8–4230nM.
+  원문 WT·GST-G696–G1022·Kinase-Glo확인, 최소2회·±15%는 SD/SEM 확정아님.
+  상세방법 ref28=10.1021/acs.jmedchem.9b00722 / PMID31560541, human종유래·조건 대기.
+  NHRI저장소3990099045/12290의 PDF링크는 실제 권리안내HTML. 우회하지 않음.
+  ref28의 ACS SI는 합성·분석자료, kinase상세법 미확인. 본문확보로 세지 않음.
+  이45건을 현재 최종학습승인·독립benchmark·임상예측자료라고 쓰지 않는다.
+- scripts/build_furan_candidate.py / data/interim/furan_candidate_20261020/:
+  IC50_candidates_not_training_ready.csv45행, single_concentration_not_IC50.csv4행,
+  manifest. training_ready=False. 저자CSV licence CC BY-NC4, ChEMBL CC BY-SA3와구별.
+  현재원문범위로 human종유래·ATP·효소량·반응조건을 추정해 채우지 않음.
+- configs/main_cohort_review.json에 새7assay의 보류·해제 조건. project.curation의
+  additional_source_review_registry_path로연결. 기존 source_review_holds.json을
+  변경하면22건baseline입력해시가깨지므로 보존했다. 향후코호트는 두등록부확인.
+- tests/test_source_measurements.py4개 추가, 전체47개 통과. tmp/main_cohort_tests.log.
+  scripts/check_main_cohort_acquisition.py 오프라인검증통과:
+  reports/main_cohort_acquisition_validation.json. 원문57·MD512·입출력·원관측·중복·구간·
+  새45/4분리·pIC50재계산·기존감사/코호트/교육실험manifest해시 보존 확인.
+- 다음: ref28의 실제 접근 가능한 원문/저자원고에서 효소human 유래·상세조건 확인,
+  또는 WT특허64건의 G번호별 구조 대조. 접근제한HTML을PDF로 처리하거나 PDB/다른
+  문헌의 조건을 복사하지 않음. 그뒤 단일실험 주코호트 범위·분할·학습곡선 결정.
+  주코호트 신규승인0·병합승인0. P0·P1in_progress/M1미완료. 커밋·push 없음.
+
+최신 209건 검토·교육용 기준 모델 실행 (2026-10-20, 아래 과거 기록보다 우선):
+- 사용자 요청: 새 공개 논문의 209건을 검토하고 조건 확인 자료로 Dummy·RF 실행,
+  사용자가 직접 배울 수 있는 실습 제공. reports/apsel_review_and_baseline_ko.md와
+  docs/11_baseline_practice_ko.md에 결과·근거·실습·해설을 정리했다.
+- Apsel 2008 / CHEMBL1243977: 전체209행 검토, 정확한 양수nM167건.
+  저자 공개 PDF Figure2a EGFR행 8건은 record→activity 연결·관계·수치 일치.
+  ATP10uM·본문 시험농도0.001–50uM. 정확값100uM28건(상한 초과 총30건)은
+  sentinel/별도조건 등 의미 미확인. 임의 부등호 변환·원값 수정하지 않았다.
+  confidence8·homolog(H)·WT·종 유래·전체SI표 미확정. 209건 학습 승인0건.
+  PMC/출판사/미러 SI 요청은 challenge HTML/403/404로 실패. PDF 확보로 세지 않음.
+  scripts/fetch_apsel_materials.py / review_apsel_study.py,
+  data/interim/apsel_review_20261020/measurement_review.csv·figure2_crosscheck.csv·manifest.json.
+- 대신 기존 CHEMBL4258549 단일 assay 22건·12scaffold로 교육·탐색용 ML만 실행.
+  조건 ATP5uM·37C60분·ELISA. 정확 구성체·효소 농도·반복 오차 정의는 미확인.
+  기존 context_pilot.csv의 training_ready=False·최종 주 코호트 미확정 상태 유지.
+- configs/baseline_pilot.json을 결과 확인 전 고정: Morgan radius2/2048bit/chirality,
+  주 scaffold GroupKFold3·보조 random KFold3, RF300trees/minleaf2/max_features1.0,
+  seed42/123/2026. 튜닝 없음. scaffold fold 학습/평가11/11·16/6·17/5, 골격 중복0.
+  전체 OOF22건의 지표, 고정 예측에 조건부인 scaffold cluster bootstrap2000회.
+- 최종 결과는 artifacts/baseline_pilot_20261020_v2/와
+  reports/baseline_pilot_20261020_v2/. v2 없는 이전 폴더는 첫 초안, 최신 아님.
+  seed42 scaffold Dummy MAE0.309552/RMSE0.375887, RF0.294978/0.363951.
+  RF-Dummy MAE=-0.014575, 탐색95%구간[-0.081885,+0.050558]로0 포함.
+  세 seed 모두 주 비교 구간0 포함: RF 우위 확정 금지. random42 RF MAE0.264710은
+  보조 평가. 11/22가 한 scaffold, 한 논문22건으로 일반 EGFR 성능 주장 금지.
+- src/egfr_lab/modeling/baseline.py 구현. 기존 출력 폴더 보호, 재실행은 두 새 경로.
+  PYTHONPATH=src .venv-ml/bin/python -m egfr_lab.modeling.baseline \
+    --run-dir artifacts/my_baseline_01 --report-dir reports/my_baseline_01
+- P0 .venv 보존, Python3.12.14 .venv-ml에 ML 의존성27개 설치. pip check 통과.
+  requirements/ml-py312-macos-arm64.freeze.txt는 현Mac 버전 스냅샷이며 해시lock 아님.
+  별도 빈 환경 재설치·다른 플랫폼·DL 호환성은 미검증.
+- 전체43개 테스트 통과(기존37+신규6), tmp/baseline_unittest_final.log.
+  scripts/check_baseline_pilot.py: 저장 모델36개 재로딩·OOF264행 예측 일치,
+  라벨·지표 재계산·원문해시·Dummy학습평균·골격중복0·209건혼입0 검증 통과.
+  reports/baseline_pilot_validation.json의 passed=true.
+  최종manifest SHA256=b8e15d1fcef2b2754994d8a39c0169ee0f69f3901cd611fe1a6e29a62f105530.
+- scripts/practice_basics.py --lesson units|review|predictions|quiz 제공.
+  질문·선택지·해설은 한국어. 사용자 실습 파일·정답 기록은 직접 작성하도록 남김.
+- configs/project.json: P0·P1 in_progress, P2–P5 planned. M1 완료 아님.
+  다음 주 모델 확대 조건: 실제 SI/단백질 정보 확인 또는 충분한 단일 프로토콜
+  코호트 확보. 22건으로 D-MPNN의 일반 우위를 주장하는 단계로 넘어가지 않는다.
+  기존 raw/full/audit/cohort/수동 변경 보존. 커밋·push 없음.
+
+최신 추가 범위 승인·M1 실행 (2026-10-20, 아래 상태보다 우선):
+- 사용자가 포트폴리오 적합성 보고서의 추가 범위를 프로젝트에 넣고 순서대로
+  진행하도록 승인. docs/10_execution_plan.md / configs/portfolio_scope.json 반영.
+  M1 데이터+기준 ML → M2 D-MPNN → M3 단일 공개 benchmark 재현 →
+  M5 Agent → M6 클라우드. M4 기업 관련 문헌 사례는 병행, 초록 카드만 진행 중.
+- 현재 M1의 데이터 확보. WT 37개 보류 assay 중 12개 접근·검토(후보154건,
+  다른 보류 포함 원 관측199건). 27건에서 종 유래 문제 해소 근거 확보.
+  학습 승인 27건 아님. 새 학습 승인0건·병합 승인0쌍, 기존 파일럿22건 유지.
+- ACS SI5개 확보. Pemberton 2024 저/고ATP 8건 수치는 본문과 반올림 일치하지만
+  SI S14 실험법은 Z'-LYTE, ChEMBL은 ADP-Glo로 충돌. 주 ADP-Glo의 15/50분을
+  별도 실험으로 복사하지 않음. 주 실험 최종ATP는 표 각주12uM/혼합계산6uM 모호성.
+- Zhou 2013 SI Figure S1의 WZ4002/3q/3x=9.58/1.47/3.67nM와 DB2.16/1.21/3.82가
+  다름. 본문 반복 평균/곡선 fit의 관계 미확인; 오류 확정·값 덮어쓰기 금지.
+  PV3872 공식 공급사 자료로 human 확인. 효소 농도0.287ug/uL 의미도 미해결.
+- configs/wt_expansion_evidence.json / wt_expansion_source_values.csv에 근거·수치.
+  data/interim/wt_expansion_review_20261020_v1/ CSV6개·근거 스냅샷·manifest.
+  scripts/review_wt_expansion.py --verify-only: 원문·입출력 해시·행수·보류 검증.
+- 별도 큰 assay CHEMBL5736995(981건), 특허US11066414B2에서 표적 열 혼입 정황.
+  Table3 앞문장: Cot 결과. 928건이 Cot열과 일치, 명시 EGFR열 일치1,
+  미일치46, 부등호6. 전 관측 오류 확정이 아니라 assay 전체 승인 보류.
+  compound362 / record4509835의 Cot1nM(activity28404131), EGFR3984nM(28406027)이
+  같은 assay. 동일 assay라는 이유로 반복 집계 금지. 원 자료 수정 안 함.
+  scripts/review_patent_assay.py / data/interim/patent_target_review_20261020/에
+  record·분자·문헌·원 표적열을 연결한 981행 검토와 해시. 새 회귀 테스트2개 통과.
+- 기존35+신규2 총37개 테스트 통과. scripts/check_wt_expansion.py에서 공개응답50개
+  SHA-256·SI5개 공급자MD5·입출력해시·ID·행수·보류·기존manifest 보존 검증 통과.
+  reports/wt_expansion_review_ko.md / wt_expansion_validation.json에 결과 기록.
+- configs/source_review_holds.json에 위 5개 assay의 보류 조건 등록.
+  기존 자동 감사표는 변경하지 않음. 향후 코호트 구축 시 보류 목록을 확인할 것.
+- data/interim/large_assay_triage_20261020/: 큰 assay의 정확값·출처 사전 점검.
+  다음 우선 후보 Apsel 2008 DOI10.1038/nchembio.117 / PMC2880455 /
+  CHEMBL1243977, 209행 중 정확한 양수nM167건. 본문·저자PDF·record 보관.
+  confidence8·homolog(H)·유래·WT·상세 조건 해결 전 학습 금지. SI 후보 다운로드실패.
+- scripts/fetch_wt_expansion.py: 공식 공개 URL·Figshare 읽기 전용 API,
+  batch initial/supplement/addendum/larger/followup와 --output-dir 사용.
+  기존manifest존재 시 보호·해시 검증만 수행. 네트워크 승인 prefix 있음.
+  기존 full/audit/cohort 원자료와 검토 출력 보존. 커밋·push 없음.
+
+최신 기업 적합성·도메인 기준 검토 (2026-10-20):
+- 사용자 요청: 지원 기업 우대사항과 현재 구현 대조, EGFR 보편 합격선의 유무,
+  추가 포트폴리오와 비의료 전공자의 학습 범위를 논문·공식 자료로 확인할 것.
+- reports/portfolio_fit_and_domain_review_ko.md에 상세 보고서·자가 점검 9문항.
+  reports/company_paper_case_hbe843.md에 회사 관련 EGFR 분해제 논문 초록 카드.
+- AI 공고 직접 근거는 사람인 rec_idx=55253770이며 54544319는 별도 ADC/PK 직무.
+  상세 HTML의 다섯 우대사항·Python/전처리/통계 요건을 직접 대조함.
+  공개 원문 4개·해시는 data/raw/portfolio_sources_20261020/에 보관(Git 제외).
+  scripts/check_portfolio_sources.py --offline으로 해시·공고·문헌·예시 수치 확인.
+  reports/portfolio_fit_validation.json 통과. 사용자 이해도/채용 성공 검증은 아님.
+- 현 증거: 바이오 공개 데이터 수집·정제·출처 검증. 딥러닝·논문 모델 재현·
+  Agent·클라우드 배포는 미실행. 원문 수치 대조를 모델 재현이라고 쓰지 않음.
+- EGFR 전체에 공통인 숫자 합격선은 확인하지 못함. SGC chemical probe,
+  NCATS 실험 품질, OECD QSAR 원칙, 자체 병합 정책을 서로 구분.
+  100 nM 미만은 WT 후보 45/50, 파일럿 21/22. 활성값 필터의 편향을 설명함.
+- Baig 등 2026 / DOI 10.1002/ardp.70193 / PMID41635121의 BNJ·한독 참여 확인.
+  HBE-843의 GI50/DC50/Dmax는 초록 보고값. 본문/SI 전체 검토·재현 미수행.
+  HDBNJ-2812와 동일 화합물이라고 단정하지 않음. WT IC50 학습표에 합치지 않음.
+- 다음 우선순위 제안: 충분한 확정 데이터+기준 ML → 같은 분할 D-MPNN 비교 →
+  저자 benchmark 1개 재현; 작은 기업 논문 카드는 병행. 이후 Agent·클라우드.
+  이번 요청은 점검·보고였으므로 정책·코호트·학습 상태를 바꾸지 않음.
+  기존 35개 테스트 통과는 이전 기록이며 이번에 새 모델 테스트를 했다는 뜻 아님.
+  원자료·기존 변경 보존, 커밋·push 안 함.
+
+최신 문헌·코호트 기준 검토 (2026-10-20, 아래 자동 감사보다 우선):
+- 사용자 요청: 공식 지침·다른 연구/프로젝트를 인터넷 조사하고 실제 WT 조건과
+  비교 가능 범위의 근거·지표를 확인해 학습 데이터 확정을 진행할 것.
+- reports/cohort_definition_evidence.md에 근거·인용·실제 판정·향후 관문 정리.
+  configs/cohort_policy.json의 wt-biochemical-context-v1로 선정 규칙 고정.
+  규칙을 고정한 것이 benchmark용 학습 데이터 확정은 아니다.
+- WT 6개 문헌의 PMID·DOI를 Europe PMC로 대조. 5개는 subscription required,
+  1개(PMC6083791 / 10.1039/c7md00571g)는 공개 본문 확보.
+  접근 실패·본문 미확인을 “방법이 존재하지 않음”으로 해석하지 않을 것.
+- CHEMBL4258549: ATP 5 uM / poly(Glu,Tyr)4:1 / 37 C·60분 / ELISA.
+  정확한 단백질 구성체·효소 농도·별도 사전 반응·ATP Km은 미확인.
+  공유결합 억제제 설계 연구이며 개별 화합물의 시간 의존성을 일괄 실증한 것은 아님.
+- 본문 Tables 1·3의 화합물 번호 → 공식 compound_record → 원 활동 ID 연결,
+  WT 수치 22/22 일치. 세포 Table 2·변이 열과 혼동하지 않음.
+  22구조·12 scaffold / pIC50 폭 1.647 / 기준약 osimertinib 1개 포함.
+  조건 확인 파일럿으로만 저장. 광범위 EGFR 성능 평가 데이터로 승인하지 않음.
+- WT 6개 assay의 15쌍 중 14쌍 공통 구조 0, 1쌍은 osimertinib 1개.
+  해당 차이 약 0.3075 pIC50. n=1로 호환성·재현성을 확정하지 않음.
+  실험 간 병합 승인 0쌍. 50건은 모두 추적용으로 보존.
+- 선례: Papyrus++(2023)의 중앙값 편차0.5log·75% assay 일치;
+  Landrum/Riniker(2024) max curation·공통 화합물 비교와 공개 notebook;
+  Nelen 등(2025) 공통5개 및 Δ·0.3/1log 진단. NCATS kinase 실험 지침 참고.
+  저자 notebook은 minOverlap=5인데 SQL ovl>:minOverlap라 실제 >=6.
+  우리 최소5는 진단 시작점이며 Wilson·편향 CI 등 별도 운영 기준을 더함.
+  Papyrus 지표와 우리 쌍간 지표를 같은 통계라고 설명하지 말 것.
+- 실제 파일: data/raw/wt_literature_20261020/ (메타데이터·본문·record·저자코드),
+  data/interim/cohort_review_20261020/ (6개 CSV·문헌 매니페스트 스냅샷·매니페스트),
+  configs/wt_assay_evidence.json(원문/ChEMBL 근거 구분),
+  reports/cohort_review_validation.json. 원 자동 감사표는 변경 안 함.
+- scripts/fetch_wt_literature.py: 네트워크 조회, 승인 prefix 있음.
+  scripts/review_wt_cohort.py: 오프라인 대조·판정. 기존 출력 보호하므로 재실행
+  시 새 실행 폴더 사용하도록 코드를 버전 관리할 것. 함부로 기존 검토를 삭제하지 않음.
+- 새 comparability.py·tests/test_comparability.py 7개 추가, 총 35개 테스트 통과.
+  조건 결측의 허위 일치, 1개/5개 대조만으로 승인, 체계적 bias, 세포 표 혼입 방지.
+- 정책의 CI는 개별 화합물 관측 의존성의 한계가 있다. 유사체 계열 편중이면
+  scaffold/계열 불확실성도 확인. 기준 수치를 국제 표준·EGFR 검증 합격선으로 부르지 않음.
+- 다음: WT 유래 불명만으로 보류된 37개 assay(277건)와 발현/형식 충돌의
+  원문 접근성·표본 규모 순으로 검토해 충분한 단일 프로토콜 자료를 확보.
+  source_expansion_queue.csv를 실제 생성함. 4개 PMC 문헌/6개 assay의 공개 경로
+  확인. 원문 방법 승인과 구별하며 모두 방법 검토 미완료로 표시.
+  조건 확인·공통 화합물 근거 전에는 assay 통합 금지.
+  호환성 보정에 사용한 공통 구조는 미래 최종 test에 넣지 않도록 표시.
+- 사람의 독립 이중 검토와 모델 학습은 미수행. P0는 계속 in_progress.
+  커밋·push하지 않음. 기존 다른 세션 변경 보존.
+
+최신 자동 감사 상태 기록 (2026-10-20, 아래 수집·환경 기록보다 우선):
+- 전체 자료의 실험·변이·단위·품질·중복·분자 구조 자동 감사 완료.
+  원문 검토·학습 코호트 확정은 미완료. P0는 in_progress, 학습 미실행.
+- CLI: audit. 정책 conservative-screen-v1. docs/09_data_audit.md 참고.
+  PYTHONPATH=src .venv/bin/python -m egfr_lab audit data/raw/chembl_full_20261020
+  이미 실행했으므로 재실행은 새 --output-dir와 --report-dir를 지정한다.
+  기존 결과·수동 검토 기록 덮어쓰기를 거절하며 원자료는 수정하지 않는다.
+- 최신 데이터: data/interim/audit_chembl_full_20261020/ (Git 제외).
+  assay_review.csv 2,425행 / molecule_audit.csv 14,776행 /
+  activity_audit.csv 26,600행 / candidate_measurements.csv 264행 /
+  repeat_contexts.csv 14행 / manual_review_queue.csv 2,425행 /
+  audit_manifest.json(입력·결과·정책 코드 해시와 환경).
+- 자동 후보 264건은 서로 다른 변이의 합계이며 하나로 합쳐 학습하면 안 됨.
+  WT 50건·49구조·6실험·6문헌·26고리 scaffold, 최대 문헌 비율 44%.
+  L858R 31건 / T790M 32건 / L858R+T790M 122건 /
+  C797S+L858R+T790M 7건 / L861Q 22건.
+- WT를 첫 원문 검토 대상으로 제안했으나 최종 학습 코호트는 미확정.
+  유래 불명만으로 보류된 WT 277건·37실험, 구조 사유만인 WT 72건·6실험은
+  별도 재판정 대상이다. 재판정 전에 현재 후보 수에 더하지 않는다.
+- 변이 미기재를 WT로 채우지 않음. B/9 코드만으로 생화학으로 판정하지 않음.
+  unknown origin/source·설명 충돌·셀 형식/단서 보류. 발현용 세포 언급까지
+  걸릴 수 있는 보수적인 자동 규칙이며 분류 정확도는 아직 평가하지 않음.
+- Small molecule로 명시된 단일 성분만 구조 후보. 유형 결측/Unknown은
+  비소분자라고 단정하지 않고 별도 보류. 자동 탈염·중성화·tautomer 통합 안 함.
+  원 SMILES·parent ID·전하·동위원소·입체정보 보존. 반복값 자동 집계 안 함.
+- pChEMBL 비교 19,378건 모두 차이 0.011 이하, 최대 약 0.00549.
+  후보 동일 구조·assay·변이·문헌 반복 맥락 14개(28건) 모두 유지.
+- tests/test_audit.py 9개 추가. 기존 19개와 합쳐 28개 통과.
+  독립 산출물 검증도 통과: 전체 ID 보존·후보 내용·pIC50 재계산·집계·해시.
+  .venv/bin/python scripts/check_data_audit.py data/interim/audit_chembl_full_20261020
+- reports/data_audit_summary_ko.md: 쉬운 요약.
+  reports/data_audit.md / dataset_card.md / audit_summary.json: 상세 결과.
+  reports/data_audit_validation.json / audit_implementation.md: 검증·구현 기록.
+- 다음: WT 후보 6개 문헌·SI에서 단백질 구성체·ATP 농도·기질·시간·검출법·
+  공유결합/시간 의존성을 확인. manual_review_queue.csv의 작업 사본에 근거 기록.
+  자동 초안의 수동 결정은 전부 빈칸(원문 검토 완료 0건).
+  작성한 검토를 자동 반영하는 기능은 아직 없음. 원문 근거와 정책 확정 후 구현.
+  동질적 코호트 확정 → 반복값·분할 정책 고정 → P1 모델 학습 순서.
+- configs/project.json은 pending_manual_assay_review_after_automatic_audit로 갱신.
+  커밋·push하지 않음. 다른 세션의 변경을 보존할 것.
+
+최신 수집기 상태 기록 (2026-10-20, 아래 환경·소량 조사 기록보다 우선):
+- 전체 수집기 구현과 실제 전체 수집·무결성 검증 완료. P0 전체 완료는 아님.
+- CLI: collect / verify-collection. 사용법 docs/08_collection.md.
+- 실제 실행: data/raw/chembl_full_20261020/ (Git 제외).
+  ChEMBL_37 / release 2026-05-01 / 상태 complete.
+  측정 26,600건 / 분자 14,776개 / assay 2,425개 / 문헌 1,299개.
+  측정 직접 출처 1,298문헌 + assay에서 추가 연결한 문헌 1개.
+- 관계값: '=' 19,719 / '>' 3,309 / '<' 2,067 / '<=' 87 / '>=' 8 /
+  '>>' 11 / '~' 1 / null 1,398. 이전 미확인 11건을 확인한 것임.
+- 원 응답 432개, data/interim/chembl_full_20261020/의 Parquet 5개 검증.
+  원 측정값 문자열·부등호·결측·변이·품질 플래그 보존. 아직 학습 적격성 미판정.
+- 원자적 저장·폴더 잠금·재시작·release 확인·누락/중복/정렬/ID 연결 검사 구현.
+- 재개 검증: 기존 원 응답 429개의 해시 유지, 새 요청은 상태·건수 3개.
+  최신 nullable 자료형 처리로 표를 재생성하고 문헌 1,299개 PMID 원 표기 대조.
+- 전체 오프라인 검증:
+  PYTHONPATH=src .venv/bin/python -m egfr_lab verify-collection data/raw/chembl_full_20261020
+- 중단 후 같은 옵션 재개:
+  PYTHONPATH=src .venv/bin/python -m egfr_lab collect --run-dir data/raw/chembl_full_20261020 --resume
+- 실제 소량 실행 data/raw/chembl_preview_20261020/은 preview_complete.
+  --page-size 5 --batch-size 3 --max-pages 2 조건이며 전체 실행과 혼동하지 말 것.
+- 테스트 19개 통과(수집·HTTP 16개 + 기존 정책·단위 3개).
+  PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -q
+- 보고서: reports/collection_chembl_full_20261020.md/.json,
+  reports/collection_implementation.md, reports/collection_resume_validation.json.
+- 다음: 실험·변이·단위·품질·중복의 전체 감사, assay_review.csv와
+  data_audit.md·dataset_card.md, 화학 정규화 정책과 학습 코호트 제안.
+- configs/project.json의 P0는 계속 in_progress. P1-P5는 planned.
+- 원 JSON은 보존하고 데이터 정제에서 원자료를 덮어쓰지 말 것.
+- 현재 변경은 커밋·push하지 않음. 다른 세션 변경을 보존하고 Git 상태 확인.
+
+최신 추가 상태 기록 (2026-10-20, 아래 기록보다 우선):
+- 다음 작업인 P0 실행 환경 검증과 패키지 버전 고정 완료.
+- 기존 .venv 유지: Python 3.12.14 / macOS 26.5.2 / arm64.
+- pyproject.toml의 p0 extra 신설: httpx, pandas, numpy, rdkit, pyarrow.
+- 직접·간접 총 14개를 정확 버전·SHA-256으로 고정하고 설치.
+  requirements/p0-py312-macos-arm64.txt / requirements/README.md
+- 주요 버전: httpx 0.28.1, numpy 2.5.4, pandas 3.0.6,
+  rdkit 2026.9.1, pyarrow 26.0.0. 간접 의존성 Pillow 13.0.0 포함.
+- uv 0.12.21로 lock 생성. pip 25.0.1, 프로젝트 빌드 도구와 Python 자체는 lock 범위 밖.
+- 재실행: .venv/bin/python scripts/check_p0_environment.py
+  기본 11항목 통과. --online 포함 12항목 통과(실제 HTTPS 2개 조회).
+- 별도 빈 tmp/p0-rebuild-20261020 환경에 같은 lock·wheel 캐시로 오프라인
+  재설치 후 버전·pip check·동일 11항목 통과. 같은 Mac에서 검증한 범위임.
+- 보고서: reports/p0_environment_validation.md
+  결과: reports/p0_environment_validation.json,
+  p0_environment_online_validation.json, p0_environment_rebuild_validation.json
+- 기존 테스트 3개·설정 검사·소량 응답 12항목 재검증 통과.
+- 전체 데이터 수집·과학적 정제·모델 학습은 아직 미수행.
+  SciPy·scikit-learn·Chemprop·PyTorch·RAG·Agent·클라우드 설치·검증도 미수행.
+- 다음 작업은 전체 수집기 구현. 현재 P0 상태는 계속 in_progress.
+- Python 3.11 환경 신규 생성과 전체 ml extra 설치를 곧바로 실행하라는
+  아래 과거 안내보다, 현재 Python 3.12 P0 환경·lock을 우선 사용한다.
+- 이전 세션 변경과 이번 변경 모두 커밋·push하지 않음. Git 상태를 먼저 확인.
+
+추가 상태 기록 (2026-10-19, 아래 기존 인수인계보다 우선):
+- P0 첫 단계인 공식 API·release 확인과 소량 응답 교차검증 완료.
+- 실제 API 버전 ChEMBL_37, API 날짜 2026-05-01; 고정 release notes와 일치.
+- CHEMBL203의 인간 EGFR/P00533/9606을 UniProt과 대조.
+- API 집계: EGFR 인간 IC50 26,600개 측정 기록. 전체 수집·정제 결과가 아님.
+  관계 '=' 19,719 / 부등호 5,471 / null 1,398 / '~' 1 / 나머지 관계 미확인 11.
+  변이 문자열 non-null IC50 5,025건은 위 분류와 겹치는 별도 조건.
+- 주 표본 10행(6분자·5실험·3문헌) + 변이 2행 상세 연결 검사.
+  단위·pChEMBL, UniProt 변이 서열, Europe PMC 문헌 메타데이터 등 12항목 통과.
+- 보고서: reports/chembl_api_verification.md
+  공개 검토 기록: reports/chembl_api_probe_manifest.json, chembl_api_probe_validation.json
+- 원 응답: data/raw/api_probe_20261019T141453676518Z/ (Git 제외, 37개 응답).
+- 소량 조회: .venv/bin/python scripts/probe_chembl_api.py
+- 오프라인 재검증:
+  .venv/bin/python scripts/check_chembl_probe.py data/raw/api_probe_20261019T141453676518Z
+- 기존 Python 3.12.14 환경 유지. 외부 패키지 설치·ML lock·학습은 미수행.
+- configs/project.json의 P0만 in_progress, P1-P5는 planned.
+- 다음: P0 의존성 검증·버전 고정, 전체 수집기, 전체 감사와 assay 검토표.
+  표적 종 인간이어도 assay confidence 8·실험 종 null 사례가 있음.
+  variant null을 자동 정상형으로, confidence 9를 생화학 실험으로 간주하지 말 것.
+- 사용자가 질문·선택지·권한 요청까지 한국어 작성을 요청. 전역 AGENTS.md에 저장.
+- P0 진행 전 학습용 도메인·IT 기술 PDF 16쪽 추가, 원고와 생성 코드 보관.
+  output/pdf/egfr_p0_domain_tech_ko.pdf
+  docs/07_p0_domain_and_tech_notes.md / scripts/build_p0_learning_guide.py
+  검수: reports/p0_learning_pdf_validation.md (전체 렌더링, 텍스트·링크·여백 확인).
+- 이번 작업의 변경은 아직 커밋·push하지 않음. 실제 Git 상태를 확인할 것.
+
 ============================================================
 1. 프로젝트 위치와 목적
 ============================================================
@@ -295,11 +691,22 @@ PDF 재생성은 선택 작업이다. 원고 수정이 없다면 기존 PDF를 �
 EGFR Evidence Lab 작업을 이어서 진행해줘.
 먼저 HANDOFF.txt, README.md, docs/01_blueprint.md, configs/project.json을 읽고
 현재 Git 상태와 실제 구현 범위를 확인해줘.
-현재 단계는 프로젝트 뼈대이며 데이터 수집·학습은 미실행 상태야.
-다음 목표는 P0: ChEMBL 인간 EGFR(CHEMBL203) IC50 자료 수집과
-실험·변이·단위·중복·문헌 분포에 대한 데이터 감사야.
-공식 문서로 실제 API 필드와 release를 확인하고,
-재실행 가능한 수집기·원자료 매니페스트·assay 검토표·data_audit 보고서를 만들어줘.
+전체 수집·자동 감사·WT 확대 검토·981건 표적 열 검토와 Apsel209건 검토를 진행했어.
+reports/apsel_review_and_baseline_ko.md와 docs/11_baseline_practice_ko.md를 먼저 읽어줘.
+이어 docs/12_main_cohort_acquisition_ko.md와 reports/main_cohort_acquisition_ko.md,
+configs/main_cohort_review.json도 읽어줘. 추가787관측을대조했고새45건후보를보존했어.
+원문 IC50와 단일농도억제율4건은 분리했고, 최종 주 코호트는 아직 미승인이야.
+우선 ref28=10.1021/acs.jmedchem.9b00722의 실제 실험법 원문·human종 유래를 확인하거나,
+WT특허US11155546B2의 G번호별 구조를 대조해야 해. 저장소PDF링크는 권리안내HTML이었어.
+새 후보는 data/interim/furan_candidate_20261020/에 training_ready=False로 저장했어.
+Apsel209건은 SI·WT·유래 미확정으로 전부 보류했고, 기존 단일 assay22건으로
+교육용 Dummy·RF 3-fold/3seed를 실행·검증했어. 이후 추가한 검사를 합쳐47개 테스트와36개 모델 재로딩 통과.
+최종 결과 폴더는 baseline_pilot_20261020_v2이며 기존 training_ready=False는 유지했어.
+scaffold42 RF MAE0.295가 Dummy0.310보다 작지만 차이 구간에0이 있어 우위 미확정이야.
+다음은 사용자의 한국어 실습을 돕고, 공개 SI·단백질 근거 또는 다른 단일 프로토콜 자료를
+검토해 충분한 주 코호트를 확보하는 일이야. 새 원문 근거 없이는 209건 보류를 풀지 마.
+P0·P1 진행 중, M1 미완료이며 D-MPNN 일반 성능 비교로 넘어갈 데이터는 아직 없어.
+자동 감사와 기존 문헌 검토 파일은 보존하고 새 작업 사본에 원문 근거·결정을 기록해줘.
 정상형/변이형, 생화학/세포 실험, IC50/Ki/Kd, 부등호 관측을 구분하고
 데이터 감사 전에 학습 표본 수나 모델 성능을 단정하지 마.
 설계 선택에는 근거·출처를 붙이고 현재 파일의 다른 변경은 보존해줘.

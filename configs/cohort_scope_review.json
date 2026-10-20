@@ -1,0 +1,49 @@
+{
+  "version": "cohort-scope-review-v1",
+  "reviewed_on": "2026-10-20",
+  "purpose": "이전 데이터·보류 등록부·교육 모델의 입력 해시를 보존하는 후속 근거와 적용 범위 판단",
+  "previous_review_path": "configs/main_cohort_review.json",
+  "diagnostics_policy_path": "configs/scope_diagnostics.json",
+  "report_path": "reports/cohort_scope_evidence_ko.md",
+  "validation_path": "reports/cohort_scope_validation.json",
+  "furan45": {
+    "training_ready": false,
+    "source_method_article_DOI": "10.1021/acs.jmedchem.9b00722",
+    "method_fulltext_newly_obtained": false,
+    "OA_index_link_DOI": "10.7270/q21v5jfw",
+    "OA_link_actual_resource": "BindingDB Entry50009645 dataset derived from ChEMBL and source article, not the article full text",
+    "independent_protocol_verification_from_OA_link": false,
+    "selection_bias": "2023 원문: 10uM에서 억제율>90%인 화합물을 6점 농도반응 IC50 측정으로 진행하는 선별. 단일농도 억제율4건은 별도 보존",
+    "scope_after_protocol_verification": "같은 furanopyrimidine 계열·같은 WT 효소 실험·선별된 히트 범위의 탐색적 회귀. 변이·세포CC50·임상·다른 측정 조건으로의 이전은 미검증",
+    "currently_allowed": "단위·구조·자료 편중·예정 분할과 화학 거리 진단",
+    "pdb_6JZ0_cross_check": {
+      "evidence_path": "data/raw/scope_evidence_20261020_v3/manifest.json",
+      "matches_ref28_citation": true,
+      "species": "Homo sapiens (taxid 9606), UniProt P00533",
+      "construct_range": "696-1021 (2023년 furan45 논문의 GST-G696-G1022와 사실상 동일 계열, 한 잔기 차이)",
+      "expression_host": "Spodoptera frugiperda / High Five 곤충세포",
+      "sequence_at_858_790": "858=Leu, 790=Thr (WT, 변이 없음)",
+      "scope_limit": "이는 결정학용 단백질 준비 구성체 확인이며, 효소 활성(IC50) 분석에 쓰인 반응 조건과 동일하다는 직접 증거는 아님. 같은 연구팀·유사 구성체라는 정황 근거로만 사용"
+    },
+    "coumar2010_si_checked": {
+      "doi": "10.1021/jm1000198",
+      "evidence_path": "data/raw/scope_evidence_20261020_v3/jm1000198_si_001.pdf",
+      "result": "12쪽 전체 열람. kinase 효소 분석 프로토콜 없음(화학 합성·세포실험·X선·HPLC만). 이 연구팀 논문의 효소 분석법은 SI가 아닌 본문에만 있는 것으로 추정"
+    },
+    "protocol_fields_still_pending": ["ATP_concentration", "enzyme_concentration", "substrate_conditions", "reaction_time_and_temperature", "readout_method"],
+    "protocol_fields_partially_corroborated_not_confirmed": ["species_in_assay(결정학 구성체 기준 human 정황 확인, 효소분석 직접 확인 아님)", "construct_boundary(GST-696~1021/1022 계열 일치 정황)"]
+  },
+  "patent64": {
+    "training_ready": false,
+    "structure_manifest": "data/interim/patent_structure_review_20261020_v2/manifest.json",
+    "source_MS_coverage_observations": 35,
+    "large_MS_discrepancy_observations": 13,
+    "large_MS_discrepancy_unique_source_keys": 10,
+    "full_structure_verified_rows": 0,
+    "claim_limit": "수치·조건 일치 외에 구조·키·원 특허 자체 분석 자료와의 차이를 해소해야 함. MS 차이만으로 DB 오류나 올바른 대체 구조를 확정하지 않음"
+  },
+  "new_training_approved": 0,
+  "new_model_training_executed": false,
+  "new_cross_assay_pooling_approved": false,
+  "human_independent_second_review_completed": false
+}

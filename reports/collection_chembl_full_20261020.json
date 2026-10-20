@@ -1,0 +1,76 @@
+{
+  "verified_at_utc": "2026-10-20T01:40:24.299971+00:00",
+  "passed": true,
+  "state": "complete",
+  "release": {
+    "chembl_db_version": "ChEMBL_37",
+    "chembl_release_date": "2026-05-01"
+  },
+  "raw_responses": 432,
+  "exports_verified": true,
+  "summary": {
+    "api_total_count": 26600,
+    "activities": 26600,
+    "molecules": 14776,
+    "assays": 2425,
+    "documents": 1299,
+    "activity_documents": 1298,
+    "relations": {
+      "<": 2067,
+      "<=": 87,
+      "<null>": 1398,
+      "=": 19719,
+      ">": 3309,
+      ">=": 8,
+      ">>": 11,
+      "~": 1
+    },
+    "units": {
+      "/uM": 6,
+      "10^-5 mol/L": 1,
+      "10^3 uM": 1,
+      "<null>": 1259,
+      "nM": 25244,
+      "ug.mL-1": 89
+    },
+    "assay_types": {
+      "A": 696,
+      "B": 24925,
+      "F": 956,
+      "T": 23
+    },
+    "bao_formats": {
+      "assay format": 3620,
+      "cell membrane format": 43,
+      "cell-based format": 7156,
+      "cell-free format": 39,
+      "organism-based format": 70,
+      "protein format": 598,
+      "single protein format": 15072,
+      "subcellular format": 2
+    },
+    "validity_comments": {
+      "<null>": 26090,
+      "Outside typical range": 445,
+      "Potential transcription error": 65
+    },
+    "sources": {
+      "1": 17521,
+      "15": 871,
+      "37": 7272,
+      "38": 747,
+      "54": 6,
+      "65": 54,
+      "72": 129
+    },
+    "variant_annotation_non_null": 5025,
+    "null_reference_counts": {
+      "molecule_chembl_id": 0,
+      "assay_chembl_id": 0,
+      "document_chembl_id": 0
+    },
+    "scientific_curation_complete": false,
+    "training_cohort_approved": false
+  },
+  "limit": "기술적 수집 무결성 확인; 실험·변이 적격성 판단과 구조 정제는 후속 작업"
+}

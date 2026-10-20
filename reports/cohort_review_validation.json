@@ -1,0 +1,23 @@
+{
+  "source_table_matched_measurements": 22,
+  "wt_measurements_preserved": 50,
+  "assay_pairs": 15,
+  "max_shared_structures": 1,
+  "pairs_meeting_5_shared_floor": 0,
+  "allowed_pooling_pairs": 0,
+  "primary_methods_reviewed_assays": 1,
+  "primary_methods_unavailable_assays": 5,
+  "source_code_uses_strict_greater_than_minOverlap": true,
+  "source_code_default_minOverlap_is_5": true,
+  "context_pilot_measurements": 22,
+  "benchmark_training_ready": false,
+  "calibration_structure_groups": 1,
+  "source_expansion_assays": 37,
+  "source_expansion_measurements": 277,
+  "source_expansion_assays_with_pmc": 6,
+  "limits": [
+    "원문 표 수치와 공식 화합물 번호 연결 검증; 합성 구조의 독립 재구성은 미수행",
+    "동일 assay라는 맥락의 파일럿 22건; 실험 간 동질성이나 일반화 성능 검증을 뜻하지 않음",
+    "문헌 검토는 AI 수행이며 사람의 독립 이중 검토를 거치지 않음"
+  ]
+}

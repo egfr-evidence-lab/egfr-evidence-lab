@@ -1,0 +1,50 @@
+{
+  "version": "wt-biochemical-context-v1",
+  "status": "selection_rules_frozen_training_data_pending",
+  "primary_task": "인간 WT EGFR의 실험 맥락이 명시된 생화학 IC50 회귀",
+  "primary_label": "pIC50",
+  "cross_assay_pooling_requires": {
+    "primary_protocols_complete_and_equal": true,
+    "critical_fields": ["species", "variant", "protein_construct", "enzyme_concentration", "atp_uM", "substrate", "substrate_concentration", "preincubation_minutes", "reaction_minutes", "temperature_C", "buffer_pH", "readout", "inhibitor_scope"],
+    "missing_values_count_as_equal": false,
+    "minimum_shared_unique_structures": 5,
+    "agreement_absolute_delta_pIC50": 0.5,
+    "agreement_fraction_minimum": 0.75,
+    "agreement_wilson_95_lower_minimum": 0.75,
+    "median_bias_bootstrap_95_absolute_bound": 0.3,
+    "fraction_absolute_delta_over_1_maximum": 0.1,
+    "all_pairs_in_a_merged_cluster_must_pass": true,
+    "bootstrap_resamples": 2000,
+    "seed": 42,
+    "threshold_status": "프로젝트의 사전 고정 운영 기준; EGFR에서 검증된 보편적 합격선이 아님"
+  },
+  "repeats": {
+    "group": ["structure_group", "assay_chembl_id", "variant_screen", "document_chembl_id"],
+    "aggregation_after_source_review": "median_pIC50",
+    "span_over_0_5_requires_source_review": true,
+    "never_aggregate_across_unverified_assays": true,
+    "preserve_all_activity_ids": true
+  },
+  "chemistry": {
+    "preserve_stereochemistry_and_isotopes": true,
+    "desalt_or_neutralize_automatically": false,
+    "unknown_molecule_type_needs_structure_review": true,
+    "group_stereo_variants_together_for_leakage_checks": true
+  },
+  "evaluation": {
+    "primary_split": "scaffold",
+    "secondary_diagnostic": "leave_document_or_assay_out_if_supported",
+    "no_compatibility_selection_from_final_test_labels": true,
+    "calibration_structures_excluded_from_final_test": true,
+    "learning_curve_and_scaffold_coverage_required": true,
+    "no_universal_sample_count_claim": true,
+    "pilot_only_is_not_training_ready": true
+  },
+  "sources": {
+    "kinase_guidance": "https://www.ncbi.nlm.nih.gov/sites/books/NBK91991/",
+    "papyrus": "https://doi.org/10.1186/s13321-022-00672-x",
+    "overlapping_assays": "https://doi.org/10.1021/acs.jcim.4c00049",
+    "author_code": "https://github.com/rinikerlab/overlapping_assays",
+    "matched_pairs": "https://doi.org/10.1186/s13321-025-00956-y"
+  }
+}

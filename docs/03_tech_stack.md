@@ -1,10 +1,12 @@
 # 기술 스택과 검증 계획
 
-이 문서는 **우리 프로젝트에 선택한 후보**를 정리합니다. 채용 회사의 실제 사용 스택이나 모든 패키지의 설치 호환성을 확인했다는 뜻은 아닙니다. 기술의 기능은 공식 문서·원 논문으로 확인하고, EGFR 데이터에서의 유효성은 이후 실험으로 검증합니다.
+이 문서는 **우리 프로젝트에 선택한 기술과 후보**를 정리합니다. 2026-10-20 기준 P0 패키지는 Python 3.12·macOS arm64에서 설치·기능·재설치를 검증하고 해시로 고정했습니다. P1 교육 실험은 별도 `.venv-ml`에서 실행하고 버전 스냅샷을 남겼습니다. [P0 검증](../reports/p0_environment_validation.md), [P1 실행·검증 범위](../reports/apsel_review_and_baseline_ko.md). 채용 회사의 실제 사용 스택이나 모든 플랫폼의 호환성을 확인한 것은 아닙니다.
 
 ## 공고의 우대사항 다섯 가지를 구현에 연결하기
 
-| 우대사항 | 넣을 수 있는 기능 | 근거 | 완료 증거 |
+실제 [AI 연구원 공고](https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=55253770)의 다섯 우대사항을 2026-10-20에 확인했습니다. 아래는 구현 목표이며 [최초 적합성 점검표](../reports/portfolio_fit_and_domain_review_ko.md) 이후 단일 assay 22건의 Dummy·RF 교육 실험을 추가했습니다. 딥러닝·논문 모델 재현·Agent·클라우드는 미실행입니다.
+
+| 우대사항 | 넣을 수 있는 기능 | 근거 | 완료 시 필요한 증거 |
 |---|---|---|---|
 | 딥러닝 | Chemprop의 PyTorch 기반 D-MPNN으로 분자 그래프 → pIC50 | [Chemprop v2 원 논문](https://pubs.acs.org/doi/10.1021/acs.jcim.5c02332), [공식 문서](https://chemprop.readthedocs.io/en/latest/index.html) | 동일 분할 RF/D-MPNN 비교·seed 변동·오차 분석 |
 | 의약바이오 데이터 경험 | ChEMBL 실험·변이·단위·문헌 정제 | [ChEMBL 실험 설명](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions) | 원자료 매니페스트·정제 제외표·데이터 카드 |
@@ -18,7 +20,7 @@
 
 | 영역 | 선택 | 선택 이유 / 근거 | 도입 시점 |
 |---|---|---|---|
-| 환경 | Python 3.11, 독립 venv/conda 환경 | Chemprop 공식 설치 문서는 3.11/3.12 CI 검증을 안내. [설치 문서](https://chemprop.readthedocs.io/en/latest/installation.html) | 환경 구축 |
+| 환경 | 기존 Python 3.12.14 독립 venv | 현재 Mac의 P0 설치·기능·재설치 검증 완료. Chemprop 호환성은 P2에서 별도 검증. [설치 문서](https://chemprop.readthedocs.io/en/latest/installation.html) | P0 환경 확인 완료 |
 | 수집·테이블 | httpx, pandas, Parquet/pyarrow | API 원 응답과 분석 테이블을 구분해 저장하는 프로젝트 설계. [ChEMBL 접근 방법](https://www.ebi.ac.uk/training/online/courses/chembl-quick-tour/accessing-chembl-data/) | P0 |
 | 분자 처리 | RDKit | 구조 파싱·Morgan fingerprint·분자 유사도. [공식 입문 문서](https://www.rdkit.org/docs/GettingStartedInPython.html) | P0/P1 |
 | 기준 ML | scikit-learn의 DummyRegressor·RandomForestRegressor | 평균 예측과 구조 기반 비선형 예측을 구분해 비교하는 설계. [평가/교차검증](https://scikit-learn.org/stable/modules/cross_validation.html) | P1 |
@@ -42,8 +44,9 @@ Sentence Transformers/FAISS/FastAPI/Streamlit은 설계 후보이며 현재 설�
 
 ## 설치·버전 정책
 
-- `pyproject.toml`은 단계별 의존성 후보이며 lock 파일이 아닙니다.
-- 시작 환경은 Python 3.11로 별도 생성하고 base ML 설치 → import·작은 데이터 smoke 확인 → 실제 버전 lock 순으로 진행합니다.
+- `pyproject.toml`은 단계별 의존성 선언이며 lock 파일이 아닙니다. P0의 검증 버전과 해시는 `requirements/p0-py312-macos-arm64.txt`로 별도 고정했습니다.
+- 기존 Python 3.12.14 환경에서 P0 5개 직접 패키지와 간접 의존성 9개를 설치했습니다. import·통신·CSV/Parquet·분자 처리·별도 빈 환경 재설치 검사를 통과했습니다. [재실행 방법](../requirements/README.md)을 참고하세요.
+- P1은 `.venv-ml`에 SciPy·scikit-learn·matplotlib 등을 설치해 모델 실행·재로딩·전체 테스트 43개와 `pip check`를 통과했습니다. `requirements/ml-py312-macos-arm64.freeze.txt`는 정확 버전 스냅샷이며 해시 lock·새 환경 재설치 검증은 아닙니다. P2 이후 의존성은 별도 검증합니다.
 - Chemprop v2 실험과 과거 논문 재현용 v1 환경을 분리합니다. v1 모델을 v2로 그대로 바꾸어 동일 재현이라고 부르지 않습니다. 공식 README는 v2 재작성과 기본 설정 차이를 안내합니다. [공식 저장소](https://github.com/chemprop/chemprop)
 - GPU는 데이터 크기·학습시간 측정 후 결정합니다. 로컬 CPU 실험은 가능성 확인부터 시작하고, GPU가 필요하면 별도 학습 환경을 고릅니다. Fargate는 이 설계에서 추론 서비스용입니다.
 - 현재 실행 뼈대의 표준 라이브러리 검증과 전체 ML/DL 환경의 검증을 구분해 기록합니다.

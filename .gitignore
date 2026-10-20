@@ -2,6 +2,7 @@ __pycache__/
 .DS_Store
 *.py[cod]
 .venv/
+.venv-ml/
 .env
 .env.*
 !.env.example

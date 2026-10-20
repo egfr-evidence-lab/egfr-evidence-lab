@@ -1,1 +1,1 @@
-"""Planned: release-aware collection, assay/variant audit and curation reports."""
+"""ChEMBL 수집·원자료 무결성 검사. 과학적 코호트 정제는 후속 단계."""

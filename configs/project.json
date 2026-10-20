@@ -1,17 +1,26 @@
 {
   "project": "EGFR Evidence Lab",
+  "portfolio_scope_path": "configs/portfolio_scope.json",
   "target": {
     "chembl_id": "CHEMBL203",
     "organism": "Homo sapiens",
     "endpoint": "IC50",
     "label": "pIC50",
-    "training_cohort": "pending_assay_and_variant_audit"
+    "training_cohort": "pending_manual_assay_review_after_automatic_audit"
   },
   "curation": {
     "relation": "=",
     "canonical_unit": "nM",
     "assay_confidence_candidate": 9,
-    "format": "biochemical_candidate_pending_audit",
+    "format": "biochemical_candidate_pending_source_review",
+    "automatic_audit_policy": "conservative-screen-v1",
+    "cohort_policy_path": "configs/cohort_policy.json",
+    "source_review_holds_path": "configs/source_review_holds.json",
+    "protocol_review_status": "new_787_observation_source_review_furan45_candidate_main_cohort_pending",
+    "additional_source_review_registry_path": "configs/main_cohort_review.json",
+    "latest_scope_review_path": "configs/cohort_scope_review.json",
+    "cross_assay_pooling_approved_pairs": 0,
+    "first_source_review_candidate": "WT",
     "variant_policy": "review_metadata_and_description_exclude_unresolved",
     "unknown_variant_is_wild_type": false,
     "pool_cell_and_biochemical_assays": false,
@@ -39,11 +48,20 @@
     "llm_may_invent_measurements": false
   },
   "phases": [
-    {"id": "P0", "name": "데이터 감사와 코호트 확정", "status": "planned"},
-    {"id": "P1", "name": "기준 모델과 통계 검증", "status": "planned"},
-    {"id": "P2", "name": "D-MPNN 비교와 논문 방법 검토", "status": "planned"},
+    {"id": "P0", "name": "데이터 감사와 코호트 확정", "status": "in_progress"},
+    {"id": "P1", "name": "기준 모델과 통계 검증", "status": "in_progress"},
+    {"id": "P2", "name": "D-MPNN 비교와 단일 공개 벤치마크 재현", "status": "planned"},
     {"id": "P3", "name": "문헌 검색과 인용 평가", "status": "planned"},
     {"id": "P4", "name": "도구 호출 Agent와 평가", "status": "planned"},
     {"id": "P5", "name": "컨테이너 추론 서비스의 클라우드 배포", "status": "planned"}
-  ]
+  ],
+  "educational_baseline": {
+    "config_path": "configs/baseline_pilot.json",
+    "report_path": "reports/apsel_review_and_baseline_ko.md",
+    "validation_path": "reports/baseline_pilot_validation.json",
+    "measurements": 22,
+    "benchmark_training_approved": false,
+    "apsel_measurements_reviewed": 209,
+    "apsel_training_approved": 0
+  }
 }

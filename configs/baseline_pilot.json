@@ -1,0 +1,16 @@
+{
+  "experiment": "single-assay-pilot22-dummy-rf-v1",
+  "purpose": "educational_exploratory",
+  "cohort_path": "data/interim/cohort_review_20261020/context_pilot.csv",
+  "cohort_sha256": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+  "expected_assay": "CHEMBL4258549",
+  "expected_rows": 22,
+  "source_holds_path": "configs/source_review_holds.json",
+  "fingerprint": {"radius": 2, "size": 2048, "include_chirality": true},
+  "cv": {"folds": 3, "primary": "scaffold", "secondary": "random_molecule", "split_seed": 42},
+  "model_seeds": [42, 123, 2026],
+  "random_forest": {"n_estimators": 300, "min_samples_leaf": 2, "max_features": 1.0, "n_jobs": 1},
+  "hyperparameter_search": false,
+  "bootstrap": {"resamples": 2000, "seed": 42, "confidence": 0.95, "unit": "scaffold"},
+  "limitations": ["22개 단일 문헌·실험의 탐색 결과", "기존 training_ready=false 상태를 변경하지 않음", "미확정 209건은 학습에서 제외", "외부 검증·최종 시험 세트·신약 성능 주장 없음", "교차검증 오차를 본 뒤 튜닝하지 않음"]
+}

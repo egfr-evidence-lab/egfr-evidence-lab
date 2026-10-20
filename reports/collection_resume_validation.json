@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "run": "chembl_full_20261020",
+  "prior_raw_responses": 429,
+  "preserved_raw_responses": 429,
+  "prior_hashes_unchanged": true,
+  "new_requests": [
+    "count_after_0001",
+    "status_after_0001",
+    "status_before_0001"
+  ],
+  "new_request_count": 3,
+  "attempts": 2,
+  "summary_unchanged": true,
+  "final_source_hash_matches": true,
+  "document_pmids_checked": 1299,
+  "scope": "실제 완료 실행 재개 시 원 응답 재사용 검사; 중간 실패 후 재개는 모의 서버 테스트에서 별도 확인"
+}
