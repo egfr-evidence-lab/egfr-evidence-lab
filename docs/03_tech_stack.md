@@ -2,9 +2,8 @@
 
 이 문서는 **우리 프로젝트에 선택한 후보**를 정리합니다. 채용 회사의 실제 사용 스택이나 모든 패키지의 설치 호환성을 확인했다는 뜻은 아닙니다. 기술의 기능은 공식 문서·원 논문으로 확인하고, EGFR 데이터에서의 유효성은 이후 실험으로 검증합니다.
 
-## 공고의 우대사항 다섯 가지를 구현에 연결하기
 
-| 우대사항 | 넣을 수 있는 기능 | 근거 | 완료 증거 |
+| 추가 기술 스택 | 넣을 수 있는 기능 | 근거 | 완료 증거 |
 |---|---|---|---|
 | 딥러닝 | Chemprop의 PyTorch 기반 D-MPNN으로 분자 그래프 → pIC50 | [Chemprop v2 원 논문](https://pubs.acs.org/doi/10.1021/acs.jcim.5c02332), [공식 문서](https://chemprop.readthedocs.io/en/latest/index.html) | 동일 분할 RF/D-MPNN 비교·seed 변동·오차 분석 |
 | 의약바이오 데이터 경험 | ChEMBL 실험·변이·단위·문헌 정제 | [ChEMBL 실험 설명](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions) | 원자료 매니페스트·정제 제외표·데이터 카드 |
@@ -12,7 +11,7 @@
 | 클라우드 | 컨테이너 추론 서비스, 모델·원자료 버전 저장, 로그 | [AWS Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html), [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) | 배포 버전·실제 호출·재시작·지연시간·로그 |
 | Agentic AI | 수치 예측·측정 조회·문헌 검색 도구를 선택하는 제한된 Agent | [LangGraph workflows/agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents) | 도구 호출 trace·인용 검증·held-out 질문 평가 |
 
-**의약바이오 데이터 경험은 라이브러리 이름이 아닌 도메인 역량**이고, 논문 재현 역시 도구가 아닌 실험 수행 역량입니다. 패키지를 설치한 것만으로 우대사항을 충족했다고 설명하지 않습니다.
+**의약바이오 데이터 경험은 라이브러리 이름이 아닌 도메인 역량**이고, 논문 재현 역시 도구가 아닌 실험 수행 역량입니다.
 
 ## 단계별 스택
 
