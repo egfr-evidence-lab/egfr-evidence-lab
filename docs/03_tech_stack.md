@@ -2,11 +2,10 @@
 
 이 문서는 **우리 프로젝트에 선택한 기술과 후보**를 정리합니다. 2026-10-20 기준 P0 패키지는 Python 3.12·macOS arm64에서 설치·기능·재설치를 검증하고 해시로 고정했습니다. P1 교육 실험은 별도 `.venv-ml`에서 실행하고 버전 스냅샷을 남겼습니다. [P0 검증](../reports/p0_environment_validation.md), [P1 실행·검증 범위](../reports/apsel_review_and_baseline_ko.md). 채용 회사의 실제 사용 스택이나 모든 플랫폼의 호환성을 확인한 것은 아닙니다.
 
-## 공고의 우대사항 다섯 가지를 구현에 연결하기
 
-실제 [AI 연구원 공고](https://www.saramin.co.kr/zf_user/jobs/relay/view?rec_idx=55253770)의 다섯 우대사항을 2026-10-20에 확인했습니다. 아래는 구현 목표이며 [최초 적합성 점검표](../reports/portfolio_fit_and_domain_review_ko.md) 이후 단일 assay 22건의 Dummy·RF 교육 실험을 추가했습니다. 딥러닝·논문 모델 재현·Agent·클라우드는 미실행입니다.
+아래 다섯 영역을 이 프로젝트에서 어떻게 구현했는지 정리합니다. 2026-10-22 기준 딥러닝 비교(M2)·공개 벤치마크 축소 재현(M3)·도구 호출 Agent(M5)·컨테이너 추론 API와 클라우드 실행(M6)을 **범위를 제한해** 완료했고, 기업 문헌 사례(M4)는 원문 미확보로 보류입니다. 각 항목의 범위 한계는 [마일스톤 기록](../configs/portfolio_scope.json)과 해당 보고서에 적었습니다.
 
-| 우대사항 | 넣을 수 있는 기능 | 근거 | 완료 시 필요한 증거 |
+| 추가 기술 스택 | 넣을 수 있는 기능 | 근거 | 완료 증거 |
 |---|---|---|---|
 | 딥러닝 | Chemprop의 PyTorch 기반 D-MPNN으로 분자 그래프 → pIC50 | [Chemprop v2 원 논문](https://pubs.acs.org/doi/10.1021/acs.jcim.5c02332), [공식 문서](https://chemprop.readthedocs.io/en/latest/index.html) | 동일 분할 RF/D-MPNN 비교·seed 변동·오차 분석 |
 | 의약바이오 데이터 경험 | ChEMBL 실험·변이·단위·문헌 정제 | [ChEMBL 실험 설명](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/chembl-data-questions) | 원자료 매니페스트·정제 제외표·데이터 카드 |
@@ -14,7 +13,7 @@
 | 클라우드 | 컨테이너 추론 서비스, 모델·원자료 버전 저장, 로그 | [AWS Fargate](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html), [S3 Versioning](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html) | 배포 버전·실제 호출·재시작·지연시간·로그 |
 | Agentic AI | 수치 예측·측정 조회·문헌 검색 도구를 선택하는 제한된 Agent | [LangGraph workflows/agents](https://docs.langchain.com/oss/python/langgraph/workflows-agents) | 도구 호출 trace·인용 검증·held-out 질문 평가 |
 
-**의약바이오 데이터 경험은 라이브러리 이름이 아닌 도메인 역량**이고, 논문 재현 역시 도구가 아닌 실험 수행 역량입니다. 패키지를 설치한 것만으로 우대사항을 충족했다고 설명하지 않습니다.
+**의약바이오 데이터 경험은 라이브러리 이름이 아닌 도메인 역량**이고, 논문 재현 역시 도구가 아닌 실험 수행 역량입니다.
 
 ## 단계별 스택
 
