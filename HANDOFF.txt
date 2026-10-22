@@ -1375,6 +1375,130 @@ SHA-256 전부 검증). 사용자가 본문 PDF 를 확보하면 거기서 이�
                막힌 경로는 configs/source_review_holds.json 의 보류 항목이고,
                새 원문 근거 없이 보류를 풀지 마.
 
+============================================================
+18. 2026-10-22 추가: 포트폴리오 산출물과 미실행 항목 정리
+============================================================
+
+[대시보드 — 아티팩트]
+https://claude.ai/artifact/TjSsKVEvgDaXWFMGfiQqru
+2개 섹션(탭)이야. Dashboard 타입에서 만들었고 데이터셋 9개를 첨부 파일로 올렸어.
+
+  섹션1 코호트와 지표   정제 퍼널(26,600→22) · paired CI 0선 플롯 ·
+                       scaffold MAE · 관측 대 예측 · 마일스톤 · 지연시간
+  섹션2 근거와 적용범위  변이 분포(내성 계보) · 부등호·형식·연대 ·
+                       22건 근거 체인 표 · 적용 범위 산점도
+
+마크업에 숫자를 직접 쓰지 않았어. 전부 데이터셋에서 채우고 각 데이터셋에
+어느 산출물에서 왔는지 설명을 달았어. 페이지에서 숫자를 누르면 출처가 보여.
+
+데이터 추출: scripts/build_portfolio_data.py (재현 가능)
+  .venv-serve/bin/python scripts/build_portfolio_data.py --out tmp/portfolio_data
+그 다음 datasets/*.json 을 upload_asset 하고 ArtifactData batch 로 기록했어.
+
+**공유 상태 주의**: 기본이 비공개야. 사용자가 Share 메뉴에서 공유해야 다른
+사람이 열 수 있어. Claude 는 공유 설정을 바꿀 수 없어.
+
+[PDF 2개]
+  output/pdf/egfr_learning_guide_medical_ai_ko.pdf          14쪽 · 표 25개
+    원고 docs/15_learning_guide_medical_ai_ko.md
+    1부 의학 도메인 (EGFR·IC50·변이·실험조건·ChEMBL·logP·DC50)
+    2부 AI 기술 (분자표현·적용범위·분할·Dummy·D-MPNN·통계·재현성·Agent·서빙·gVisor)
+    3부 더 공부할 것 8개 + 근본 제약
+    각 지식에 "이 프로젝트의 어느 지점에서 필요했나"를 붙였어.
+    2.14절에 겪은 함정 7개를 표로 모았어.
+
+  output/pdf/egfr_project_definition_and_results_ko.pdf     12쪽 · 표 26개
+    원고 docs/16_project_definition_and_results_ko.md
+    무엇을 확인하려 했나(질문 6개) / 무엇을 정의했나(정책·금지목록) /
+    무엇이 확인됐나(질문별 답·퍼널·사전예상 대조·주장하지 않는 것 9개)
+
+바탕화면에도 복사했어:
+  ~/Desktop/EGFR_학습가이드_의학도메인_AI기술.pdf
+  ~/Desktop/EGFR_프로젝트_정의와_결과.pdf
+
+재생성:
+  .venv-serve/bin/python scripts/build_session_notes_pdf.py \
+      --font /System/Library/Fonts/Supplemental/AppleGothic.ttf \
+      --source docs/16_project_definition_and_results_ko.md \
+      --output output/pdf/<파일>.pdf --header "..." --footer "..."
+렌더러 주의: 줄바꿈에 걸친 **굵게** 는 별표가 그대로 나와. 한 줄로 유지해.
+
+[README 전면 재작성]
+낡은 내용(P0/P1 진행 중)을 걷어내고 원인→결과 구조로 다시 썼어.
+  맨 위 대시보드·PDF 링크 + 한눈에 표
+  "왜 22건인가" 를 원인(실험조건 민감성)→결과(558 assay pooling 0쌍)로
+  질문과 답 표 6행 / 분할 방식이 결론을 바꾸는 표 / 적용범위 상수붕괴 표
+  대시보드 2섹션 설명 / 단계별 보고서 / 실행 / 구조 / 남은 것
+로컬 링크 전부 유효한지 확인했어.
+
+[정의했는데 실행하지 않은 것 6건 — 중요]
+설정에 required 로 적힌 것과 실제가 어긋나면 기록의 신뢰가 떨어져.
+숨기지 않고 모아 기록했어.
+
+  configs/portfolio_scope.json → defined_but_not_executed_20261022
+  configs/cohort_policy.json   → evaluation.learning_curve_decision_20261022
+
+  1) 학습곡선        cohort_policy 에 required:true 인데 미실행.
+                     이유: 22건에서 샘플을 줄이면 scaffold 분할이 성립 안 해.
+                     15건→scaffold 8~9개, 10건→5~6개, 5건→2~3개.
+                     이미 22건에서 구간이 0을 포함하니 더 작은 표본에서는
+                     곡선의 기울기 자체를 추정할 수 없어.
+                     **기계적으로 실행하는 대신 실행이 무의미한 이유를 적었어.**
+                     코호트가 늘면 이 판단은 무효야.
+  2) scaffold 커버리지  같은 항목. **가능했는데 우선순위에서 밀렸어.**
+                     1번과 구분해서 적었어 — 불가능해서가 아니야.
+  3) Chemprop v2     계획은 v2, 실제는 v1.6.1.
+                     M3 재현이 저자환경 v1.6.1 을 요구해서 M2 도 통일했어.
+                     docs/03·docs/04 를 2026-10-22 에 정정했어.
+  4) BM25·임베딩 검색  식별자 조회로 충분했고 평가 질의집합을 안 만들었어.
+  5) MLflow 상시 운영  처음부터 "필요 시" 항목이었어.
+  6) model card      내용은 보고서에 있는데 표준 형식으로 안 모았어.
+
+[빈 패키지 docstring 정정]
+src/egfr_lab 의 evaluation·features·literature 가 비어 있고 "Planned" 로
+적혀 있었어. 세 기능이 실제로는 다른 곳에 구현돼 있어서 구현 위치를 적었어.
+삭제하지 않은 이유는 계획과 실제를 둘 다 남기려고.
+  evaluation → modeling.baseline 의 metrics()·paired_cluster_ci(),
+               scripts/run_agent_eval.py 의 score()
+  features   → modeling.baseline, agent.tools.ActivityPredictor._featurize
+               (두 경로가 manifest 에서 같은 설정을 읽어 갈라지지 않게 함)
+  literature → agent.tools.search_literature·fetch_evidence
+
+[설정 수정 안전성]
+configs/cohort_policy.json 의 SHA-256 이 어느 산출물에도 박혀 있지 않은 걸
+먼저 확인하고 수정했어. 박혀 있었으면 M3 때처럼 파일을 그대로 두고 보고서에만
+정정했어야 해. 설정을 고치기 전에 항상 해시 참조를 확인해.
+
+[다음 마일스톤 후보 — 부등호 5,482건]
+회귀는 assay 조건에 민감해서 pooling 이 막혔어. 그런데 >10000 nM
+(10uM 까지 50% 억제 없음)을 "비활성" 라벨로 쓰면 조건 민감도가 훨씬 낮은
+과제가 돼. ATP 농도가 1uM 이든 10uM 이든 10uM 에서 안 듣는 화합물은
+강한 저해제가 아니야. 그러면 원문 검증 없이도 수천 건 규모를 쓸 수 있어.
+**22건 벽을 우회하는 유일한 경로로 보여.**
+
+단 이것도 가정이야. "조건 민감도가 낮다"를 먼저 검증해야 해 —
+같은 화합물이 여러 assay 에서 활성/비활성으로 갈리는 비율을 재면 돼.
+그 데이터는 이미 있어. 새 마일스톤 규모니까 설정을 먼저 고정하고 시작해.
+
+[git 상태 — 2026-10-22]
+웹에서 docs/03_tech_stack.md 를 편집한 커밋(8804ee2)과 로컬이 갈라져서
+머지했어(c782043). 충돌은 그 파일 하나였고, 웹 편집의 의도(공고 언급 제거)를
+따르고 로컬의 검증 내용은 유지했어. 그리고 로컬 문단의 "딥러닝·논문 재현·
+Agent·클라우드는 미실행입니다" 가 사실과 달라져서 현재 상태로 갱신했어.
+
+git push --force 는 쓰지 마. 웹 편집 커밋이 사라져.
+
+============================================================
+현재 상태 요약 (2026-10-22)
+============================================================
+  M1 M2 M3 M5 M6   complete_scope_limited
+  M4               blocked_source_unavailable (유료 원문)
+  P0~P5            전부 complete_scope_limited
+  테스트           81개 통과 (.venv-serve, PYTHONPATH=src)
+  active_milestone M4
+
+산출물: 보고서 8종 · PDF 4종 · 대시보드 1개 · 설정 고정 6개
+
 [커밋]
 사용자가 직접 커밋해. 커밋·푸시하지 마.
 
