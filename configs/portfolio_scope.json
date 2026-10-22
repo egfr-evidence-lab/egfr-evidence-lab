@@ -503,5 +503,51 @@
   ],
   "m4_reason": "DOI 10.1002/ardp.70193 본문 미확보. 유료 콘텐츠를 우회하지 않는다",
   "note": "M6 까지 닫혔으므로 남은 계획 항목은 M4 하나다. M4 는 외부 조건(원문 접근)이 바뀌어야 재개된다"
+ },
+ "defined_but_not_executed_20261022": {
+  "why_this_section_exists": "정의한 항목 중 실행하지 않은 것을 숨기지 않고 모아 둔다. 설정 파일에 required 로 적힌 것과 실제 산출물이 어긋나면 기록의 신뢰가 떨어진다",
+  "items": [
+   {
+    "item": "학습곡선 (learning curve)",
+    "defined_in": "configs/cohort_policy.json → evaluation.learning_curve_and_scaffold_coverage_required: true",
+    "executed": false,
+    "reason": "22건 규모에서 샘플을 줄이면 scaffold 분할이 성립하지 않는다. 곡선의 기울기를 추정할 수 없어 \"표본을 늘리면 나아지는가\"에 답할 수 없다",
+    "decision_record": "configs/cohort_policy.json → evaluation.learning_curve_decision_20261022",
+    "reopens_if": "코호트가 scaffold 3-fold 를 구성할 규모로 늘어나면 무효"
+   },
+   {
+    "item": "scaffold 커버리지 분석",
+    "defined_in": "같은 항목",
+    "executed": false,
+    "reason": "규모와 무관하게 가능했고 새 정보를 줄 수 있었다. 미실행 이유는 우선순위 판단이며 불가능해서가 아니다",
+    "partial": "furan45 진단에서 골격 중복 0·최근접 유사도 최대 0.986 을 확인했다(configs/cohort_scope_review.json). 학습 코호트 22건 자체의 커버리지 분석은 아니다"
+   },
+   {
+    "item": "Chemprop v2 로 EGFR 실험",
+    "defined_in": "docs/03_tech_stack.md · docs/04_reproduction.md · pyproject.toml 의 deep extra",
+    "executed": false,
+    "what_we_did_instead": "M2 와 M3 를 모두 .venv-repro 의 v1.6.1 로 돌렸다. M3 가 저자 환경의 v1.6.1 을 요구했고, 두 실험의 환경을 통일해 버전 차이가 결과에 섞이지 않게 했다",
+    "corrected_in_docs": "2026-10-22 에 docs/03·04 를 정정했다"
+   },
+   {
+    "item": "BM25·임베딩 문헌 검색",
+    "defined_in": "pyproject.toml 의 literature·dense extra · docs/03_tech_stack.md",
+    "executed": false,
+    "reason": "현재 범위에서는 정확한 식별자 조회로 충분했고, 검색 품질을 평가할 질의 집합을 만들지 않았다. Europe PMC 검색은 egfr_lab.agent.tools 에 구현했다"
+   },
+   {
+    "item": "MLflow 상시 운영",
+    "defined_in": "configs 의 tracking extra · docs/03_tech_stack.md",
+    "executed": false,
+    "reason": "JSON 매니페스트로 충분했다. 처음부터 \"필요 시\"로 적어 둔 항목이다"
+   },
+   {
+    "item": "model card",
+    "defined_in": "관행 (명시적 정의는 없음)",
+    "executed": false,
+    "reason": "내용은 보고서와 artifact manifest 에 있으나 표준 형식으로 모으지 않았다. reports/dataset_card.md 는 데이터 카드다"
+   }
+  ],
+  "empty_packages_clarified_20261022": "src/egfr_lab 의 evaluation·features·literature 패키지는 비어 있었고 docstring 이 \"Planned\" 로 남아 있었다. 세 기능이 실제로는 modeling·agent.tools·scripts 에 구현돼 있어, 각 패키지의 docstring 에 구현 위치를 적었다. 삭제하지 않은 이유는 계획과 실제 위치를 함께 기록하기 위해서다"
  }
 }

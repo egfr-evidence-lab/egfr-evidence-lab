@@ -4,7 +4,7 @@
 
 1. **Yang et al., 2019. Analyzing Learned Molecular Representations for Property Prediction.** DOI: [10.1021/acs.jcim.9b00237](https://doi.org/10.1021/acs.jcim.9b00237). [저자 소속기관 공개 PDF](https://people.csail.mit.edu/tommi/papers/acs.jcim.9b00237.pdf). D-MPNN과 새로운 화학 구조 평가의 이론·실험 맥락을 학습합니다.
 2. **Heid et al., 2024. Chemprop: A Machine Learning Package for Chemical Property Prediction.** DOI: [10.1021/acs.jcim.3c01250](https://doi.org/10.1021/acs.jcim.3c01250). [원문](https://pmc.ncbi.nlm.nih.gov/articles/PMC10777403/). 공개 코드·분할을 이용한 재현 대상을 고릅니다.
-3. **Graff et al. Chemprop v2: An Efficient, Modular Machine Learning Package for Chemical Property Prediction.** DOI: [10.1021/acs.jcim.5c02332](https://doi.org/10.1021/acs.jcim.5c02332). 주 EGFR 실험에 사용할 v2 구현과 이전 구현의 차이를 이해합니다.
+3. **Graff et al. Chemprop v2: An Efficient, Modular Machine Learning Package for Chemical Property Prediction.** DOI: [10.1021/acs.jcim.5c02332](https://doi.org/10.1021/acs.jcim.5c02332). v2 구현과 이전 구현의 차이를 이해합니다. **2026-10-22 정정: 주 EGFR 실험(M2)에 v2를 쓸 계획이었으나 실제로는 v1.6.1을 썼습니다.** M3 재현이 저자 환경의 v1.6.1을 요구했고, 두 실험의 환경을 통일해 버전 차이가 결과에 섞이지 않게 했습니다. v2 실행은 남은 과제입니다.
 
 ## 두 작업을 분리하기
 

@@ -1,51 +1,141 @@
 # EGFR Evidence Lab
 
-ChEMBL EGFR 공개 실험 데이터로 화합물 활성을 예측하고, 실험·변이·문헌 근거를 추적하는 연구 포트폴리오 프로젝트입니다.
+ChEMBL 공개 EGFR 실험 데이터로 화합물 활성을 예측하고, **그 예측의 근거와 한계를 추적 가능하게 기록하는** 연구 포트폴리오 프로젝트입니다.
 
-현재 **P0는 주 학습 코호트 검토 중, P1은 교육용 기준 모델 실행으로 진행 중**입니다. ChEMBL 37에서 EGFR 표적에 연결된 IC50 측정 26,600건·분자 14,776개·실험 2,425개·문헌 1,299개를 보관했습니다. 보수적 자동 후보 264건은 변이별 합계입니다. 추가 공개 논문의 209건은 WT·종 유래·전체 부속 표가 미확정이라 모두 보류했습니다. 기존에 원문 수치를 대조한 단일 assay 22건으로 Dummy·Random Forest 교육 실험을 완료했으며, 일반 EGFR 성능 평가용 데이터 확정과 논문 모델 재현·RAG/Agent·클라우드는 남아 있습니다.
+**[대시보드 보기](https://claude.ai/artifact/TjSsKVEvgDaXWFMGfiQqru)** · [정의와 결과 PDF](output/pdf/egfr_project_definition_and_results_ko.pdf) · [학습 가이드 PDF](output/pdf/egfr_learning_guide_medical_ai_ko.pdf) · [HANDOFF.txt](HANDOFF.txt)
 
-- **[209건 검토·실제 모델 결과와 한계](reports/apsel_review_and_baseline_ko.md)**: 22건 scaffold 3-fold, seed 3개, RF 우위 미확정. [독립 검증](reports/baseline_pilot_validation.json): 저장 모델 36개 재로딩·예측 264행·누출 검사 통과, 전체 테스트 43개 통과.
-- **[직접 따라 하는 한국어 실습](docs/11_baseline_practice_ko.md)**: 단위·원문 표 읽기·Dummy 평균·오차·scaffold 검사·모델 재실행·자가 점검.
-- **[주 학습 데이터 확보 절차](docs/12_main_cohort_acquisition_ko.md) / [첫 실행 결과](reports/main_cohort_acquisition_ko.md)**: 2,425assay 재집계·242개 검토 대기표·787관측 원문 대조. 저자 CSV의 IC50 45건과 억제율4건을 분리했으며, 45건의 상세 방법·human 유래 확인은 남아 있습니다. 동일173행 자료의 두 assay ID와 구간 중간값180건을 확인했습니다. 새 학습 승인0건, 전체 테스트47개 통과.
-- **[후속 원문 검토·실제 지표·적용 범위](reports/cohort_scope_evidence_ko.md)**: 45건의 예정 분할·구조 거리와 선별 편향, 특허 구조·원 MS 연결 경보를 실제 계산했습니다. 골격 중복0이어도 최근접 유사도는 최대0.986입니다. 원문을 대신할 수 없는 DB 파생 자료를 구분했고, 주 코호트 승인은 계속 보류했습니다. 전체 테스트52개 통과.
+---
 
-- [ChEMBL API 확인 결과와 쉬운 해설](reports/chembl_api_verification.md): ChEMBL 37·인간 EGFR 표적·소량 응답·단위·변이·문헌 연결 검증. API 집계 26,600건은 정제 전 측정 기록 수이며 학습 분자 수가 아닙니다.
-- [P0 실행 환경 검증](reports/p0_environment_validation.md): Python 3.12·macOS arm64의 P0 패키지 14개 설치·해시 고정, 기본 검사 11항목과 실제 HTTPS 포함 12항목, 새 가상환경 재설치 확인. [설치·재실행 방법](requirements/README.md).
-- [전체 수집기 사용법](docs/08_collection.md): 원 응답 보존, 페이지·상세 ID 검사, 재시작, Parquet 분석 표와 오프라인 검증.
-- [실제 전체 수집 결과](reports/collection_chembl_full_20261020.md) / [구현·19개 테스트 기록](reports/collection_implementation.md) / [실제 재개 검증](reports/collection_resume_validation.json). 자료 수집 완료와 학습 적격성 판단을 구분합니다.
-- [전체 감사 쉬운 요약](reports/data_audit_summary_ko.md) / [상세 데이터 감사](reports/data_audit.md) / [후보 데이터 카드](reports/dataset_card.md) / [감사 실행·원문 검토 순서](docs/09_data_audit.md). 자동 선별 후보를 확정 학습 데이터로 취급하지 않습니다.
-- [학습 데이터 확정 방향 요약](reports/cohort_decision_summary_ko.md) / [문헌 근거·실험 조건·실제 판정](reports/cohort_definition_evidence.md): WT 6개 실험 검토, 공개 원문 1개 실험의 22건 수치·화합물 ID 대조 완료. 15개 실험 쌍은 공통 구조가 최대 1개라 병합 승인 0쌍. [선정 정책](configs/cohort_policy.json)을 고정했고 단일 실험 파일럿만 보존했습니다. 최종 학습 코호트는 미확정입니다.
-- [기업 우대사항·EGFR 기준·도메인 이해 점검](reports/portfolio_fit_and_domain_review_ko.md): AI 연구원 실제 공고와 구현 상태, 실험·화합물·모델 기준의 차이, 추가 산출물 우선순위와 자가 점검 9문항. [회사 관련 HBE-843 논문 카드](reports/company_paper_case_hbe843.md)는 초록 확인 범위이며 본문·실험 재현과 구별합니다.
+## 한눈에
 
-**새 터미널·다른 세션에서 이어갈 때는 [HANDOFF.txt](HANDOFF.txt)를 먼저 읽으세요.** 실행 명령, 현재 구현 상태, 다음 원문 검토 작업과 새 세션용 시작 요청을 정리했습니다.
+| | |
+|---|---|
+| 수집 | ChEMBL `CHEMBL203` IC50 측정 **26,600건** · 분자 14,776 · assay 2,425 · 문헌 1,299 |
+| 선정 기준 통과 | **5,511건** · assay 558개 |
+| 학습에 사용 | **22건** · scaffold 12개 (단일 문헌·단일 assay) |
+| 단계 | M1·M2·M3·M5·M6 완료(범위 제한) · **M4 보류**(원문 유료) |
+| 테스트 | **81개 통과** |
 
-2026-10-20 추가 범위 반영: [실행 순서·완료 조건](docs/10_execution_plan.md)에 따라 데이터 확정·기준 ML → D-MPNN → 공개 벤치마크 재현 → Agent → 클라우드를 진행합니다. 기업 관련 EGFR 내성·분해제 문헌 사례는 병행합니다. 현재 M1은 교육 실험까지 진행했으며, 주 코호트 확정이 남아 있습니다.
+### 이 프로젝트의 결론을 한 문장으로
 
-[첫 확대 검토 결과](reports/wt_expansion_review_ko.md): WT 12개 assay 접근·검토, 유래 문제를 해소한 검토 후보 27건, 수치 11건 대조. 별도 981건 assay에서 Cot·EGFR 열 혼입 정황을 확인해 [원문 검토 보류 목록](configs/source_review_holds.json)에 등록했습니다. 새로운 학습 승인·모델 성능 결과와 구분합니다.
+> 엔지니어링은 데이터 수집부터 클라우드 추론까지 전부 돌아간다. 그리고 **22건으로는 어떤 모델도 평균 예측을 확실히 넘지 못한다는 것**이 측정 결과다.
 
-## 도메인 공부 자료와 VS Code
+성능 자랑이 아니라 **근거와 한계의 기록**입니다. 결과의 절반이 "미확정"이고, 그것이 이 프로젝트의 산출물입니다.
 
-- **[P0 시작 전 도메인·IT 기술 학습 노트 - 16쪽](output/pdf/egfr_p0_domain_tech_ko.pdf)**: 실제 API 사례, IC50·변이·실험 구분, 현재 사용한 IT 스택, 이후 기술 계획, 문제·해설·공식 출처. [원고](docs/07_p0_domain_and_tech_notes.md).
-- **[한국어 도메인 학습 PDF - 14쪽](output/pdf/egfr_domain_study_guide_ko.pdf)**: EGFR·분자 구조·IC50·변이·ChEMBL·정제 연습·신약개발 맥락·문헌 읽기·문제 해설·참고문헌.
-- [PDF 원고](docs/06_domain_study_guide.md) / [생성 스크립트](scripts/build_domain_guide.py).
-- [VS Code 워크스페이스](egfr-evidence-lab.code-workspace)를 열면 `.venv/bin/python` 환경과 테스트·설정 점검 task를 사용할 수 있습니다. Python 확장 설치가 필요할 수 있습니다.
+---
 
-새로 clone한 환경에서는 Python 3.11 또는 3.12로 가상환경을 먼저 만듭니다. 현재 로컬 뼈대는 Python 3.12 가상환경으로 점검했습니다.
+## 왜 22건인가 — 원인과 결과
+
+이 프로젝트를 설명하는 가장 중요한 숫자입니다.
+
+### 원인: 실험 조건이 다르면 같은 IC50도 다른 양이다
+
+생화학 IC50은 효소 농도·**ATP 농도**·기질·전처리 시간·반응 시간·온도·pH·검출 방식에 따라 몇 배씩 달라집니다. ATP 경쟁 저해제는 특히 ATP 농도에 민감합니다. 어떤 논문은 1 µM, 어떤 논문은 10 µM을 쓰는데, 같은 화합물이 다른 IC50으로 보고됩니다.
+
+그래서 [선정 정책](configs/cohort_policy.json)에 **13개 필수 필드**를 정의하고, 값이 빠진 것을 같다고 보지 않는다(`missing_values_count_as_equal: false`)고 못박았습니다.
+
+### 결과: 기준은 통과했지만 합칠 수 없었다
+
+| 단계 | 기준 | 남은 측정 | assay |
+|---|---|---|---|
+| 0 | 수집 전체 | 26,600 | 2,425 |
+| 2 | 등식 값만 (부등호 제외) | 19,719 | 2,053 |
+| 4 | 변이 미지정 (WT 후보) | 15,377 | 1,460 |
+| 5 | 생화학 실험만 | 14,114 | 1,328 |
+| 6 | 단일 단백질 형식 | 9,938 | 913 |
+| 7 | 표적 신뢰도 9 | 6,503 | 649 |
+| 8–9 | 품질 경고·중복 제외 | **5,511** | **558** |
+| 10 | 단일 assay 선택 | **22** | **1** |
+
+**558개 assay 중 실험 조건이 같다고 원문으로 확인한 조합이 하나도 없었습니다**(cross-assay pooling 승인 0쌍). 데이터가 없어서가 아니라 **근거가 없어서** 쓰지 않았습니다.
+
+재현: `.venv-serve/bin/python scripts/build_portfolio_data.py --out tmp/portfolio_data`
+
+---
+
+## 확인하려 한 질문과 답
+
+| 단계 | 질문 | 답 |
+|---|---|---|
+| **M1** | 기준 모델이 평균 예측보다 나은가 | **확정할 수 없다.** scaffold 분할 3 seed 모두 차이의 95% 구간이 0을 포함 |
+| **M2** | D-MPNN이 수작업 fingerprint보다 나은가 | **구별되지 않는다.** paired 12개 중 11개가 0 포함. 예측 표준편차 0.011~0.036 대 관측 0.377 — 상수 붕괴 |
+| **M3** | 공개 벤치마크를 재현할 수 있는가 | **저자값과 구별되지 않는 결과.** 세 세트 모두 저자 보고값이 우리 95% 구간 안. 단 축소 조건이므로 동일 조건 재현은 아니다 |
+| **M4** | 기업 문헌 사례를 원문 검토할 수 있는가 | **할 수 없다.** DOI `10.1002/ardp.70193` 유료. 5개 경로 확인, 우회하지 않음 |
+| **M5** | LLM이 근거 없는 수치를 만들지 않는가 | **도구 선택·인용·오류 처리는 통과.** 약점은 종료 판단. 규칙 8/8, gpt-4.1 5/8, gpt-5-mini 4/8 |
+| **M6** | 서비스로 만들어 클라우드에서 돌릴 수 있는가 | **돌아간다.** 로컬·클라우드 예측 5/5 일치. 다만 클라우드가 3.5~5.9배 느리고, 적용 범위 밖에서 모델이 상수를 돌려준다 |
+
+### 분할 방식이 결론을 바꾼다
+
+| 분할 | seed | RF−Dummy MAE | 95% 구간 | 판정 |
+|---|---|---|---|---|
+| **scaffold**(주 지표) | 42 | −0.0146 | −0.0819 ~ +0.0506 | 0 포함 — 미확정 |
+| scaffold | 123 | −0.0095 | −0.0766 ~ +0.0639 | 0 포함 — 미확정 |
+| scaffold | 2026 | −0.0170 | −0.0906 ~ +0.0513 | 0 포함 — 미확정 |
+| random | 42 | −0.0525 | −0.1143 ~ **−0.0047** | **0 제외** |
+
+random 분할 seed 42만 보면 "RF가 유의하게 낫다"고 쓸 수 있습니다. 주 지표를 **실행 전에** scaffold로 정해두지 않았다면 유리한 쪽을 고를 수 있었습니다.
+
+### 적용 범위 밖에서 모델이 상수를 돌려준다
+
+M6에서 구조가 전혀 다른 분자 10개를 넣어본 결과입니다.
+
+| 분자 | 예측 pIC50 | 환산 IC50 | 최대 Tanimoto |
+|---|---|---|---|
+| 포도당 | 8.048 | 약 9 nM | 0.045 |
+| 에탄올 | 8.054 | 약 9 nM | 0.053 |
+| 아스피린 | 8.055 | 약 9 nM | 0.133 |
+| 니코틴 | 8.143 | 약 7 nM | 0.163 |
+
+예측값 폭 **0.095**, 표준편차 **0.035** — 학습 라벨 표준편차 0.381의 **9%**입니다. 숫자만 돌려주는 API였다면 포도당이 9 nM EGFR 저해제로 보고됐을 것입니다.
+
+**그래서 서비스 응답에서 적용 범위 판정과 고지를 생략할 수 없게 만들었습니다.**
+
+---
+
+## 대시보드 — 두 섹션
+
+**[claude.ai/artifact/TjSsKVEvgDaXWFMGfiQqru](https://claude.ai/artifact/TjSsKVEvgDaXWFMGfiQqru)**
+
+마크업에 숫자를 직접 쓰지 않았습니다. 9개 데이터셋에서만 채우고, 각 데이터셋에 어느 산출물에서 왔는지 적었습니다. 숫자를 클릭하면 출처와 원본 행을 볼 수 있습니다.
+
+### 섹션 1 — 코호트와 지표
+
+- **정제 퍼널**: 26,600 → 22. 막대에 올리면 그 단계의 기준과 제외 이유
+- **95% 구간 플롯**: 0선 기준으로 M1·M2의 차이 구간. 0을 포함하면 회색
+- scaffold 분할 MAE, 관측 대 예측 산점도, 마일스톤 표, 지연시간 비교
+
+### 섹션 2 — 근거와 적용 범위
+
+- **변이 분포**: L858R → T790M → C797S 내성 계보를 assay 건수와 함께. `UNDEFINED MUTATION` 115건은 경고색
+- 부등호·측정 형식·문헌 연대 분포
+- **22건 근거 체인**: 분자 → 측정값 → `activity_id` → SMILES. ChEMBL 원본까지 되짚을 수 있다
+- **적용 범위 산점도**: 학습 라벨 범위를 띠로 표시하고 무관한 분자 10개의 예측이 한 점에 모이는 것
+
+데이터 추출: [`scripts/build_portfolio_data.py`](scripts/build_portfolio_data.py)
+
+---
+
+## 문서
+
+### 정리 PDF
+
+| 문서 | 내용 |
+|---|---|
+| **[프로젝트 정의와 결과 — 11쪽](output/pdf/egfr_project_definition_and_results_ko.pdf)** | 무엇을 확인하려 했고 무엇을 정의했으며 무엇이 확인됐는가. 사전 예상과 실제, 주장하지 않는 것 목록 ([원고](docs/16_project_definition_and_results_ko.md)) |
+| **[의학 도메인·AI 기술 학습 가이드 — 14쪽](output/pdf/egfr_learning_guide_medical_ai_ko.pdf)** | EGFR·IC50·변이·실험 조건부터 scaffold 분할·부트스트랩·Agent 평가·gVisor까지. 각 지식이 이 프로젝트의 어느 지점에서 필요했는지 함께 적음 ([원고](docs/15_learning_guide_medical_ai_ko.md)) |
+| [P0 도메인·IT 기술 노트 — 16쪽](output/pdf/egfr_p0_domain_tech_ko.pdf) | 프로젝트 시작 전 학습 노트 ([원고](docs/07_p0_domain_and_tech_notes.md)) |
+| [도메인 학습 가이드 — 14쪽](output/pdf/egfr_domain_study_guide_ko.pdf) | EGFR·분자 구조·IC50·변이·ChEMBL 입문 ([원고](docs/06_domain_study_guide.md)) |
+
+PDF를 다시 만들려면 한글이 포함된 임베딩 가능한 TTF가 필요합니다. 폰트는 저장소에 넣지 않았습니다.
 
 ```bash
-python3.12 -m venv .venv
-PYTHONPATH=src .venv/bin/python -m egfr_lab check-config
-PYTHONPATH=src .venv/bin/python -m unittest discover -s tests -v
+.venv-serve/bin/python scripts/build_session_notes_pdf.py \
+    --font /System/Library/Fonts/Supplemental/AppleGothic.ttf \
+    --source docs/16_project_definition_and_results_ko.md \
+    --output output/pdf/egfr_project_definition_and_results_ko.pdf
 ```
 
-PDF를 다시 만들려면 별도 PDF 의존성과 한글을 포함한 임베딩 가능한 TTF가 필요합니다. 폰트 파일은 저장소에 포함하지 않았습니다.
-
-```bash
-.venv/bin/python -m pip install '.[pdf]'
-.venv/bin/python scripts/build_domain_guide.py --font /path/to/Korean.ttf
-```
-
-## 문서 읽는 순서
+### 읽는 순서
 
 1. [프로젝트 설계와 데이터·평가 기준](docs/01_blueprint.md)
 2. [바이오·메디컬 학습 가이드](docs/02_bio_medical_primer.md)
@@ -53,9 +143,30 @@ PDF를 다시 만들려면 별도 PDF 의존성과 한글을 포함한 임베딩
 4. [논문 재현 범위와 실험 기록](docs/04_reproduction.md)
 5. [출처와 인용 목록](docs/05_references.md)
 
-## 실행 가능한 부분
+**다른 세션에서 이어갈 때는 [HANDOFF.txt](HANDOFF.txt)를 먼저 읽으세요.** 17개 절에 실행 명령·현재 상태·겪은 장애·다음 작업이 있습니다.
 
-권장 개발 환경은 Python 3.11 또는 3.12입니다. 아래는 표준 라이브러리만 사용하는 설정 점검과 정확한 IC50 단위 변환 명령입니다. 네트워크 요청이나 학습은 실행하지 않습니다. `python`은 프로젝트 가상환경의 인터프리터를 사용하세요.
+---
+
+## 단계별 보고서
+
+| 단계 | 보고서 |
+|---|---|
+| 데이터 감사 | [요약](reports/data_audit_summary_ko.md) · [상세](reports/data_audit.md) · [데이터 카드](reports/dataset_card.md) |
+| 코호트 확정 | [근거와 판정](reports/cohort_definition_evidence.md) · [적용 범위 검토](reports/cohort_scope_evidence_ko.md) · [보류 목록](configs/source_review_holds.json) |
+| **M1** 기준 모델 | [실행 결과와 한계](reports/apsel_review_and_baseline_ko.md) · [독립 검증](reports/baseline_pilot_validation.json) |
+| **M2** D-MPNN | `reports/dmpnn_pilot22_20261021_v2/` |
+| **M3** 벤치마크 재현 | [축소 재현 보고서](reports/sampl_repro_20261021_v2/benchmark_repro_report_ko.md) |
+| **M4** 기업 문헌 | [HBE-843 카드](reports/company_paper_case_hbe843.md) · [접근 차단 증거](data/raw/m4_access_evidence_20261021/) |
+| **M5** Agent | [LLM 평가 보고서](reports/agent_eval_20261021_final_openai/agent_llm_report_ko.md) |
+| **M6** 서비스 | [컨테이너](reports/serving_m6_20261021/serving_report_ko.md) · [클라우드](reports/serving_m6_cloud_20261022/cloud_report_ko.md) |
+
+전체 상태는 [`configs/portfolio_scope.json`](configs/portfolio_scope.json)에 있습니다.
+
+---
+
+## 실행
+
+### 설정 점검과 단위 변환 (표준 라이브러리만)
 
 ```bash
 PYTHONPATH=src python -m egfr_lab check-config
@@ -64,51 +175,133 @@ PYTHONPATH=src python -m egfr_lab convert-ic50 --value 10 --unit nM
 PYTHONPATH=src python -m unittest discover -s tests -v
 ```
 
-10 nM의 변환 결과는 pIC50=8입니다. `>10 nM` 같은 부등호 측정은 정확값 회귀의 정답으로 변환하지 않습니다.
+10 nM → pIC50 = 8입니다. `>10 nM` 같은 부등호 측정은 정확값 회귀의 정답으로 변환하지 않습니다.
 
-ChEMBL 수집은 P0 패키지를 설치한 뒤 별도 명령으로 실행합니다. `--max-pages`는 제한 실행으로 기록되며 전체 완료와 구분합니다. 수집기에 대한 자세한 옵션과 실패·재개 동작은 [사용법](docs/08_collection.md)을 참고하세요.
+### 전체 테스트 (81개)
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m egfr_lab collect --run-dir data/raw/chembl_full_20261020
-PYTHONPATH=src .venv/bin/python -m egfr_lab collect --run-dir data/raw/chembl_full_20261020 --resume
-PYTHONPATH=src .venv/bin/python -m egfr_lab verify-collection data/raw/chembl_full_20261020
+PYTHONPATH=src .venv-serve/bin/python -m pytest tests/ -q
 ```
 
-전체 감사는 네트워크 없이 실행합니다. 기존 감사·검토표를 보호하므로 재실행에는 새 출력·보고서 폴더를 지정합니다([사용법](docs/09_data_audit.md)).
+### 데이터 수집과 감사
 
 ```bash
-PYTHONPATH=src .venv/bin/python -m egfr_lab audit data/raw/chembl_full_20261020
+PYTHONPATH=src .venv/bin/python -m egfr_lab collect --run-dir data/raw/chembl_full_<날짜>
+PYTHONPATH=src .venv/bin/python -m egfr_lab verify-collection data/raw/chembl_full_<날짜>
+PYTHONPATH=src .venv/bin/python -m egfr_lab audit data/raw/chembl_full_<날짜>
 ```
 
-의존성은 `pyproject.toml`에 단계별로 나누었습니다. **P0 패키지 14개는 [현재 Mac용 해시 lock](requirements/p0-py312-macos-arm64.txt)으로 고정했습니다.** 교육용 P1은 별도 `.venv-ml`에 scikit-learn·SciPy 등을 설치해 실제 실행했으며 [버전 스냅샷과 복원 방법](requirements/README.md)을 보관했습니다. 다른 플랫폼과 DL extras는 검증 전입니다. 재현용 구버전 Chemprop은 주 프로젝트와 환경을 분리합니다.
+기존 출력을 보호하므로 재실행에는 새 폴더를 지정합니다.
+
+### 추론 서비스
 
 ```bash
-# Python 3.12·macOS arm64에서 P0 실행 의존성 설치
-.venv/bin/python -m pip install --require-hashes --only-binary=:all: --index-url https://pypi.org/simple -r requirements/p0-py312-macos-arm64.txt
+# 로컬
+PYTHONPATH=src .venv-serve/bin/python -m uvicorn --factory \
+    egfr_lab.serving.app:app_from_env --host 127.0.0.1 --port 8011
+
+# 컨테이너
+docker build --platform linux/arm64 -f deployment/Dockerfile -t egfr-pilot22-inference:v1 .
+docker run -d --name egfr-serve -p 127.0.0.1:8010:8000 egfr-pilot22-inference:v1
+curl -s http://127.0.0.1:8010/readyz
+```
+
+포트 8000은 쓰지 마십시오 — 이 기계에서 다른 프로세스가 IPv4로 점유하고 있어 요청이 그쪽으로 갑니다([겪은 일](reports/serving_m6_20261021/serving_report_ko.md)).
+
+### 검증
+
+```bash
+PYTHONPATH=src .venv-serve/bin/python scripts/verify_serving_m6.py \
+    --container-url http://127.0.0.1:8010 --container-name egfr-serve \
+    --out reports/serving_m6_<날짜>
+```
+
+클라우드 배포는 [`deployment/README.md`](deployment/README.md)에 순서와 비용 통제 규칙이 있습니다.
+
+### 환경
+
+| 환경 | 용도 |
+|---|---|
+| `.venv` | P0 수집·감사 (해시 lock) |
+| `.venv-ml` | M1·M2 모델 실험 |
+| `.venv-repro` | Chemprop v1 재현 (분리 필수) |
+| `.venv-serve` | M6 서비스·테스트·PDF |
+
+```bash
+.venv/bin/python -m pip install --require-hashes --only-binary=:all: \
+    -r requirements/p0-py312-macos-arm64.txt
 .venv/bin/python scripts/check_p0_environment.py
 ```
 
-## 계획된 구조
+---
+
+## 구조
 
 ```text
-configs/project.json       # 표적, 정제·평가 정책, 단계 상태
-data/raw/                  # 원 응답·버전·수집 매니페스트
-data/interim/              # 실험·변이 검토표, 정제 제외 사유
-data/processed/            # 학습 표와 고정 분할
+configs/
+  project.json              표적·정제·평가 정책, 단계 상태
+  cohort_policy.json        선정 규칙, pooling 13필드 조건
+  portfolio_scope.json      마일스톤 상태와 결론
+  agent_eval.json           Agent 평가 질문·축 (실행 전 고정)
+  serving_m6.json           서비스 계약 (실행 전 고정)
+  serving_m6_cloud.json     클라우드 단계 (실행 전 고정)
+data/raw/                   원 응답·버전·수집 매니페스트
+data/interim/               검토표, 정제 제외 사유
 src/egfr_lab/
-  config.py                # 구현: 설정 점검
-  labels.py                # 구현: 정확값 IC50 → pIC50
-  data/                    # 구현: 수집·재개·무결성·자동 감사·조건 비교; 최종 코호트 미확정
-  features/                # 확장 계획: 분자 정규화·유사도; 파일럿 fingerprint는 modeling에 구현
-  modeling/                # 구현: 교육용 Dummy·RF·분할·누출·오차·cluster bootstrap; D-MPNN은 계획
-  evaluation/              # 확장 계획: 주 코호트·문헌 평가
-  literature/              # 계획: 문헌 메타데이터·검색·인용
-  agent/                   # 계획: 제한된 도구 선택·상태 관리
-artifacts/                 # 모델과 실행 매니페스트
-reports/                   # 데이터 감사·평가·모델 카드·재현 보고서
-deployment/                # 배포 계획, 실제 리소스 생성 없음
+  config.py labels.py       설정 점검, IC50 → pIC50
+  data/                     수집·재개·무결성·감사·조건 비교
+  modeling/                 Dummy·RF·분할·누출·오차·cluster bootstrap
+  agent/                    도구 4개, 실행기, 정책, trace
+  serving/                  FastAPI 추론 API
+artifacts/                  모델과 실행 매니페스트
+reports/                    감사·평가·모델 카드·재현 보고서
+deployment/                 Dockerfile, 배포 순서, 비용 통제
+scripts/                    실행·검증·추출 스크립트
 ```
 
-원 데이터·감사·교육 실험 결과를 실행별로 보관합니다. 현재 모델 결과는 22건 파일럿에 한정하며 검색·Agent·배포의 실제 실행 결과는 아직 없습니다.
+출력을 실행별로 보관하고 덮어쓰지 않습니다.
 
-ChEMBL 원 데이터의 공식 안내는 CC BY-SA 3.0입니다. 데이터를 공개할 때 출처·release·가공 내용·라이선스를 함께 기록합니다. 논문 원문은 별도 이용 조건을 확인합니다. [ChEMBL 공식 라이선스](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/general-questions)
+---
+
+## 남은 것
+
+### 정의했지만 실행하지 않은 것
+
+| 항목 | 어디에 정의 | 이유 |
+|---|---|---|
+| **학습곡선** | `cohort_policy.json`의 `learning_curve_..._required: true` | 22건에서 샘플을 줄이면 scaffold 분할이 성립하지 않아 **곡선의 기울기를 추정할 수 없다** |
+| **scaffold 커버리지** | 같은 항목 | 가능했으나 우선순위에서 밀렸다. 불가능해서가 아니다 |
+| **Chemprop v2** | `docs/03_tech_stack.md` · `deep` extra | M3 재현이 v1.6.1을 요구해 M2도 같은 환경으로 통일했다. 문서를 2026-10-22에 정정 |
+| BM25·임베딩 검색 | `literature`·`dense` extra | 식별자 조회로 충분했고 검색 평가 질의 집합을 만들지 않았다 |
+| MLflow 상시 운영 | `tracking` extra | JSON 매니페스트로 충분. 처음부터 "필요 시" 항목 |
+| model card | 관행 | 내용은 보고서에 있으나 표준 형식으로 모으지 않았다 |
+
+학습곡선은 **기계적으로 실행하는 대신 실행이 무의미한 이유를 기록**했습니다. 예상된 결론("전 구간 구별 불가")을 하나 더 추가하는 것보다 판단 근거를 남기는 쪽을 택했습니다. 코호트가 늘어나면 이 판단은 무효입니다.
+
+기록: [`cohort_policy.json`](configs/cohort_policy.json)의 `learning_curve_decision_20261022` · [`portfolio_scope.json`](configs/portfolio_scope.json)의 `defined_but_not_executed_20261022`
+
+### 외부 조건이 막은 것
+
+| 과제 | 상태 |
+|---|---|
+| **M4** 기업 문헌 사례 | 보류 — 원문 유료. 외부 조건이 바뀌어야 재개 |
+| 코호트 확대 (furan45·patent64) | 보류 — 방법론 원문 미확보, 구조 검증 미완 |
+| 보류 목록 5건 | `CHEMBL2439336` · `CHEMBL5638807/14/15` · `CHEMBL5736995` |
+| 과금 금액 확정 | 2026-10-23 이후 비용 테이블 재확인 |
+| M5 다음 반복 | 반올림 허용 여부, 종료 개선, 질문 집합을 다른 출처에서 작성 |
+
+### 다음 마일스톤 후보 — 부등호 5,482건
+
+**근본 제약**: 22건·12 scaffold로는 어떤 모델도 평균 예측을 확실히 넘지 못합니다. 회귀로 표본을 늘리려면 실험 조건 동일성을 원문으로 확인해야 하고, M4·furan45·patent64가 모두 같은 벽(유료 논문·특허 원문)에 막혀 있습니다.
+
+우회 경로를 설계해 뒀습니다. `>10000 nM`(10 µM까지 50% 억제 없음)을 **비활성 라벨**로 쓰는 분류 과제입니다. ATP 농도가 1 µM이든 10 µM이든 10 µM에서 안 듣는 화합물은 강한 저해제가 아니므로, **회귀보다 조건 민감도가 낮습니다.** 원문 검증 없이 수천 건 규모를 쓸 수 있습니다.
+
+단 이것도 가정이고, "조건 민감도가 낮다"를 먼저 검증해야 합니다 — 같은 화합물이 여러 assay에서 활성/비활성으로 갈리는 비율을 재면 됩니다. 그 데이터는 이미 있습니다.
+
+---
+
+## 라이선스와 출처
+
+ChEMBL 원 데이터는 CC BY-SA 3.0입니다. 데이터를 공개할 때 출처·release·가공 내용·라이선스를 함께 기록합니다. 논문 원문은 별도 이용 조건을 확인합니다. [ChEMBL 공식 라이선스](https://chembl.gitbook.io/chembl-interface-documentation/frequently-asked-questions/general-questions)
+
+유료 콘텐츠를 우회하지 않습니다. 접근할 수 없으면 접근할 수 없다고 기록합니다.

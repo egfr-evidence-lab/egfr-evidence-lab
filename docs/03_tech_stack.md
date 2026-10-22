@@ -24,7 +24,7 @@
 | 분자 처리 | RDKit | 구조 파싱·Morgan fingerprint·분자 유사도. [공식 입문 문서](https://www.rdkit.org/docs/GettingStartedInPython.html) | P0/P1 |
 | 기준 ML | scikit-learn의 DummyRegressor·RandomForestRegressor | 평균 예측과 구조 기반 비선형 예측을 구분해 비교하는 설계. [평가/교차검증](https://scikit-learn.org/stable/modules/cross_validation.html) | P1 |
 | 통계 | NumPy, SciPy + 그룹 재표집 코드 | paired 차이·CI 계산. [SciPy bootstrap](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html) | P1 |
-| DL | Chemprop v2 / PyTorch | 분자 그래프 표현을 학습. 수작업 fingerprint와 비교. [v2 원 논문](https://pubs.acs.org/doi/10.1021/acs.jcim.5c02332) | P2 |
+| DL | **Chemprop v1.6.1 / PyTorch 2.5.1** (계획은 v2였음) | 분자 그래프 표현을 학습. 수작업 fingerprint와 비교. [v2 원 논문](https://pubs.acs.org/doi/10.1021/acs.jcim.5c02332) | P2 완료 |
 | 실험 기록 | JSON 매니페스트 → MLflow | 파라미터·코드 버전·지표·출력 파일 관리. [MLflow Tracking](https://mlflow.org/docs/latest/ml/tracking/) | P1, MLflow는 필요 시 |
 | 문헌 | Europe PMC API, SQLite/JSON 메타데이터 | 문헌 식별자와 허용된 텍스트를 함께 관리. [공식 개발자 문서](https://dev.europepmc.org/developers) | P3 |
 | 검색 | 정확 ID + BM25 우선, Sentence Transformers/FAISS는 추가 후보 | 짧은 변이명·화합물 식별자의 검색 누락을 관찰한 뒤 hybrid 검색 여부 결정 | P3 |
@@ -46,6 +46,7 @@ Sentence Transformers/FAISS/FastAPI/Streamlit은 설계 후보이며 현재 설�
 - `pyproject.toml`은 단계별 의존성 선언이며 lock 파일이 아닙니다. P0의 검증 버전과 해시는 `requirements/p0-py312-macos-arm64.txt`로 별도 고정했습니다.
 - 기존 Python 3.12.14 환경에서 P0 5개 직접 패키지와 간접 의존성 9개를 설치했습니다. import·통신·CSV/Parquet·분자 처리·별도 빈 환경 재설치 검사를 통과했습니다. [재실행 방법](../requirements/README.md)을 참고하세요.
 - P1은 `.venv-ml`에 SciPy·scikit-learn·matplotlib 등을 설치해 모델 실행·재로딩·전체 테스트 43개와 `pip check`를 통과했습니다. `requirements/ml-py312-macos-arm64.freeze.txt`는 정확 버전 스냅샷이며 해시 lock·새 환경 재설치 검증은 아닙니다. P2 이후 의존성은 별도 검증합니다.
-- Chemprop v2 실험과 과거 논문 재현용 v1 환경을 분리합니다. v1 모델을 v2로 그대로 바꾸어 동일 재현이라고 부르지 않습니다. 공식 README는 v2 재작성과 기본 설정 차이를 안내합니다. [공식 저장소](https://github.com/chemprop/chemprop)
+- **2026-10-22 정정: 계획은 v2였고 실제로는 v1.6.1만 썼습니다.** M3(SAMPL 재현)은 저자 환경이 v1.6.1이라 그 버전이 필요했고, M2(pilot22 D-MPNN)도 같은 `.venv-repro` 환경에서 v1.6.1로 돌렸습니다. 두 실험의 환경을 통일해 버전 차이가 결과에 섞이지 않게 한 선택이지만, 처음 계획과 다릅니다. v2로 EGFR 실험을 다시 돌리는 것은 실행하지 않았습니다. v1 모델을 v2로 그대로 바꾸어 동일 재현이라고 부르지 않습니다. 공식 README는 v2 재작성과 기본 설정 차이를 안내합니다. [공식 저장소](https://github.com/chemprop/chemprop)
+- `pyproject.toml`의 `deep` extra는 `chemprop>=2,<3`으로 남겨 두었습니다. 실제 실행 환경은 `.venv-repro`의 v1.6.1이며 그 버전은 [M2 설정](../configs/dmpnn_pilot22.json)과 [M3 보고서](../reports/sampl_repro_20261021_v2/benchmark_repro_report_ko.md)에 기록했습니다.
 - GPU는 데이터 크기·학습시간 측정 후 결정합니다. 로컬 CPU 실험은 가능성 확인부터 시작하고, GPU가 필요하면 별도 학습 환경을 고릅니다. Fargate는 이 설계에서 추론 서비스용입니다.
 - 현재 실행 뼈대의 표준 라이브러리 검증과 전체 ML/DL 환경의 검증을 구분해 기록합니다.
