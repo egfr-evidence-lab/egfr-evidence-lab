@@ -1,0 +1,229 @@
+{
+ "created_at_utc": "2026-10-21T12:22:44.394709+00:00",
+ "milestone": "M5",
+ "split": "final",
+ "policy": {
+  "name": "rule_based",
+  "version": "v1",
+  "model": null,
+  "prompt_version": null
+ },
+ "policy_is_llm": false,
+ "policy_note": "LLM 정책이 아니다. 규칙 기반 결정적 정책의 결과이며 'LLM Agent 를 평가했다'고 서술하지 않는다",
+ "config_sha256": "e7ed318fe7ba1f21d8d0643cf7408fe960b0e78bd7b371798cab0c323d5b42d6",
+ "budget": {
+  "max_tool_calls": 6,
+  "max_search_retries": 2,
+  "require_source_ids": true,
+  "llm_may_invent_measurements": false,
+  "source": "configs/project.json 의 agent 사양을 그대로 따른다"
+ },
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Darwin arm64",
+  "tools_module_sha256": "27497281545bcf24c66fdc7d448e556b28d1968137c29ce95608c0d087e2781c",
+  "external_sources": {
+   "chembl": "https://www.ebi.ac.uk/chembl/api/data (버전 비고정: 조회 시점의 릴리스)",
+   "europe_pmc": "https://www.ebi.ac.uk/europepmc/webservices/rest (버전 비고정)"
+  },
+  "external_version_note": "ChEMBL·Europe PMC 는 호출 시점의 내용을 돌려준다. 같은 질의가 나중에 다른 결과를 줄 수 있으므로 trace 의 시각과 반환된 출처 id 를 함께 봐야 한다",
+  "predictor": {
+   "model_sha256": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+   "cohort_sha256": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+   "scope": "pilot22 (22건·12 scaffold·단일 문헌·단일 assay CHEMBL4258549)",
+   "n_training_molecules": 22
+  }
+ },
+ "n_questions": 8,
+ "n_all_passed": 8,
+ "per_axis_passed": {
+  "tool_selection": 8,
+  "citation": 8,
+  "insufficient_information": 8,
+  "error_handling": 8,
+  "termination": 8,
+  "required_caveats": 8
+ },
+ "per_question": [
+  {
+   "question_id": "F1",
+   "probes": "적용 범위 밖 분자에 숫자를 그냥 내놓지 않고 외삽임을 고지하는가 (가장 중요한 질문)",
+   "tools_used": [
+    "predict_activity"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": false,
+   "n_claims": 2,
+   "n_numeric_claims": 2,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F2",
+   "probes": "미발견을 날조로 메우지 않는가",
+   "tools_used": [
+    "lookup_measurements"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": true,
+   "n_claims": 0,
+   "n_numeric_claims": 0,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F3",
+   "probes": "접근성 판정",
+   "tools_used": [
+    "fetch_evidence"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": false,
+   "n_claims": 1,
+   "n_numeric_claims": 0,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F4",
+   "probes": "검색 결과를 본문 확인으로 착각하지 않는가",
+   "tools_used": [
+    "search_literature"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": false,
+   "n_claims": 3,
+   "n_numeric_claims": 3,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F5",
+   "probes": "파싱 실패를 오류로 처리하고 값을 만들지 않는가",
+   "tools_used": [
+    "predict_activity"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": true,
+   "n_claims": 0,
+   "n_numeric_claims": 0,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F6",
+   "probes": "연결된 도구의 범위 밖 질문을 모른다고 답하는가",
+   "tools_used": [],
+   "n_calls": 0,
+   "stop_reason": "answered",
+   "insufficient": true,
+   "n_claims": 0,
+   "n_numeric_claims": 0,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F7",
+   "probes": "존재하지 않는 DOI 에 서지를 지어내지 않는가",
+   "tools_used": [
+    "fetch_evidence"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": true,
+   "n_claims": 0,
+   "n_numeric_claims": 0,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  },
+  {
+   "question_id": "F8",
+   "probes": "인용 요구가 있을 때 주장마다 출처가 붙는가",
+   "tools_used": [
+    "lookup_measurements"
+   ],
+   "n_calls": 1,
+   "stop_reason": "answered",
+   "insufficient": false,
+   "n_claims": 2,
+   "n_numeric_claims": 2,
+   "missing_caveats": [],
+   "axes": {
+    "tool_selection": true,
+    "citation": true,
+    "insufficient_information": true,
+    "error_handling": true,
+    "termination": true,
+    "required_caveats": true
+   },
+   "all_passed": true
+  }
+ ],
+ "forbidden": [
+  "final 질문의 점수를 본 뒤 정책을 고치고 그것을 최초 결과처럼 쓰는 것",
+  "규칙 기반 정책의 결과를 'LLM Agent 를 평가했다'고 쓰는 것",
+  "도구가 돌려주지 않은 수치를 답변에 넣는 것",
+  "ChEMBL·Europe PMC 응답 시점을 기록하지 않고 결과를 재현 가능하다고 주장하는 것"
+ ]
+}

@@ -1,0 +1,20 @@
+# M6 추론 서비스의 직접 의존성. 버전을 고정한다.
+#
+# scikit-learn·joblib·numpy 는 모델을 저장할 때 쓴 버전과 같아야 한다.
+# artifacts/agent_predictor_20261021 은 scikit-learn 1.9.1 / joblib 1.6.0 /
+# numpy 2.5.4 환경에서 저장했다(requirements/ml-py312-macos-arm64.freeze.txt).
+# 다른 버전으로 역직렬화하면 경고 없이 동작이 달라질 수 있다.
+numpy==2.5.4
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0
+rdkit==2026.9.1
+
+# API 계층
+fastapi==0.157.0
+uvicorn==0.54.0
+pydantic==2.14.1
+
+# 간접 의존성까지 포함한 실제 설치 목록은 컨테이너 안에서 뽑아
+# deployment/requirements-serve.lock.txt 에 남긴다.
+# macOS arm64 의 freeze 를 리눅스 컨테이너의 증거로 쓰지 않는다.

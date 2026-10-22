@@ -1,0 +1,77 @@
+{
+  "version": "main-cohort-approval-v1",
+  "approved_on": "2026-10-20",
+  "approved_by": "사용자(저장소 소유자) 결정. 사람의 독립 2차 검토는 미수행",
+  "decision": "pilot22를 M1의 주 학습 코호트로 승격하고 M1을 범위 한정으로 종료한다",
+
+  "approved_cohort": {
+    "assay_chembl_id": "CHEMBL4258549",
+    "document_chembl_id": "CHEMBL4257480",
+    "doi": "10.1039/C7MD00571G",
+    "pmid": "30108918",
+    "pmcid": "PMC6083791",
+    "measurements": 22,
+    "isomeric_structures": 22,
+    "connectivity_groups": 22,
+    "murcko_scaffolds": 12,
+    "largest_scaffold_fraction_by_connectivity": 0.5,
+    "inverse_simpson_scaffolds": 3.6667,
+    "pIC50_min": 6.8474059220725305,
+    "pIC50_max": 8.494850021680094,
+    "pIC50_span": 1.6474440996075632,
+    "IC50_nM_range": "3.2 - 142.1",
+    "member_id_path": "data/interim/cohort_review_20261020/context_pilot.csv",
+    "relation_filter": "=",
+    "label": "pIC50 = 9 - log10(IC50[nM])"
+  },
+
+  "assay_context_verified": {
+    "species": "human (ChEMBL assay description 'Wild type human EGFR' + 원문 확보)",
+    "variant": "wild type",
+    "format": "biochemical (ELISA)",
+    "substrate": "poly(Glu, Tyr) 4:1",
+    "atp_uM": 5,
+    "temperature_C": 37,
+    "reaction_minutes": 60,
+    "readout": "ELISA",
+    "still_unverified": ["정확한 단백질 구성체", "효소 농도", "별도 사전 반응 여부", "ATP Km"],
+    "evidence_report": "reports/cohort_definition_evidence.md"
+  },
+
+  "approval_basis": {
+    "gate_review": "reports/candidate_fit_review_ko.md / data/interim/candidate_fit_review_20261020/",
+    "gates_passed": "9 / 9 (변이·형식·종·구조보류0·중복0·정확값만·원문접근·정량조건·원문DB충돌없음)",
+    "queue_population": "242 assay 중 9게이트 전부 통과한 유일한 assay",
+    "source_crosscheck": "본문 Tables 1·3의 22/22 수치가 원 activity ID와 일치",
+    "leakage_check": "scaffold GroupKFold 3-fold에서 골격 중복 0 · connectivity 중복 0 · 평가행 중 학습골격 보유 0",
+    "experiment_plan_frozen_before_results": "configs/baseline_pilot.json (결과 확인 전 고정)",
+    "independent_validation": "reports/baseline_pilot_validation.json passed=true, 저장 모델 36개 재로딩·OOF 264행 예측 일치"
+  },
+
+  "scope_limits": {
+    "statement": "단일 문헌·단일 assay·22건·12 scaffold의 탐색적 WT 생화학 IC50 회귀",
+    "must_not_claim": [
+      "일반 EGFR 활성 예측 성능",
+      "RF의 Dummy 대비 우위 (seed42 scaffold RF-Dummy MAE -0.0146, 95% 구간 [-0.081885, +0.050558]로 0 포함)",
+      "새 화학 계열에 대한 일반화 (최근접 Tanimoto 중앙값 0.689-0.878)",
+      "변이 선택성·세포 효능·임상 효과",
+      "외부 benchmark 재현"
+    ],
+    "n_is_small_disclosure": "22건 중 11건이 한 scaffold에 속한다. 표본 크기와 골격 편중을 결과와 함께 항상 표시한다."
+  },
+
+  "unchanged_by_this_approval": {
+    "cross_assay_pooling_approved_pairs": 0,
+    "other_candidates_training_approved": 0,
+    "held_candidates": ["CHEMBL5382277 (furan45, 종·정량조건 미확정)", "CHEMBL5737421 (patent64, 구조·MS 충돌)", "CHEMBL1243977 (Apsel209)", "CHEMBL5736995 (981건, 표적열 혼입)", "CHEMBL5141216 (BLU-945, 원문-DB 충돌)"],
+    "source_review_holds_path": "configs/source_review_holds.json (변경하지 않음 - 기존 baseline 입력 해시 보존)"
+  },
+
+  "hash_drift_note": {
+    "file": "configs/project.json",
+    "recorded_in": "reports/portfolio_fit_validation.json",
+    "recorded_sha256": "7d8355cdc1eceab4c5d76e29be04888e3994fb3bfa68089a6105f6b7dc6ed3fe",
+    "sha256_before_this_change": "6760eb08b41af87366e3ed6db3b2392392b82f57c7193f984c5227d7f2cf72cc",
+    "note": "portfolio_fit_validation.json은 과거 시점 스냅샷이며, 이번 변경 이전에 이미 불일치했다(이전 세션이 latest_scope_review_path·M1 progress_report를 연결). 이번 승인으로 training_cohort 등이 추가 변경된다. 해당 validation을 다시 실행할 때는 이 사실을 고려한다."
+  }
+}

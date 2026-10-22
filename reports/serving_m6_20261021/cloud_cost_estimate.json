@@ -1,0 +1,157 @@
+{
+ "created_at_utc": "2026-10-21T14:39:35.997980+00:00",
+ "milestone": "M6",
+ "kind": "pre_execution_estimate",
+ "this_is_an_estimate": "추정이다. 실제 과금은 실행 후 Cost Explorer·청구서로만 확인된다. 이 숫자를 '실제 비용'으로 쓰지 않는다",
+ "region": "ap-northeast-2",
+ "task_size": {
+  "vcpu": 0.25,
+  "memory_gb": 0.5,
+  "architecture": "ARM64 (Graviton)",
+  "why": "추론 1건이 10ms 수준이라 최소 구성으로 충분하다. ARM 을 쓰는 이유는 로컬 빌드가 arm64 이고 요율도 x86 보다 낮다"
+ },
+ "image_gb": 0.81,
+ "rates": {
+  "Fargate ARM vCPU": {
+   "usagetype": "APN2-Fargate-ARM-vCPU-Hours:perCPU",
+   "billing_unit": "vCPU-hour",
+   "sku": "27GM5GDE29DV8J8U",
+   "usd": 0.03725,
+   "unit": "hours",
+   "description": "AWS Fargate - ARM - vCPU - Asia Pacific (Seoul)",
+   "n_matching_dimensions": 1,
+   "publication_date": "2026-10-19T22:43:17Z"
+  },
+  "Fargate ARM 메모리": {
+   "usagetype": "APN2-Fargate-ARM-GB-Hours",
+   "billing_unit": "GB-hour",
+   "sku": "HNBF4GM42YHAVRU3",
+   "usd": 0.00409,
+   "unit": "hours",
+   "description": "AWS Fargate - ARM - Memory - Asia Pacific (Seoul)",
+   "n_matching_dimensions": 1,
+   "publication_date": "2026-10-19T22:43:17Z"
+  },
+  "ECR 이미지 저장": {
+   "usagetype": "APN2-TimedStorage-ByteHrs",
+   "billing_unit": "GB-month",
+   "sku": "FP58BXCX2RHZR3B2",
+   "usd": 0.1,
+   "unit": "GB-Mo",
+   "description": "$0.10 per GB-month of data storage",
+   "n_matching_dimensions": 1,
+   "publication_date": "2026-09-11T12:44:25Z"
+  },
+  "CloudWatch Logs 수집": {
+   "usagetype": "APN2-DataProcessing-Bytes",
+   "billing_unit": "GB",
+   "sku": "5P9Q77R2ADUJCNJ2",
+   "usd": 0.76,
+   "unit": "GB",
+   "description": "$0.76 per GB custom log data ingested in Standard log class - Asia Pacific (Seoul)",
+   "n_matching_dimensions": 1,
+   "publication_date": "2026-10-07T11:55:40Z"
+  },
+  "CloudWatch Logs 저장": {
+   "usagetype": "APN2-TimedStorage-ByteHrs",
+   "billing_unit": "GB-month",
+   "sku": "E7V5NF3GN7MQKCB6",
+   "usd": 0.0314,
+   "unit": "GB-Mo",
+   "description": "$0.0314 per GB-mo of log storage - Asia Pacific (Seoul)",
+   "n_matching_dimensions": 1,
+   "publication_date": "2026-10-07T11:55:40Z"
+  },
+  "공용 IPv4 주소": {
+   "usagetype": "APN2-PublicIPv4:InUseAddress",
+   "billing_unit": "hour",
+   "sku": "ZKBHEVDXYBRCKFQ8",
+   "usd": 0.005,
+   "unit": "Hrs",
+   "description": "$0.005 per In-use public IPv4 address per hour",
+   "n_matching_dimensions": 1,
+   "publication_date": "2026-10-16T22:43:21Z"
+  }
+ },
+ "rate_sources": [
+  {
+   "service": "AmazonECS",
+   "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonECS/current/ap-northeast-2/index.json",
+   "sha256": "9f19a301d76125f56e50a43218071c8058f1a9fa7fc2b247b1cd00e29fb2ecc7",
+   "bytes": 755947,
+   "publication_date": "2026-10-19T22:43:17Z"
+  },
+  {
+   "service": "AmazonECR",
+   "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonECR/current/ap-northeast-2/index.json",
+   "sha256": "144d7e147dc978ce27d98ec773db4bd9f4b60ad731868a10386e8ebd37ab9990",
+   "bytes": 5853,
+   "publication_date": "2026-09-11T12:44:25Z"
+  },
+  {
+   "service": "AmazonCloudWatch",
+   "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonCloudWatch/current/ap-northeast-2/index.json",
+   "sha256": "3fc8544c26354f0e01b56abb900c4828c37d297a0a08b53a7bf96ab8280544ff",
+   "bytes": 201786,
+   "publication_date": "2026-10-07T11:55:40Z"
+  },
+  {
+   "service": "AmazonVPC",
+   "url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonVPC/current/ap-northeast-2/index.json",
+   "sha256": "e282b2e26ff9ee03f09319be0db2544c54973444de13af5d493a59ef038c1eb8",
+   "bytes": 80738,
+   "publication_date": "2026-10-16T22:43:21Z"
+  }
+ ],
+ "derived_hourly_usd": {
+  "fargate": 0.0113575,
+  "public_ipv4": 0.005,
+  "ecr_storage": 0.00011096,
+  "total": 0.01646846
+ },
+ "scenarios": [
+  {
+   "name": "검증 1회",
+   "hours": 1.0,
+   "note": "배포·확인·측정·정리를 1시간 안에 끝내는 경우. M6 에 필요한 최소 실행",
+   "fargate_usd": 0.011357,
+   "public_ipv4_usd": 0.005,
+   "ecr_storage_usd": 0.000111,
+   "cloudwatch_usd": 0.00076,
+   "total_usd": 0.0172
+  },
+  {
+   "name": "하루 운용",
+   "hours": 24.0,
+   "note": "하루 켜 두는 경우",
+   "fargate_usd": 0.27258,
+   "public_ipv4_usd": 0.12,
+   "ecr_storage_usd": 0.002663,
+   "cloudwatch_usd": 0.000761,
+   "total_usd": 0.396
+  },
+  {
+   "name": "한 달 상시",
+   "hours": 730.0,
+   "note": "상시 운용. 이 프로젝트 범위에서는 필요 없다",
+   "fargate_usd": 8.290975,
+   "public_ipv4_usd": 3.65,
+   "ecr_storage_usd": 0.081,
+   "cloudwatch_usd": 0.000791,
+   "total_usd": 12.0228
+  }
+ ],
+ "excluded_from_estimate": [
+  "인터넷 아웃바운드 전송 — 응답이 수 KB 라 무료 구간 안이라고 보고 뺐다. 빼고 계산했다는 사실을 밝힌다",
+  "NAT Gateway — 쓰지 않는 설계다(공용 서브넷 + 공용 IPv4). 쓰면 시간당 요금이 따로 붙는다",
+  "로드 밸런서 — 단일 task 에 공용 IP 로 직접 접근하므로 쓰지 않는다",
+  "ECR 이미지 스캔(Inspector)·KMS — 기본 설정에서 쓰지 않는다",
+  "프리 티어 — 계정이 프리 티어 대상이면 실제 청구는 이보다 낮을 수 있다"
+ ],
+ "cost_control_rules": [
+  "task 를 측정 직후 중지한다. desiredCount 0 또는 task 종료",
+  "공용 IPv4 는 task 와 함께 사라진다. Elastic IP 를 따로 만들지 않는다",
+  "ECR 이미지는 측정 후 삭제하거나 저장 비용을 감안해 남긴다(0.81GB 당 월 $0.081)",
+  "CloudWatch 로그 그룹에 보존 기간을 설정한다. 무기한 보존은 저장 비용이 쌓인다"
+ ]
+}

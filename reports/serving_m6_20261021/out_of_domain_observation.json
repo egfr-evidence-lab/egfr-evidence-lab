@@ -1,0 +1,135 @@
+{
+ "created_at_utc": "2026-10-21T14:42:32.383639+00:00",
+ "milestone": "M6",
+ "kind": "post_hoc_observation",
+ "not_in_frozen_plan": "configs/serving_m6.json 의 verification_plan 에 없는 조사다. V1 결과를 보고 추가했으므로 통과·실패로 채점하지 않는다",
+ "question": "적용 범위 밖에서 이 모델은 입력에 따라 값을 바꾸는가",
+ "artifact": "artifacts/agent_predictor_20261021",
+ "model_sha256": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+ "n_molecules": 10,
+ "all_outside_applicability_domain": true,
+ "max_tanimoto_range": [
+  0.028,
+  0.163
+ ],
+ "prediction_min": 8.048,
+ "prediction_max": 8.143,
+ "prediction_spread": 0.095,
+ "prediction_std": 0.03509,
+ "observed_label_std_in_training": 0.3811,
+ "prediction_std_over_label_std": 0.0921,
+ "training_label_range": [
+  6.8474059220725305,
+  8.494850021680094
+ ],
+ "molecules": [
+  {
+   "name": "아스피린",
+   "smiles": "CC(=O)Oc1ccccc1C(=O)O",
+   "status": "ok",
+   "predicted_pIC50": 8.055,
+   "implied_IC50_nM": 8.81,
+   "max_tanimoto_to_training": 0.133,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "에탄올",
+   "smiles": "CCO",
+   "status": "ok",
+   "predicted_pIC50": 8.054,
+   "implied_IC50_nM": 8.83,
+   "max_tanimoto_to_training": 0.053,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "메탄올",
+   "smiles": "CO",
+   "status": "ok",
+   "predicted_pIC50": 8.057,
+   "implied_IC50_nM": 8.77,
+   "max_tanimoto_to_training": 0.028,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "벤젠",
+   "smiles": "c1ccccc1",
+   "status": "ok",
+   "predicted_pIC50": 8.055,
+   "implied_IC50_nM": 8.81,
+   "max_tanimoto_to_training": 0.028,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "카페인",
+   "smiles": "Cn1cnc2c1c(=O)n(C)c(=O)n2C",
+   "status": "ok",
+   "predicted_pIC50": 8.057,
+   "implied_IC50_nM": 8.77,
+   "max_tanimoto_to_training": 0.11,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "포도당",
+   "smiles": "OCC1OC(O)C(O)C(O)C1O",
+   "status": "ok",
+   "predicted_pIC50": 8.048,
+   "implied_IC50_nM": 8.95,
+   "max_tanimoto_to_training": 0.045,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "이부프로펜",
+   "smiles": "CC(C)Cc1ccc(C(C)C(=O)O)cc1",
+   "status": "ok",
+   "predicted_pIC50": 8.053,
+   "implied_IC50_nM": 8.85,
+   "max_tanimoto_to_training": 0.092,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "파라세타몰",
+   "smiles": "CC(=O)Nc1ccc(O)cc1",
+   "status": "ok",
+   "predicted_pIC50": 8.057,
+   "implied_IC50_nM": 8.77,
+   "max_tanimoto_to_training": 0.139,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "니코틴",
+   "smiles": "CN1CCCC1c1cccnc1",
+   "status": "ok",
+   "predicted_pIC50": 8.143,
+   "implied_IC50_nM": 7.19,
+   "max_tanimoto_to_training": 0.163,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  },
+  {
+   "name": "콜레스테롤 골격",
+   "smiles": "CC(C)CCCC(C)C1CCC2C1(C)CCC1C2CC=C2CC(O)CCC12C",
+   "status": "ok",
+   "predicted_pIC50": 8.141,
+   "implied_IC50_nM": 7.23,
+   "max_tanimoto_to_training": 0.071,
+   "scaffold_in_training": false,
+   "n_caveats": 6
+  }
+ ],
+ "reading": "구조가 전혀 다른 분자 10개의 예측값이 8.048~8.143(폭 0.095) 안에 모였다. 예측 표준편차 0.0351 는 학습 라벨 표준편차 0.3811 의 9% 다. 적용 범위 밖에서 이 모델은 입력에 거의 반응하지 않고 사실상 상수를 돌려준다",
+ "why_it_matters": "숫자만 돌려주는 API 라면 포도당에 pIC50 8.05(IC50 약 9nM)가 나온다. 적용 범위 판정과 고지를 응답에서 뺄 수 없게 만든 이유가 이것이다",
+ "same_pattern_as_M2": "M2 에서 D-MPNN 도 상수 붕괴를 보였다(예측 표준편차 0.011~0.036 대 관측 0.377). 모델 종류의 문제가 아니라 22건·12 scaffold 라는 학습 규모의 문제로 보인다",
+ "not_claimed": [
+  "이 분자들의 실제 EGFR 활성을 주장하지 않는다. 실측값을 조회하지 않았다",
+  "'RF 가 나쁘다'는 결론이 아니다. 적용 범위 밖에서 외삽이 되지 않는다는 관찰이다",
+  "상수 붕괴의 원인을 규모 하나로 단정하지 않는다. 특징 표현·하이퍼파라미터도 후보다"
+ ]
+}

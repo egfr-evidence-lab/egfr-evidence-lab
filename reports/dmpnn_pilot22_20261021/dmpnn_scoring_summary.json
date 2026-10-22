@@ -1,0 +1,50 @@
+{
+ "created_at_utc": "2026-10-21T11:24:46.322693+00:00",
+ "milestone": "M2",
+ "stage": "2_scoring",
+ "config_sha256": "907af2cb3d3729ca1e61524facf27a8df612a08407e8b75783cea5ce7ea75323",
+ "dmpnn_predictions_sha256": "0d31b3c832ed15dd708c6777f884c9ad7659e7e8204473ad50aae81569cc53e4",
+ "baseline_predictions_sha256": "c3632c748f03108e10449929118584c689840c3fa827905826315b4294a54df0",
+ "metric_implementation": "src/egfr_lab/modeling/baseline.py 의 metrics(), paired_cluster_ci() 를 import",
+ "metric_environment": {
+  "python": "3.12.14",
+  "numpy": "2.5.4",
+  "pandas": "3.0.6"
+ },
+ "bootstrap": {
+  "resamples": 2000,
+  "seed": 42,
+  "confidence": 0.95,
+  "unit": "scaffold"
+ },
+ "mean_MAE_by_model_and_scheme": {
+  "DMPNN": {
+   "random_molecule": 0.3168,
+   "scaffold": 0.3062
+  },
+  "Dummy": {
+   "random_molecule": 0.3172,
+   "scaffold": 0.3096
+  },
+  "RandomForest": {
+   "random_molecule": 0.2694,
+   "scaffold": 0.2959
+  }
+ },
+ "prior_expectation": "D-MPNN 이 Dummy(평균 예측)보다 나쁘게 나올 가능성이 높다고 실행 전에 적어 둔다",
+ "prior_expectation_outcome": {
+  "primary_scheme": "scaffold",
+  "seeds_where_dmpnn_worse_than_dummy": 0,
+  "seeds_total": 3,
+  "seeds_where_ci_contains_zero": 3,
+  "verdict": "사전 예상과 다르게 나온 seed 가 있다"
+ },
+ "must_not_claim": [
+  "이 결과로 D-MPNN 이 RF 보다 낫거나 못하다고 일반화하는 것",
+  "22건 결과를 일반 EGFR 성능의 근거로 쓰는 것",
+  "결과를 본 뒤 구조·epoch·검증 구성을 바꿔 다시 돌리고 그것을 최초 결과처럼 쓰는 것",
+  "평가 fold 를 체크포인트 선택이나 조기 종료에 쓰는 것",
+  "원 자료의 training_ready=False 를 이 실험을 이유로 바꾸는 것",
+  "보류 중인 assay(furan45·patent64·Apsel209·BLU-945 등)를 끌어와 표본을 늘리는 것"
+ ]
+}

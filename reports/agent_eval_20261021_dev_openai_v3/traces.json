@@ -1,0 +1,572 @@
+[
+ {
+  "question_id": "D1",
+  "question": "SMILES: C=C=CC(=O)Nc1cc(Nc2nccc(-c3cnn4ccccc34)n2)c(OC)cc1N(C)CCN(C)C 이 분자의 EGFR pIC50 을 예측해줘",
+  "policy": {
+   "name": "openai",
+   "version": "v1",
+   "model": "gpt-5-mini-2025-08-07",
+   "prompt_version": "agent-prompt-v1"
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "predict_activity",
+    "arguments": {
+     "smiles": "C=C=CC(=O)Nc1cc(Nc2nccc(-c3cnn4ccccc34)n2)c(OC)cc1N(C)CCN(C)C"
+    },
+    "status": "ok",
+    "source_ids": [
+     "model:c6538d0d275df816",
+     "cohort:CHEMBL4258549",
+     "report:reports/baseline_pilot_20261020_v2/"
+    ],
+    "caveat_count": 4,
+    "elapsed_sec": 0.431,
+    "message": "예측값은 참고치다. M1 교차검증에서 평균 예측 대비 우위가 확정되지 않았다"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "predict_activity"
+  ],
+  "answer": {
+   "text": "예측 결과를 요약합니다. 입력된 SMILES 분자의 EGFR pIC50(예측): 7.936입니다. 아래 출처와 적용범위를 확인하세요.",
+   "claims": [
+    {
+     "text": "해당 SMILES 분자의 EGFR pIC50 예측값: 7.936 (모델: RandomForest (Morgan r=2, 2048bit), pilot22)",
+     "source_ids": [
+      "model:c6538d0d275df816",
+      "cohort:CHEMBL4258549",
+      "report:reports/baseline_pilot_20261020_v2/"
+     ]
+    }
+   ],
+   "caveats": [
+    "학습 표본이 22건이고 모두 단일 문헌·단일 실험(CHEMBL4258549)에서 왔다",
+    "M1 교차검증에서 이 모델은 평균 예측(Dummy)보다 낫다고 확정되지 않았다",
+    "라벨 범위가 pIC50 6.85~8.49(폭 1.65)뿐이라 그 밖의 활성은 예측 근거가 없다",
+    "정상형(WT) 생화학 IC50 으로만 학습했다. 변이형·세포 실험·분해제 지표에 쓰지 않는다",
+    "예측값은 참고치다. M1 교차검증에서 평균 예측 대비 우위가 확정되지 않았다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T13:13:57.323583+00:00",
+  "total_elapsed_sec": 15.753
+ },
+ {
+  "question_id": "D2",
+  "question": "이 화합물의 EGFR pIC50 을 예측해줘",
+  "policy": {
+   "name": "openai",
+   "version": "v1",
+   "model": "gpt-5-mini-2025-08-07",
+   "prompt_version": "agent-prompt-v1"
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "predict_activity",
+    "arguments": {
+     "smiles": ""
+    },
+    "status": "error",
+    "source_ids": [],
+    "caveat_count": 0,
+    "elapsed_sec": 0.0,
+    "message": "SMILES 를 해석할 수 없다: ''"
+   },
+   {
+    "index": 2,
+    "tool": "predict_activity",
+    "arguments": {
+     "smiles": ""
+    },
+    "status": "error",
+    "source_ids": [],
+    "caveat_count": 0,
+    "elapsed_sec": 0.0,
+    "message": "SMILES 를 해석할 수 없다: ''"
+   },
+   {
+    "index": 3,
+    "tool": "predict_activity",
+    "arguments": {
+     "smiles": ""
+    },
+    "status": "error",
+    "source_ids": [],
+    "caveat_count": 0,
+    "elapsed_sec": 0.0,
+    "message": "SMILES 를 해석할 수 없다: ''"
+   }
+  ],
+  "n_calls": 3,
+  "tools_used": [
+   "predict_activity",
+   "predict_activity",
+   "predict_activity"
+  ],
+  "answer": {
+   "text": "predict_activity 가 반복 실패해 중단했다.",
+   "claims": [],
+   "caveats": [
+    "predict_activity 재시도 2회 한도 초과"
+   ],
+   "insufficient_information": true
+  },
+  "stop_reason": "retry_limit",
+  "started_at": "2026-10-21T13:14:13.076929+00:00",
+  "total_elapsed_sec": 20.324
+ },
+ {
+  "question_id": "D3",
+  "question": "CHEMBL4278815 의 EGFR 실측 활성 기록을 보여줘",
+  "policy": {
+   "name": "openai",
+   "version": "v1",
+   "model": "gpt-5-mini-2025-08-07",
+   "prompt_version": "agent-prompt-v1"
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "lookup_measurements",
+    "arguments": {
+     "molecule_chembl_id": "CHEMBL4278815"
+    },
+    "status": "ok",
+    "source_ids": [
+     "chembl:CHEMBL4278815",
+     "chembl_activity:18722866",
+     "chembl_activity:18722897"
+    ],
+    "caveat_count": 2,
+    "elapsed_sec": 1.19,
+    "message": "2건 조회"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "lookup_measurements"
+  ],
+  "answer": {
+   "text": "요청하신 CHEMBL4278815의 EGFR 실측 활성 기록(ChEMBL 조회 결과)은 다음과 같습니다.\n\n1) activity_id 18722866 (assay CHEMBL4258549): IC50 = 22.4 nM (pIC50 = 7.65). Assay: \"Inhibition of Wild type human EGFR using poly(Glu, Tyr) 4 : 1 as substrate after 1 hr by ELISA\". Document: CHEMBL4257480.\n\n2) activity_id 18722897 (assay CHEMBL4258550): IC50 = 1.3 nM (pIC50 = 8.89). Assay: \"Inhibition of recombinant human EGFR T790M/L858R double mutant (696 to end residues) using poly(Glu, Tyr) 4 : 1 as substrate after 1 hr by ELISA\". Document: CHEMBL4257480.\n\nCaveats:\n- 서로 다른 실험·조건의 값이 섞여 있을 수 있다. 하나의 값으로 합치지 않는다.\n- 정상형(WT)과 변이형, 생화학과 세포 실험, IC50·Ki·Kd 를 구분해 읽어야 한다.",
+   "claims": [
+    {
+     "text": "CHEMBL4278815 — EGFR (wild-type) IC50 = 22.4 nM (pIC50 7.65); activity_id 18722866; assay CHEMBL4258549; document CHEMBL4257480.",
+     "source_ids": [
+      "chembl:CHEMBL4278815",
+      "chembl_activity:18722866"
+     ]
+    },
+    {
+     "text": "CHEMBL4278815 — EGFR T790M/L858R double mutant IC50 = 1.3 nM (pIC50 8.89); activity_id 18722897; assay CHEMBL4258550; document CHEMBL4257480.",
+     "source_ids": [
+      "chembl:CHEMBL4278815",
+      "chembl_activity:18722897"
+     ]
+    }
+   ],
+   "caveats": [
+    "서로 다른 실험·조건의 값이 섞여 있을 수 있다. 하나의 값으로 합치지 않는다",
+    "정상형(WT)과 변이형, 생화학과 세포 실험, IC50·Ki·Kd 를 구분해 읽어야 한다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T13:14:33.401156+00:00",
+  "total_elapsed_sec": 21.931
+ },
+ {
+  "question_id": "D4",
+  "question": "EGFR C797S 내성 변이 관련 문헌을 검색해줘",
+  "policy": {
+   "name": "openai",
+   "version": "v1",
+   "model": "gpt-5-mini-2025-08-07",
+   "prompt_version": "agent-prompt-v1"
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "EGFR C797S resistance mutation"
+    },
+    "status": "ok",
+    "source_ids": [
+     "pmid:PMC13634975",
+     "doi:10.1158/1078-0432.ccr-26-0704",
+     "doi:10.20517/cdr.2026.79",
+     "doi:10.1016/j.ejmech.2026.119404",
+     "doi:10.3389/fonc.2026.1952701"
+    ],
+    "caveat_count": 2,
+    "elapsed_sec": 1.599,
+    "message": "5건 검색"
+   },
+   {
+    "index": 2,
+    "tool": "fetch_evidence",
+    "arguments": {
+     "identifier": "10.3389/fonc.2026.1952701"
+    },
+    "status": "ok",
+    "source_ids": [
+     "pmid:None"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 3.659,
+    "message": "서지·접근성 조회 완료"
+   },
+   {
+    "index": 3,
+    "tool": "fetch_evidence",
+    "arguments": {
+     "identifier": "10.1158/1078-0432.ccr-26-0704"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.1158/1078-0432.ccr-26-0704"
+    ],
+    "caveat_count": 0,
+    "elapsed_sec": 1.423,
+    "message": "서지·접근성 조회 완료"
+   },
+   {
+    "index": 4,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "EGFR C797S Thress 2015 osimertinib C797S resistance"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.3389/fgene.2026.1827187",
+     "doi:10.3389/fchem.2026.1753911",
+     "doi:10.1111/cbdd.70391",
+     "doi:10.21037/jtd-2025-76",
+     "doi:10.2147/lctt.s463429"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 1.585,
+    "message": "5건 검색"
+   },
+   {
+    "index": 5,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "Thress 2015 C797S AZD9291 osimertinib Thress C797S 2015 PMID"
+    },
+    "status": "not_found",
+    "source_ids": [],
+    "caveat_count": 0,
+    "elapsed_sec": 1.39,
+    "message": "검색 결과가 없다: 'Thress 2015 C797S AZD9291 osimertinib Thress C797S 2015 PMID'"
+   }
+  ],
+  "n_calls": 5,
+  "tools_used": [
+   "search_literature",
+   "fetch_evidence",
+   "fetch_evidence",
+   "search_literature",
+   "search_literature"
+  ],
+  "answer": {
+   "text": "EGFR C797S 내성 변이 관련으로 검색된 문헌(주요 타이틀 및 식별자). 원하시면 특정 논문 본문·초록을 더 가져오겠습니다 (단, 일부는 비공개임).",
+   "claims": [
+    {
+     "text": "Comparative profiling of osimertinib and fourth-generation EGFR inhibitors on EGFR-mutant proteins and cell lines",
+     "source_ids": [
+      "pmid:PMC13634975",
+      "doi:10.3389/fonc.2026.1952701"
+     ]
+    },
+    {
+     "text": "Osimertinib plus Gefitinib in Patients with EGFR-Mutated Advanced Non-Small Cell Lung Cancer and EGFR (C797X) Mutation Following First-Line Osimertinib: ORCHARD.",
+     "source_ids": [
+      "doi:10.1158/1078-0432.ccr-26-0704"
+     ]
+    },
+    {
+     "text": "Resistance to third-generation EGFR TKIs - what can be expected from the fourth-generation?",
+     "source_ids": [
+      "doi:10.20517/cdr.2026.79"
+     ]
+    },
+    {
+     "text": "Design, synthesis and biological evaluation of novel aminopyrimidine derivatives as potent EGFR C797S inhibitors for overcoming osimertinib resistance.",
+     "source_ids": [
+      "doi:10.1016/j.ejmech.2026.119404"
+     ]
+    },
+    {
+     "text": "Mechanisms of acquired resistance to osimertinib in EGFR T790M-Positive lung adenocarcinoma.",
+     "source_ids": [
+      "doi:10.3389/fgene.2026.1827187"
+     ]
+    },
+    {
+     "text": "A multi-stage computational pipeline for repurposing FDA-approved drugs: application to EGFR C797S-mutant NSCLC.",
+     "source_ids": [
+      "doi:10.3389/fchem.2026.1753911"
+     ]
+    },
+    {
+     "text": "Discovery of Potent EGFR Inhibitors for Del19 and L858R/T790M Mutants Through Structure-Based Virtual Screening and Biological Evaluation.",
+     "source_ids": [
+      "doi:10.1111/cbdd.70391"
+     ]
+    },
+    {
+     "text": "Circulating tumor DNA in lung cancer: a bibliometric analysis of studies published from 2001 to 2024.",
+     "source_ids": [
+      "doi:10.21037/jtd-2025-76"
+     ]
+    },
+    {
+     "text": "Top 20 EGFR+ NSCLC Clinical and Translational Science Papers That Shaped the 20 Years Since the Discovery of Activating EGFR Mutations in NSCLC. An Editor-in-Chief Expert Panel Consensus Survey.",
+     "source_ids": [
+      "doi:10.2147/lctt.s463429"
+     ]
+    }
+   ],
+   "caveats": [
+    "검색 결과는 초록 수준의 메타데이터다. 본문을 읽은 것이 아니다 (따라서 본문·수치 인용 불가).",
+    "초록/메타데이터 조회에서 2건은 공개 접근이 아님(비공개 논문 본문 확인 불가).",
+    "fetch_evidence 수행 중 일부 항목은 초록·본문이 포함되지 않았음.",
+    "별도 검색(예: 'Thress 2015 C797S')는 결과가 없었음"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T13:14:55.332411+00:00",
+  "total_elapsed_sec": 77.824
+ },
+ {
+  "question_id": "D5",
+  "question": "10.1002/ardp.70193 의 본문을 볼 수 있는지 확인해줘",
+  "policy": {
+   "name": "openai",
+   "version": "v1",
+   "model": "gpt-5-mini-2025-08-07",
+   "prompt_version": "agent-prompt-v1"
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "fetch_evidence",
+    "arguments": {
+     "identifier": "10.1002/ardp.70193"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.1002/ardp.70193"
+    ],
+    "caveat_count": 2,
+    "elapsed_sec": 1.187,
+    "message": "서지·접근성 조회 완료"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "fetch_evidence"
+  ],
+  "answer": {
+   "text": "조회 결과를 전달합니다: 해당 DOI(10.1002/ardp.70193)의 서지 정보는 확인되었으며, 본문 전문은 공개 접근이 아니며 'Subscription required' 상태입니다.",
+   "claims": [
+    {
+     "text": "논문의 전문은 공개 접근이 아니며 구독이 필요하다.",
+     "source_ids": [
+      "doi:10.1002/ardp.70193"
+     ]
+    }
+   ],
+   "caveats": [
+    "공개 접근이 아니다. 전문 링크 상태: Subscription required",
+    "본문을 읽지 않은 상태에서 본문 내용을 단정하지 않는다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T13:16:13.156501+00:00",
+  "total_elapsed_sec": 16.576
+ },
+ {
+  "question_id": "D6",
+  "question": "aspirin 의 EGFR 실측 기록을 ChEMBL 에서 찾아줘",
+  "policy": {
+   "name": "openai",
+   "version": "v1",
+   "model": "gpt-5-mini-2025-08-07",
+   "prompt_version": "agent-prompt-v1"
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "aspirin ChEMBL ID"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.1093/bib/bbag427",
+     "doi:10.1038/s41746-026-02869-y",
+     "pmid:PMC13640889",
+     "doi:10.1177/11779322261483607",
+     "doi:10.1021/acsomega.5c05094"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 1.89,
+    "message": "5건 검색"
+   },
+   {
+    "index": 2,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "aspirin ChEMBL molecule ID CHEMBL aspirin \"Aspirin\" ChEMBL"
+    },
+    "status": "ok",
+    "source_ids": [
+     "pmid:PMC13640889",
+     "doi:10.1177/11779322261483607",
+     "doi:10.3390/ph19050715",
+     "doi:10.1021/acsomega.5c05094",
+     "doi:10.1093/nar/gkaf1271"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 1.689,
+    "message": "5건 검색"
+   },
+   {
+    "index": 3,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "aspirin CHEMBL compound CHEMBL ID \"aspirin\" CHEMBL"
+    },
+    "status": "ok",
+    "source_ids": [
+     "pmid:PMC13640889",
+     "doi:10.1093/bib/bbag427",
+     "doi:10.3390/ph19050698",
+     "doi:10.1177/11779322261483607",
+     "doi:10.1021/acsomega.5c05094"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 1.602,
+    "message": "5건 검색"
+   },
+   {
+    "index": 4,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "acetylsalicylic acid ChEMBL \"CHEMBL\" \"acetylsalicylic\""
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.1093/nar/gkaf1271",
+     "doi:10.3390/biology15080632",
+     "doi:10.1021/acs.jcim.6c00939",
+     "doi:10.1093/nar/gkag463",
+     "doi:10.3390/pathogens15030263"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 1.697,
+    "message": "5건 검색"
+   },
+   {
+    "index": 5,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "aspirin CHEMBL \"CHEMBL\" acetylsalicylic"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.3390/biology15080632",
+     "doi:10.1093/nar/gkag463",
+     "doi:10.1093/nar/gkaf1271",
+     "doi:10.3390/pathogens15030263",
+     "doi:10.3390/ph18081240"
+    ],
+    "caveat_count": 1,
+    "elapsed_sec": 1.648,
+    "message": "5건 검색"
+   },
+   {
+    "index": 6,
+    "tool": "lookup_measurements",
+    "arguments": {
+     "molecule_chembl_id": "CHEMBL25"
+    },
+    "status": "ok",
+    "source_ids": [
+     "chembl:CHEMBL25",
+     "chembl_activity:7618801",
+     "chembl_activity:7618802",
+     "chembl_activity:16410659"
+    ],
+    "caveat_count": 4,
+    "elapsed_sec": 1.218,
+    "message": "3건 조회"
+   }
+  ],
+  "n_calls": 6,
+  "tools_used": [
+   "search_literature",
+   "search_literature",
+   "search_literature",
+   "search_literature",
+   "search_literature",
+   "lookup_measurements"
+  ],
+  "answer": {
+   "text": "도구 호출 예산을 모두 썼고 근거를 충분히 모으지 못했다.",
+   "claims": [],
+   "caveats": [
+    "도구 호출 6회 한도에 도달했다"
+   ],
+   "insufficient_information": true
+  },
+  "stop_reason": "budget_exhausted",
+  "started_at": "2026-10-21T13:16:29.733086+00:00",
+  "total_elapsed_sec": 42.46
+ }
+]

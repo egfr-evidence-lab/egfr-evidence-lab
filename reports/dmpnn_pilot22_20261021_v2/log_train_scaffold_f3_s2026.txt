@@ -1,0 +1,328 @@
+0it [00:00, ?it/s]13it [00:00, 62817.92it/s]
+  0%|          | 0/13 [00:00<?, ?it/s]100%|██████████| 13/13 [00:00<00:00, 140893.93it/s]
+  0%|          | 0/13 [00:00<?, ?it/s]100%|██████████| 13/13 [00:00<00:00, 1618.75it/s]
+Fold 0
+0it [00:00, ?it/s]5it [00:00, 155344.59it/s]
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 227951.30it/s]
+  0%|          | 0/5 [00:00<?, ?it/s]100%|██████████| 5/5 [00:00<00:00, 5599.87it/s]
+0it [00:00, ?it/s]4it [00:00, 182361.04it/s]
+  0%|          | 0/4 [00:00<?, ?it/s]100%|██████████| 4/4 [00:00<00:00, 209715.20it/s]
+  0%|          | 0/4 [00:00<?, ?it/s]100%|██████████| 4/4 [00:00<00:00, 6163.56it/s]
+/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/chemprop/nn_utils.py:172: RuntimeWarning: divide by zero encountered in divide
+  self.linear_increment = (self.max_lr - self.init_lr) / self.warmup_steps
+/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/chemprop/nn_utils.py:174: RuntimeWarning: divide by zero encountered in divide
+  self.exponential_gamma = (self.final_lr / self.max_lr) ** (1 / (self.total_steps - self.warmup_steps))
+  0%|          | 0/50 [00:00<?, ?it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+  4%|▍         | 2/50 [00:00<00:02, 19.32it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 12%|█▏        | 6/50 [00:00<00:01, 28.80it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 20%|██        | 10/50 [00:00<00:01, 32.55it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 28%|██▊       | 14/50 [00:00<00:01, 34.62it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 36%|███▌      | 18/50 [00:00<00:00, 36.05it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 44%|████▍     | 22/50 [00:00<00:00, 35.53it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 52%|█████▏    | 26/50 [00:00<00:00, 36.75it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 62%|██████▏   | 31/50 [00:00<00:00, 38.44it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 72%|███████▏  | 36/50 [00:00<00:00, 39.88it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 82%|████████▏ | 41/50 [00:01<00:00, 40.41it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+ 92%|█████████▏| 46/50 [00:01<00:00, 40.56it/s]
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A
+  0%|          | 0/1 [00:00<?, ?it/s][A
+                                     [A/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+100%|██████████| 50/50 [00:01<00:00, 37.58it/s]
+Model 0 best validation rmse = 0.295857 on epoch 2
+/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/chemprop/utils.py:112: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  state = torch.load(path, map_location=lambda storage, loc: storage)
+  0%|          | 0/1 [00:00<?, ?it/s]                                     /Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+Model 0 test rmse = 0.337862
+/Users/kyungduck/Documents/ChatGPT/사이드 프로젝트/egfr-evidence-lab/.venv-repro/lib/python3.12/site-packages/sklearn/metrics/_regression.py:492: FutureWarning: 'squared' is deprecated in version 1.4 and will be removed in 1.6. To calculate the root mean squared error, use the function'root_mean_squared_error'.
+  warnings.warn(
+Ensemble test rmse = 0.337862
+1-fold cross validation
+	Seed 2026 ==> test rmse = 0.337862
+Overall test rmse = 0.337862 +/- 0.000000
+Elapsed time = 0:00:02

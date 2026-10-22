@@ -1,0 +1,622 @@
+{
+ "created_at_utc": "2026-10-21T14:35:30.103915+00:00",
+ "milestone": "M6",
+ "scope": "컨테이너까지. 클라우드 실행은 이 실행에 포함되지 않는다",
+ "config_path": "configs/serving_m6.json",
+ "config_sha256": "dbdff039449a79609403887d718c56fa0b220186edb4212a44b3fafb3ec1d196",
+ "image": {
+  "tag": "egfr-pilot22-inference:v1",
+  "id": "sha256:088055b1684d440d469466f14747cf17bc2dc36ae1883c0975cf19fe7c4d5413",
+  "size_mb": 790.8,
+  "architecture": "arm64",
+  "os": "linux",
+  "base_image_digest_pinned": true
+ },
+ "environment": {
+  "host_python": "3.12.14",
+  "host_platform": "macOS-26.5.2-arm64-arm-64bit",
+  "docker_server_version": "29.8.0"
+ },
+ "port_note": "컨테이너를 127.0.0.1:8010 에 묶었다. 8000 은 다른 프로세스가 IPv4 로 점유 중이어서 127.0.0.1:8000 요청이 그 프로세스로 갔다. /model-info 해시 확인으로 올바른 서비스를 때리는지 검증한다",
+ "verdicts": {
+  "V1_parity": true,
+  "V2_model_identity": true,
+  "V3_restart": true,
+  "V4_error_handling": true,
+  "V6_logging": true
+ },
+ "all_checked_passed": true,
+ "latency_is_a_measurement_not_a_verdict": "V5 는 통과·실패로 채점하지 않는다. 합격선을 미리 정하지 않았기 때문이다",
+ "cloud_execution": {
+  "status_at_freeze": "not_configured",
+  "aws_profile_found": "skn33 (ap-northeast-2, arn:aws:iam::498777149300:user/student)",
+  "credentials_present_at_freeze": false,
+  "requirement": "클라우드 실행 증거는 실제 요청·응답·모델 버전·비용 기록이 있어야 완료로 쓴다",
+  "if_not_executed": "M6 를 'complete' 로 쓰지 않는다. 컨테이너까지 끝낸 범위를 명시하고 클라우드 항목은 미충족으로 남긴다",
+  "cost_rule": "리소스를 만들기 전에 사용자 승인을 받는다. 과금되는 자원을 임의로 생성하지 않는다",
+  "teardown_rule": "만든 자원은 측정 후 삭제하고 삭제 사실을 기록한다"
+ },
+ "results": {
+  "V2_model_identity": {
+   "what": "/model-info 가 돌려주는 해시가 설정에 고정한 해시와 같은가",
+   "host": {
+    "hash_checks": {
+     "model_sha256": {
+      "expected": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+      "actual": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+      "match": true
+     },
+     "cohort_sha256": {
+      "expected": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+      "actual": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+      "match": true
+     },
+     "settings_sha256": {
+      "expected": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+      "actual": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+      "match": true
+     }
+    },
+    "all_match": true,
+    "n_training_molecules": 22,
+    "n_training_scaffolds": 12,
+    "training_label_range": [
+     6.8474059220725305,
+     8.494850021680094
+    ],
+    "runtime": {
+     "python": "3.12.14",
+     "platform": "macOS-26.5.2-arm64-arm-64bit",
+     "machine": "arm64",
+     "numpy": "2.5.4",
+     "scipy": "1.18.1",
+     "sklearn": "1.9.1",
+     "joblib": "1.6.0",
+     "rdkit": "2026.09.1"
+    },
+    "config_sha256": "dbdff039449a79609403887d718c56fa0b220186edb4212a44b3fafb3ec1d196",
+    "mandatory_caveats": [
+     "학습 표본이 22건이고 모두 단일 문헌·단일 실험(CHEMBL4258549)에서 왔다",
+     "M1 교차검증에서 이 모델은 평균 예측(Dummy)보다 낫다고 확정되지 않았다",
+     "라벨 범위가 pIC50 6.85~8.49(폭 1.65)뿐이라 그 밖의 활성은 예측 근거가 없다",
+     "정상형(WT) 생화학 IC50 으로만 학습했다. 변이형·세포 실험·분해제 지표에 쓰지 않는다"
+    ]
+   },
+   "container": {
+    "hash_checks": {
+     "model_sha256": {
+      "expected": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+      "actual": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+      "match": true
+     },
+     "cohort_sha256": {
+      "expected": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+      "actual": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+      "match": true
+     },
+     "settings_sha256": {
+      "expected": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+      "actual": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+      "match": true
+     }
+    },
+    "all_match": true,
+    "n_training_molecules": 22,
+    "n_training_scaffolds": 12,
+    "training_label_range": [
+     6.8474059220725305,
+     8.494850021680094
+    ],
+    "runtime": {
+     "python": "3.12.14",
+     "platform": "Linux-7.0.12-linuxkit-aarch64-with-glibc2.36",
+     "machine": "aarch64",
+     "numpy": "2.5.4",
+     "scipy": "1.18.1",
+     "sklearn": "1.9.1",
+     "joblib": "1.6.0",
+     "rdkit": "2026.09.1"
+    },
+    "config_sha256": "dbdff039449a79609403887d718c56fa0b220186edb4212a44b3fafb3ec1d196",
+    "mandatory_caveats": [
+     "학습 표본이 22건이고 모두 단일 문헌·단일 실험(CHEMBL4258549)에서 왔다",
+     "M1 교차검증에서 이 모델은 평균 예측(Dummy)보다 낫다고 확정되지 않았다",
+     "라벨 범위가 pIC50 6.85~8.49(폭 1.65)뿐이라 그 밖의 활성은 예측 근거가 없다",
+     "정상형(WT) 생화학 IC50 으로만 학습했다. 변이형·세포 실험·분해제 지표에 쓰지 않는다"
+    ]
+   },
+   "config_sha256_identical": true,
+   "passed": true
+  },
+  "V1_parity": {
+   "what": "같은 입력에 호스트 프로세스와 컨테이너가 같은 예측값을 내는가",
+   "pass_rule": "모든 분자의 predicted_pIC50 이 소수 3자리까지 같고 적용 범위 판정도 같다",
+   "passed": true,
+   "n_probes": 5,
+   "n_identical": 5,
+   "per_probe": [
+    {
+     "id": "P-in-1",
+     "note": "M5 D1 과 같은 분자. 적용 범위 안쪽 경로",
+     "identical": true,
+     "host": {
+      "status": "ok",
+      "predicted_pIC50": 7.936,
+      "in_applicability_domain": true,
+      "applicability": {
+       "scaffold_in_training": true,
+       "max_tanimoto_to_training": 1.0,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 4,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     },
+     "container": {
+      "status": "ok",
+      "predicted_pIC50": 7.936,
+      "in_applicability_domain": true,
+      "applicability": {
+       "scaffold_in_training": true,
+       "max_tanimoto_to_training": 1.0,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 4,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     }
+    },
+    {
+     "id": "P-out-1",
+     "note": "아스피린. M5 F1 과 같은 분자. 적용 범위 밖 경로",
+     "identical": true,
+     "host": {
+      "status": "ok",
+      "predicted_pIC50": 8.055,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.133,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     },
+     "container": {
+      "status": "ok",
+      "predicted_pIC50": 8.055,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.133,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     }
+    },
+    {
+     "id": "P-out-2",
+     "note": "에탄올. 극단적으로 작은 분자",
+     "identical": true,
+     "host": {
+      "status": "ok",
+      "predicted_pIC50": 8.054,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.053,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     },
+     "container": {
+      "status": "ok",
+      "predicted_pIC50": 8.054,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.053,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     }
+    },
+    {
+     "id": "P-bad-1",
+     "note": "해석 불가. 오류 경로",
+     "identical": true,
+     "host": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+      "has_value_field": false
+     },
+     "container": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+      "has_value_field": false
+     }
+    },
+    {
+     "id": "P-bad-2",
+     "note": "빈 문자열. 원자 0개로 파싱되는 함정(M5 에서 실제로 겪은 결함)",
+     "identical": true,
+     "host": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: ''",
+      "has_value_field": false
+     },
+     "container": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: ''",
+      "has_value_field": false
+     }
+    }
+   ],
+   "runtime_diff_host_vs_container": {
+    "machine": [
+     "arm64",
+     "aarch64"
+    ],
+    "platform": [
+     "macOS-26.5.2-arm64-arm-64bit",
+     "Linux-7.0.12-linuxkit-aarch64-with-glibc2.36"
+    ]
+   }
+  },
+  "V4_error_handling": {
+   "what": "잘못된 입력을 거부하는가",
+   "host": {
+    "cases": [
+     {
+      "case": "빈 배열",
+      "expectation": "422",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "빈 문자열 SMILES",
+      "expectation": "status=error 이고 값 필드 없음",
+      "status_code": 200,
+      "passed": true,
+      "detail": {
+       "result": {
+        "index": 0,
+        "smiles": "",
+        "status": "error",
+        "message": "SMILES 를 해석할 수 없다: ''",
+        "predict_ms": 0.011
+       }
+      }
+     },
+     {
+      "case": "해석 불가 문자열",
+      "expectation": "status=error 이고 값 필드 없음",
+      "status_code": 200,
+      "passed": true,
+      "detail": {
+       "result": {
+        "index": 0,
+        "smiles": "this-is-not-a-molecule",
+        "status": "error",
+        "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+        "predict_ms": 0.278
+       }
+      }
+     },
+     {
+      "case": "max_batch(32) 초과",
+      "expectation": "413",
+      "status_code": 413,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "smiles 필드 없음",
+      "expectation": "422",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "JSON 아닌 본문",
+      "expectation": "4xx (500 이면 실패)",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "smiles 가 배열이 아님",
+      "expectation": "422",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "학습 엔드포인트 /train",
+      "expectation": "404",
+      "status_code": 404,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "학습 엔드포인트 /fit",
+      "expectation": "404",
+      "status_code": 404,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "학습 엔드포인트 /retrain",
+      "expectation": "404",
+      "status_code": 404,
+      "passed": true,
+      "detail": null
+     }
+    ],
+    "n_passed": 10,
+    "n_cases": 10,
+    "failed": []
+   },
+   "container": {
+    "cases": [
+     {
+      "case": "빈 배열",
+      "expectation": "422",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "빈 문자열 SMILES",
+      "expectation": "status=error 이고 값 필드 없음",
+      "status_code": 200,
+      "passed": true,
+      "detail": {
+       "result": {
+        "index": 0,
+        "smiles": "",
+        "status": "error",
+        "message": "SMILES 를 해석할 수 없다: ''",
+        "predict_ms": 0.016
+       }
+      }
+     },
+     {
+      "case": "해석 불가 문자열",
+      "expectation": "status=error 이고 값 필드 없음",
+      "status_code": 200,
+      "passed": true,
+      "detail": {
+       "result": {
+        "index": 0,
+        "smiles": "this-is-not-a-molecule",
+        "status": "error",
+        "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+        "predict_ms": 0.113
+       }
+      }
+     },
+     {
+      "case": "max_batch(32) 초과",
+      "expectation": "413",
+      "status_code": 413,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "smiles 필드 없음",
+      "expectation": "422",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "JSON 아닌 본문",
+      "expectation": "4xx (500 이면 실패)",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "smiles 가 배열이 아님",
+      "expectation": "422",
+      "status_code": 422,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "학습 엔드포인트 /train",
+      "expectation": "404",
+      "status_code": 404,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "학습 엔드포인트 /fit",
+      "expectation": "404",
+      "status_code": 404,
+      "passed": true,
+      "detail": null
+     },
+     {
+      "case": "학습 엔드포인트 /retrain",
+      "expectation": "404",
+      "status_code": 404,
+      "passed": true,
+      "detail": null
+     }
+    ],
+    "n_passed": 10,
+    "n_cases": 10,
+    "failed": []
+   },
+   "passed": true
+  },
+  "V5_latency": {
+   "measured_on": "Docker Desktop 29.8.0 / aarch64 linux VM / NCPU=8 / MemTotal=8.3GB, 호스트는 macOS 25.5.0 Apple Silicon",
+   "procedure": "단일 분자 요청. 워밍업 20회(버림) 후 측정 200회 순차. 동시 요청은 측정하지 않는다",
+   "host_measurement_note": "호스트 서버는 macOS 에서 직접 실행한 uvicorn 프로세스다",
+   "probe_molecule": "P-in-1",
+   "host": {
+    "warmup_discarded": 20,
+    "sequential_requests": 200,
+    "batch_size": 1,
+    "client_side_ms": {
+     "n": 200,
+     "p50": 9.348,
+     "p95": 10.174,
+     "min": 8.267,
+     "max": 11.849,
+     "mean": 9.408
+    },
+    "server_side_ms": {
+     "n": 200,
+     "p50": 8.426,
+     "p95": 9.128,
+     "min": 7.608,
+     "max": 10.267,
+     "mean": 8.467
+    },
+    "not_claimed": "처리량·동시 부하 성능이 아니다. 순차 요청 1배치의 측정이다"
+   },
+   "container": {
+    "warmup_discarded": 20,
+    "sequential_requests": 200,
+    "batch_size": 1,
+    "client_side_ms": {
+     "n": 200,
+     "p50": 11.61,
+     "p95": 15.571,
+     "min": 10.456,
+     "max": 22.309,
+     "mean": 12.005
+    },
+    "server_side_ms": {
+     "n": 200,
+     "p50": 10.04,
+     "p95": 13.208,
+     "min": 9.067,
+     "max": 20.507,
+     "mean": 10.357
+    },
+    "not_claimed": "처리량·동시 부하 성능이 아니다. 순차 요청 1배치의 측정이다"
+   },
+   "container_over_host_p50_ratio": 1.242
+  },
+  "V3_restart": {
+   "what": "컨테이너를 재시작한 뒤 모델이 다시 로딩되고 같은 값을 내는가",
+   "procedure": "docker restart 2회, 각 재시작 후 /readyz 200 확인하고 probe 재예측",
+   "passed": true,
+   "cycles": [
+    {
+     "cycle": 1,
+     "readyz_status_code": 200,
+     "ready": true,
+     "model_load_seconds": 0.85,
+     "restart_to_ready_wall_seconds": 2.67,
+     "hash_checks_all_match": true,
+     "predictions_identical_to_first_run": true,
+     "mismatched_probe_ids": []
+    },
+    {
+     "cycle": 2,
+     "readyz_status_code": 200,
+     "ready": true,
+     "model_load_seconds": 0.708,
+     "restart_to_ready_wall_seconds": 2.54,
+     "hash_checks_all_match": true,
+     "predictions_identical_to_first_run": true,
+     "mismatched_probe_ids": []
+    }
+   ]
+  },
+  "V6_logging": {
+   "what": "요청·오류가 로그에 남는가",
+   "total_log_lines": 515,
+   "request_lines": 256,
+   "request_lines_with_duration": 256,
+   "sample_request_lines": [
+    "2026-10-21 14:35:29,814 INFO egfr_lab.serving POST /predict -> 200 10.4ms",
+    "2026-10-21 14:35:29,822 INFO egfr_lab.serving POST /predict -> 200 0.7ms",
+    "2026-10-21 14:35:29,829 INFO egfr_lab.serving POST /predict -> 200 0.5ms"
+   ],
+   "smiles_leaked_into_logs": [],
+   "passed": true,
+   "note": "요청 경로·상태코드·처리시간은 남기고 입력 SMILES 는 남기지 않는다"
+  },
+  "pre_registration_vs_actual": {
+   "declared_before_measurement": {
+    "declared_before_any_measurement": true,
+    "why": "측정 결과를 본 뒤 '예상대로였다'고 쓰지 않기 위해 먼저 적는다. 틀리면 틀린 대로 남긴다",
+    "host_p50_ms": "5~30 예상",
+    "container_p50_ms": "10~60 예상",
+    "container_vs_host": "컨테이너가 같거나 느릴 것으로 예상. 가상화 비용 때문",
+    "model_load_seconds": "1~5 예상",
+    "parity": "호스트와 컨테이너의 예측값이 소수 3자리까지 같을 것으로 예상. 다만 RandomForest 는 부동소수 합산 순서에 민감할 수 있고 리눅스/macOS 의 BLAS 가 달라 어긋날 가능성을 배제하지 않는다",
+    "image_size_mb": "600~1400 예상 (rdkit·scikit-learn·scipy 포함)"
+   },
+   "actual": {
+    "host_p50_ms": 9.348,
+    "container_p50_ms": 11.61,
+    "container_vs_host": "컨테이너가 더 느림",
+    "model_load_seconds_container": 0.844,
+    "model_load_seconds_host": 1.218,
+    "parity": "일치",
+    "image_size_mb": 790.8
+   },
+   "expectations_not_met": [
+    "모델 로딩 예상 1~5초, 컨테이너 실제 0.844초"
+   ]
+  }
+ }
+}

@@ -1,0 +1,425 @@
+[
+ {
+  "question_id": "F1",
+  "question": "SMILES: CC(=O)Oc1ccccc1C(=O)O 이 분자의 EGFR pIC50 을 예측해줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "predict_activity",
+    "arguments": {
+     "smiles": "CC(=O)Oc1ccccc1C(=O)O"
+    },
+    "status": "ok",
+    "source_ids": [
+     "model:c6538d0d275df816",
+     "cohort:CHEMBL4258549",
+     "report:reports/baseline_pilot_20261020_v2/"
+    ],
+    "caveat_count": 6,
+    "elapsed_sec": 0.358,
+    "message": "예측값은 참고치다. M1 교차검증에서 평균 예측 대비 우위가 확정되지 않았다"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "predict_activity"
+  ],
+  "answer": {
+   "text": "도구가 돌려준 근거로만 구성한 답이다.",
+   "claims": [
+    {
+     "text": "모델 예측 pIC50 는 8.055 이다.",
+     "source_ids": [
+      "model:c6538d0d275df816",
+      "cohort:CHEMBL4258549",
+      "report:reports/baseline_pilot_20261020_v2/"
+     ]
+    },
+    {
+     "text": "학습 분자와의 최대 Tanimoto 유사도는 0.133 이고 scaffold 가 학습 범위에 없다.",
+     "source_ids": [
+      "model:c6538d0d275df816",
+      "cohort:CHEMBL4258549",
+      "report:reports/baseline_pilot_20261020_v2/"
+     ]
+    }
+   ],
+   "caveats": [
+    "M1 교차검증에서 이 모델은 평균 예측(Dummy)보다 낫다고 확정되지 않았다",
+    "라벨 범위가 pIC50 6.85~8.49(폭 1.65)뿐이라 그 밖의 활성은 예측 근거가 없다",
+    "정상형(WT) 생화학 IC50 으로만 학습했다. 변이형·세포 실험·분해제 지표에 쓰지 않는다",
+    "질의 분자의 Murcko scaffold 가 학습에 쓰인 12개 scaffold 에 없다. 적용 범위 밖이다",
+    "학습 분자와의 최대 Tanimoto 유사도가 0.13 로 낮다. 외삽이다",
+    "학습 표본이 22건이고 모두 단일 문헌·단일 실험(CHEMBL4258549)에서 왔다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:36.382139+00:00",
+  "total_elapsed_sec": 0.359
+ },
+ {
+  "question_id": "F2",
+  "question": "CHEMBL999999999 의 EGFR 실측 활성 기록을 보여줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "lookup_measurements",
+    "arguments": {
+     "molecule_chembl_id": "CHEMBL999999999"
+    },
+    "status": "not_found",
+    "source_ids": [
+     "chembl:CHEMBL999999999"
+    ],
+    "caveat_count": 0,
+    "elapsed_sec": 1.167,
+    "message": "CHEMBL999999999 와 CHEMBL203 의 활성 기록이 없다"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "lookup_measurements"
+  ],
+  "answer": {
+   "text": "도구가 근거를 돌려주지 못했다. 답을 지어내지 않는다.",
+   "claims": [],
+   "caveats": [],
+   "insufficient_information": true
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:36.740758+00:00",
+  "total_elapsed_sec": 1.167
+ },
+ {
+  "question_id": "F3",
+  "question": "10.1098/rstb.2024.0505 의 본문을 확보할 수 있는지 확인해줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "fetch_evidence",
+    "arguments": {
+     "identifier": "10.1098/rstb.2024.0505"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.1098/rstb.2024.0505"
+    ],
+    "caveat_count": 2,
+    "elapsed_sec": 1.594,
+    "message": "서지·접근성 조회 완료"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "fetch_evidence"
+  ],
+  "answer": {
+   "text": "도구가 돌려준 근거로만 구성한 답이다.",
+   "claims": [
+    {
+     "text": "'Towards better outcomes for epidermal growth factor receptor' 는 공개 접근이 아니다. 전문 상태: Free, Subscription required.",
+     "source_ids": [
+      "doi:10.1098/rstb.2024.0505"
+     ]
+    }
+   ],
+   "caveats": [
+    "공개 접근이 아니다. 전문 링크 상태: Free, Subscription required",
+    "본문을 읽지 않은 상태에서 본문 내용을 단정하지 않는다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:37.908067+00:00",
+  "total_elapsed_sec": 1.594
+ },
+ {
+  "question_id": "F4",
+  "question": "EGFR exon 20 insertion 저해제 문헌을 검색해줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "search_literature",
+    "arguments": {
+     "query": "EGFR exon insertion"
+    },
+    "status": "ok",
+    "source_ids": [
+     "doi:10.1080/14756366.2026.2730846",
+     "doi:10.3389/fimmu.2026.1952941",
+     "doi:10.3389/fonc.2026.1812440",
+     "doi:10.2340/1651-226x.2026.46295",
+     "pmid:PMC13602845"
+    ],
+    "caveat_count": 2,
+    "elapsed_sec": 1.744,
+    "message": "5건 검색"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "search_literature"
+  ],
+  "answer": {
+   "text": "도구가 돌려준 근거로만 구성한 답이다.",
+   "claims": [
+    {
+     "text": "2026년 Journal of enzyme inhibition and medicinal chemistry 의 'Structure-based rational design and biological evaluation of' (공개접근 N)",
+     "source_ids": [
+      "doi:10.1080/14756366.2026.2730846"
+     ]
+    },
+    {
+     "text": "2026년 Frontiers in immunology 의 'Correction: Case Report: Exceptional survival with immunothe' (공개접근 Y)",
+     "source_ids": [
+      "doi:10.3389/fimmu.2026.1952941"
+     ]
+    },
+    {
+     "text": "2026년 Frontiers in oncology 의 'Emergence of EGFR C797S as a resistance mechanism to CLN081 ' (공개접근 Y)",
+     "source_ids": [
+      "doi:10.3389/fonc.2026.1812440"
+     ]
+    }
+   ],
+   "caveats": [
+    "1건은 공개 접근이 아니다. 본문 확인 없이 수치를 인용하지 않는다",
+    "검색 결과는 초록 수준의 메타데이터다. 본문을 읽은 것이 아니다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:39.502393+00:00",
+  "total_elapsed_sec": 1.745
+ },
+ {
+  "question_id": "F5",
+  "question": "SMILES: this-is-not-a-molecule 이 분자의 EGFR pIC50 을 예측해줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "predict_activity",
+    "arguments": {
+     "smiles": "this-is-not-a-molecule"
+    },
+    "status": "error",
+    "source_ids": [],
+    "caveat_count": 0,
+    "elapsed_sec": 0.001,
+    "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "predict_activity"
+  ],
+  "answer": {
+   "text": "predict_activity 호출이 실패해 근거를 얻지 못했다: SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+   "claims": [],
+   "caveats": [
+    "predict_activity 가 실패했다. 다른 도구의 결과로 대신 답하지 않는다"
+   ],
+   "insufficient_information": true
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:41.246960+00:00",
+  "total_elapsed_sec": 0.001
+ },
+ {
+  "question_id": "F6",
+  "question": "오시머티닙의 임상 3상 전체 생존 기간 중앙값은 얼마야?",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [],
+  "n_calls": 0,
+  "tools_used": [],
+  "answer": {
+   "text": "이 질문에 쓸 수 있는 도구를 고르지 못했다. 답을 지어내지 않는다.",
+   "claims": [],
+   "caveats": [
+    "질문이 연결된 도구의 범위를 벗어난다"
+   ],
+   "insufficient_information": true
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:41.247595+00:00",
+  "total_elapsed_sec": 0.0
+ },
+ {
+  "question_id": "F7",
+  "question": "10.9999/does.not.exist 의 서지 정보를 가져와줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "fetch_evidence",
+    "arguments": {
+     "identifier": "10.9999/does.not.exist"
+    },
+    "status": "not_found",
+    "source_ids": [],
+    "caveat_count": 0,
+    "elapsed_sec": 1.964,
+    "message": "서지 정보를 찾지 못했다: '10.9999/does.not.exist'"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "fetch_evidence"
+  ],
+  "answer": {
+   "text": "도구가 근거를 돌려주지 못했다. 답을 지어내지 않는다.",
+   "claims": [],
+   "caveats": [],
+   "insufficient_information": true
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:41.247624+00:00",
+  "total_elapsed_sec": 1.964
+ },
+ {
+  "question_id": "F8",
+  "question": "CHEMBL4289490 의 EGFR 실측 기록을 보여주고 측정값을 그대로 인용해줘",
+  "policy": {
+   "name": "rule_based",
+   "version": "v1",
+   "model": null,
+   "prompt_version": null
+  },
+  "budget": {
+   "max_tool_calls": 6,
+   "max_search_retries": 2,
+   "require_source_ids": true,
+   "llm_may_invent_measurements": false
+  },
+  "calls": [
+   {
+    "index": 1,
+    "tool": "lookup_measurements",
+    "arguments": {
+     "molecule_chembl_id": "CHEMBL4289490"
+    },
+    "status": "ok",
+    "source_ids": [
+     "chembl:CHEMBL4289490",
+     "chembl_activity:18722867",
+     "chembl_activity:18722896"
+    ],
+    "caveat_count": 2,
+    "elapsed_sec": 1.178,
+    "message": "2건 조회"
+   }
+  ],
+  "n_calls": 1,
+  "tools_used": [
+   "lookup_measurements"
+  ],
+  "answer": {
+   "text": "도구가 돌려준 근거로만 구성한 답이다.",
+   "claims": [
+    {
+     "text": "CHEMBL4258549 에서 IC50 = 30.6 nM 로 보고됐다.",
+     "source_ids": [
+      "chembl_activity:18722867"
+     ]
+    },
+    {
+     "text": "CHEMBL4258550 에서 IC50 = 2.6 nM 로 보고됐다.",
+     "source_ids": [
+      "chembl_activity:18722896"
+     ]
+    }
+   ],
+   "caveats": [
+    "서로 다른 실험·조건의 값이 섞여 있을 수 있다. 하나의 값으로 합치지 않는다",
+    "정상형(WT)과 변이형, 생화학과 세포 실험, IC50·Ki·Kd 를 구분해 읽어야 한다"
+   ],
+   "insufficient_information": false
+  },
+  "stop_reason": "answered",
+  "started_at": "2026-10-21T12:22:43.211783+00:00",
+  "total_elapsed_sec": 1.18
+ }
+]

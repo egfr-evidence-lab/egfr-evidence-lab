@@ -3,9 +3,17 @@ __pycache__/
 *.py[cod]
 .venv/
 .venv-ml/
+.venv-repro/
+.venv-serve/
 .env
 .env.*
 !.env.example
+# API 키는 저장소 안에 두지 않는다. 이 저장소는 공개다.
+# 기본 경로는 ~/.config/egfr-evidence-lab/ 이며, 아래는 실수로 안에 둔 경우의 방어선이다.
+*api_key*
+*_key.txt
+secrets/
+*.pem
 *.egg-info/
 build/
 dist/

@@ -1,0 +1,64 @@
+{
+ "created_at_utc": "2026-10-21T15:48:09.081296+00:00",
+ "milestone": "M6",
+ "stage": "cloud_teardown",
+ "rule_followed": "configs/serving_m6_cloud.json 의 cost_control: 사용량을 수집한 뒤 삭제한다. 삭제가 먼저면 지표를 받을 수 없다",
+ "snapshot_before_deletion": {
+  "service_url": "https://egfr-pilot22-inference-evnfdxjziq-du.a.run.app",
+  "service_url_note": "배포 시 안내된 URL(...-551014461113.asia-northeast3.run.app)과 describe 가 돌려준 URL 이 다르다. Cloud Run 이 프로젝트 번호 기반 URL 과 난수 기반 URL 을 모두 제공한다. 검증은 전자로 했다",
+  "latest_ready_revision": "egfr-pilot22-inference-00002-nwm",
+  "revisions": [
+   "egfr-pilot22-inference-00002-nwm",
+   "egfr-pilot22-inference-00001-wjs"
+  ],
+  "artifact_registry_size": "173.612MB"
+ },
+ "deleted": [
+  {
+   "kind": "Cloud Run service",
+   "name": "egfr-pilot22-inference",
+   "region": "asia-northeast3",
+   "result": "Deleted service [egfr-pilot22-inference]",
+   "verified": "describe → Cannot find service"
+  },
+  {
+   "kind": "Artifact Registry repository",
+   "name": "egfr-lab",
+   "location": "asia-northeast3",
+   "result": "Deleted repository [egfr-lab]",
+   "verified": "describe → NOT_FOUND",
+   "included": "egfr-pilot22-inference 이미지(압축 173.612MB)가 함께 삭제됐다"
+  }
+ ],
+ "not_deleted": [
+  {
+   "kind": "GCP project",
+   "name": "project-eb5a476e-cdcf-4277-997",
+   "why": "사용자가 만든 프로젝트다. 프로젝트 자체는 과금되지 않는다. 삭제는 사용자 판단"
+  },
+  {
+   "kind": "enabled APIs",
+   "names": [
+    "run.googleapis.com",
+    "artifactregistry.googleapis.com"
+   ],
+   "why": "API 활성화 자체는 과금되지 않는다. 비활성화하지 않았다"
+  },
+  {
+   "kind": "Cloud Logging 로그",
+   "why": "기본 보존 기간(30일)으로 남는다. 요청 로그가 증거이므로 임의로 지우지 않았다. 저장량이 작아 무료 구간으로 본다"
+  },
+  {
+   "kind": "local docker images",
+   "names": [
+    "egfr-pilot22-inference:v1 (arm64)",
+    "egfr-pilot22-inference:v1-amd64"
+   ],
+   "why": "로컬 이미지는 과금과 무관하다. 재현에 필요하므로 남겼다"
+  }
+ ],
+ "remaining_charge_risk": "없다. 과금되는 자원(Cloud Run 서비스·레지스트리 이미지)을 모두 삭제했다",
+ "cost_still_unconfirmed": "과금 금액은 Cloud Billing 반영 지연으로 이 시점에 확인할 수 없다. 하루 이상 뒤 조회해야 한다. 삭제했으므로 추가 과금은 발생하지 않는다",
+ "aws_resources_created": 0,
+ "aws_note": "AWS 는 계정 수준 차단으로 로그인 자체가 안 됐고 자원을 만들지 않았다"
+}

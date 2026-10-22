@@ -1,0 +1,461 @@
+{
+ "created_at_utc": "2026-10-21T15:45:00.056140+00:00",
+ "milestone": "M6",
+ "stage": "cloud_execution",
+ "provider": "Google Cloud Run",
+ "region": "asia-northeast3",
+ "project": "project-eb5a476e-cdcf-4277-997",
+ "service": "egfr-pilot22-inference",
+ "service_url": "https://egfr-pilot22-inference-551014461113.asia-northeast3.run.app",
+ "config_path": "configs/serving_m6_cloud.json",
+ "config_sha256": "dc34ce5f57153b3ef83ad5bd47c58ed3c0aada219b5d7631e93de6383b9dca78",
+ "authentication": "require_authentication (gcloud ID 토큰으로 호출)",
+ "token_handling": "토큰은 메모리에만 두고 이 파일에 싣지 않는다",
+ "local_environment": {
+  "python": "3.12.14",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "verdicts": {
+  "C1_parity": true,
+  "C2_model_identity": true,
+  "C4_error_handling": true,
+  "C7_logs": true
+ },
+ "all_checked_passed": true,
+ "not_scored": {
+  "C3_cold_start": "1회 측정이라 채점하지 않는다",
+  "C5_latency": "합격선을 사전에 정하지 않아 채점하지 않는다",
+  "C6_usage_and_cost": "과금 반영 지연으로 금액을 확인할 수 없다"
+ },
+ "results": {
+  "C3_cold_start": {
+   "what": "min-instances 0 에서 첫 요청의 지연과 모델 로딩 시간",
+   "first_request_round_trip_ms": 134.8,
+   "readyz_status_code": 200,
+   "ready": true,
+   "model_load_seconds": 4.998,
+   "limitation": "배포 직후 첫 요청 1회만 측정했다. 유휴 15분 뒤의 재콜드 스타트는 측정하지 않았다. 반복 측정이 아니므로 분포를 주장하지 않는다",
+   "prior_measurement": {
+    "measured_at_utc": "2026-10-21T15:43Z (대략)",
+    "context": "Cloud Run 첫 배포(리비전 egfr-pilot22-inference-00001-wjs) 직후의 첫 요청. 진짜 콜드 스타트다",
+    "revision": "egfr-pilot22-inference-00001-wjs",
+    "first_request_round_trip_ms": 167,
+    "readyz_status_code": 200,
+    "model_load_seconds": 5.047,
+    "why_this_file_exists": "이 측정 직후 스크립트가 설정 키 오타(C1_parity vs C1_parity_with_local)로 중단됐다. 재실행하면 인스턴스가 떠 있어 콜드 스타트가 아니므로, 이 값을 버리지 않고 따로 보존한다",
+    "how_obtained": "scripts/verify_serving_cloud_m6.py 의 C3 단계 출력(터미널)",
+    "limitation": "1회 측정이다. 분포를 주장하지 않는다",
+    "note_on_167ms": "첫 요청 왕복이 167ms 인데 모델 로딩이 5.047초다. 모순이 아니다 — load_seconds 는 컨테이너가 시작될 때 측정한 값이고, Cloud Run 이 시작 프로브로 컨테이너를 먼저 띄운 뒤 우리 요청을 받았기 때문에 요청 왕복에 로딩 시간이 포함되지 않았다"
+   }
+  },
+  "C2_model_identity": {
+   "what": "/model-info 의 해시가 고정값과 같은가. 즉 올바른 모델이 서비스되는가",
+   "passed": true,
+   "hash_checks": {
+    "model_sha256": {
+     "expected": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+     "actual": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+     "match": true
+    },
+    "cohort_sha256": {
+     "expected": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+     "actual": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+     "match": true
+    },
+    "settings_sha256": {
+     "expected": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+     "actual": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+     "match": true
+    }
+   },
+   "n_training_molecules": 22,
+   "n_training_scaffolds": 12,
+   "training_label_range": [
+    6.8474059220725305,
+    8.494850021680094
+   ],
+   "runtime": {
+    "python": "3.12.14",
+    "platform": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "sklearn": "1.9.1",
+    "joblib": "1.6.0",
+    "rdkit": "2026.09.1"
+   },
+   "config_sha256_in_image": "dbdff039449a79609403887d718c56fa0b220186edb4212a44b3fafb3ec1d196",
+   "mandatory_caveats": [
+    "학습 표본이 22건이고 모두 단일 문헌·단일 실험(CHEMBL4258549)에서 왔다",
+    "M1 교차검증에서 이 모델은 평균 예측(Dummy)보다 낫다고 확정되지 않았다",
+    "라벨 범위가 pIC50 6.85~8.49(폭 1.65)뿐이라 그 밖의 활성은 예측 근거가 없다",
+    "정상형(WT) 생화학 IC50 으로만 학습했다. 변이형·세포 실험·분해제 지표에 쓰지 않는다"
+   ],
+   "refused_by_design": [
+    "학습·재학습 엔드포인트 — 서비스는 추론만 한다",
+    "고지 생략 옵션",
+    "변이형·세포 실험·분해제 지표 예측 — 학습 라벨이 WT 생화학 IC50 뿐이다",
+    "예측값을 '측정값'이나 '실측'으로 부르는 필드명"
+   ]
+  },
+  "C1_parity": {
+   "what": "Cloud Run 이 로컬과 같은 입력에 같은 예측값을 내는가",
+   "baseline": "reports/serving_m6_20261021/verification.json 의 V1 호스트 결과",
+   "passed": true,
+   "n_identical": 5,
+   "n_probes": 5,
+   "per_probe": [
+    {
+     "id": "P-in-1",
+     "note": "M5 D1 과 같은 분자. 적용 범위 안쪽 경로",
+     "identical": true,
+     "local_host": {
+      "status": "ok",
+      "predicted_pIC50": 7.936,
+      "in_applicability_domain": true,
+      "applicability": {
+       "scaffold_in_training": true,
+       "max_tanimoto_to_training": 1.0,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 4,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     },
+     "cloud_run": {
+      "status": "ok",
+      "predicted_pIC50": 7.936,
+      "in_applicability_domain": true,
+      "applicability": {
+       "scaffold_in_training": true,
+       "max_tanimoto_to_training": 1.0,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 4,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     }
+    },
+    {
+     "id": "P-out-1",
+     "note": "아스피린. M5 F1 과 같은 분자. 적용 범위 밖 경로",
+     "identical": true,
+     "local_host": {
+      "status": "ok",
+      "predicted_pIC50": 8.055,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.133,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     },
+     "cloud_run": {
+      "status": "ok",
+      "predicted_pIC50": 8.055,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.133,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     }
+    },
+    {
+     "id": "P-out-2",
+     "note": "에탄올. 극단적으로 작은 분자",
+     "identical": true,
+     "local_host": {
+      "status": "ok",
+      "predicted_pIC50": 8.054,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.053,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     },
+     "cloud_run": {
+      "status": "ok",
+      "predicted_pIC50": 8.054,
+      "in_applicability_domain": false,
+      "applicability": {
+       "scaffold_in_training": false,
+       "max_tanimoto_to_training": 0.053,
+       "training_label_range": [
+        6.8474059220725305,
+        8.494850021680094
+       ],
+       "n_training_molecules": 22
+      },
+      "n_caveats": 6,
+      "source_ids": [
+       "model:c6538d0d275df816",
+       "cohort:CHEMBL4258549",
+       "report:reports/baseline_pilot_20261020_v2/"
+      ]
+     }
+    },
+    {
+     "id": "P-bad-1",
+     "note": "해석 불가. 오류 경로",
+     "identical": true,
+     "local_host": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+      "has_value_field": false
+     },
+     "cloud_run": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+      "has_value_field": false
+     }
+    },
+    {
+     "id": "P-bad-2",
+     "note": "빈 문자열. 원자 0개로 파싱되는 함정(M5 에서 실제로 겪은 결함)",
+     "identical": true,
+     "local_host": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: ''",
+      "has_value_field": false
+     },
+     "cloud_run": {
+      "status": "error",
+      "message": "SMILES 를 해석할 수 없다: ''",
+      "has_value_field": false
+     }
+    }
+   ],
+   "platform_note": "로컬 기준값은 macOS arm64 호스트, Cloud Run 은 linux/amd64 다. 플랫폼이 다르다"
+  },
+  "C4_error_handling": {
+   "what": "컨테이너 단계와 같은 오류 10건을 클라우드에서도 같이 처리하는가",
+   "passed": true,
+   "n_passed": 10,
+   "n_cases": 10,
+   "failed": [],
+   "cases": [
+    {
+     "case": "빈 배열",
+     "expectation": "422",
+     "status_code": 422,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "빈 문자열 SMILES",
+     "expectation": "status=error 이고 값 필드 없음",
+     "status_code": 200,
+     "passed": true,
+     "detail": {
+      "result": {
+       "index": 0,
+       "smiles": "",
+       "status": "error",
+       "message": "SMILES 를 해석할 수 없다: ''",
+       "predict_ms": 0.026
+      }
+     }
+    },
+    {
+     "case": "해석 불가 문자열",
+     "expectation": "status=error 이고 값 필드 없음",
+     "status_code": 200,
+     "passed": true,
+     "detail": {
+      "result": {
+       "index": 0,
+       "smiles": "this-is-not-a-molecule",
+       "status": "error",
+       "message": "SMILES 를 해석할 수 없다: 'this-is-not-a-molecule'",
+       "predict_ms": 0.526
+      }
+     }
+    },
+    {
+     "case": "max_batch(32) 초과",
+     "expectation": "413",
+     "status_code": 413,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "smiles 필드 없음",
+     "expectation": "422",
+     "status_code": 422,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "JSON 아닌 본문",
+     "expectation": "4xx (500 이면 실패)",
+     "status_code": 422,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "smiles 가 배열이 아님",
+     "expectation": "422",
+     "status_code": 422,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "학습 엔드포인트 /train",
+     "expectation": "404",
+     "status_code": 404,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "학습 엔드포인트 /fit",
+     "expectation": "404",
+     "status_code": 404,
+     "passed": true,
+     "detail": null
+    },
+    {
+     "case": "학습 엔드포인트 /retrain",
+     "expectation": "404",
+     "status_code": 404,
+     "passed": true,
+     "detail": null
+    }
+   ]
+  },
+  "C5_latency": {
+   "what": "지연시간",
+   "measured_from": "한국(로컬 노트북)에서 asia-northeast3 리전으로",
+   "warmup_discarded": 20,
+   "sequential_requests": 200,
+   "batch_size": 1,
+   "client_round_trip_ms": {
+    "n": 200,
+    "p50": 50.019,
+    "p95": 64.371,
+    "min": 42.12,
+    "max": 75.615,
+    "mean": 51.373
+   },
+   "server_process_ms": {
+    "n": 200,
+    "p50": 35.042,
+    "p95": 45.494,
+    "min": 28.985,
+    "max": 60.546,
+    "mean": 36.122
+   },
+   "network_and_overhead_p50_ms": 14.977,
+   "how_to_read": "client_round_trip_ms 에는 네트워크 왕복·TLS·Cloud Run 프런트엔드가 섞여 있다. 서버 성능은 server_process_ms 로 읽는다",
+   "not_claimed": "처리량·동시 부하 성능이 아니다. 순차 요청의 측정이다"
+  },
+  "C7_logs": {
+   "what": "Cloud Logging 에 요청·오류가 남고 SMILES 는 남지 않는가",
+   "total_log_lines": 300,
+   "app_request_lines": 101,
+   "app_request_lines_with_duration": 101,
+   "sample": [
+    "2026-10-21 15:44:48 2026-10-21 15:44:48,598 INFO egfr_lab.serving POST /predict -> 200 42.2ms",
+    "2026-10-21 15:44:48 2026-10-21 15:44:48,658 INFO egfr_lab.serving POST /predict -> 200 43.8ms",
+    "2026-10-21 15:44:48 2026-10-21 15:44:48,709 INFO egfr_lab.serving POST /predict -> 200 35.9ms"
+   ],
+   "smiles_leaked_into_logs": [],
+   "passed": true
+  },
+  "C6_usage_and_cost": {
+   "what": "실제 사용량과 과금",
+   "requests_sent_by_this_script": {
+    "probes": 10,
+    "error_cases": 11,
+    "latency": 220,
+    "note": "스크립트가 보낸 횟수다. 서비스 쪽 집계와 다를 수 있다"
+   },
+   "collected_at_utc": "2026-10-21T15:44:55.846000+00:00",
+   "measurement_window_start_utc": "2026-10-21T15:44:39.630173+00:00",
+   "delay_caveat": "Cloud Monitoring 지표는 수 분, Cloud Billing 금액은 하루 이상 지연된다. 이 실행 직후에 금액이 0 으로 보이는 것은 '과금이 없다'는 뜻이 아니라 '아직 반영되지 않았다'는 뜻이다",
+   "service_revision": "egfr-pilot22-inference-00002-nwm\t2",
+   "request_log_sample": {
+    "n_entries_read": 135,
+    "status_counts": {
+     "200": 127,
+     "404": 3,
+     "413": 1,
+     "422": 4
+    },
+    "note": "최근 1000건만 읽었다. 전체 요청 수가 아니다"
+   },
+   "billing_enabled": "True\tbillingAccounts/018DAD-0BD504-B88375",
+   "cost_usd": null,
+   "cost_status": "이 실행에서는 확인할 수 없다. Cloud Billing 반영에 하루 이상 걸린다. 금액을 0 이라고 적지 않는다"
+  },
+  "pre_registration_vs_actual": {
+   "declared_before_measurement": {
+    "declared_before_any_cloud_measurement": true,
+    "why": "결과를 본 뒤 '예상대로였다'고 쓰지 않기 위해 먼저 적는다. 틀리면 틀린 대로 남긴다",
+    "parity_with_local": "소수 3자리까지 일치 예상. 다만 arm64→amd64 로 BLAS·부동소수 합산 순서가 달라질 수 있어 어긋날 가능성을 배제하지 않는다",
+    "server_side_p50_ms": "10~40 예상 (로컬 arm64 컨테이너 서버측 p50 이 10.04ms 였다)",
+    "client_round_trip_p50_ms": "30~150 예상 (한국→서울 리전. 네트워크가 지배할 것)",
+    "cold_start_first_request_seconds": "2~15 예상 (이미지 829MB 당겨오기 + 파이썬 시작 + 모델 로딩 0.844초)",
+    "model_load_seconds_in_cloud": "0.5~3 예상",
+    "billed_cost_usd": "0 예상 (무료 등급 안)",
+    "image_push_minutes": "3~20 예상 (829MB 업로드, 가정용 상향 대역폭)"
+   },
+   "actual": {
+    "server_process_p50_ms": 35.042,
+    "client_round_trip_p50_ms": 50.019,
+    "cold_start_first_request_seconds": 0.13,
+    "model_load_seconds": 4.998,
+    "parity": "일치"
+   },
+   "expectations_not_met": [
+    "콜드 스타트 첫 요청 예상 2~15초, 실제 0.13초",
+    "클라우드 모델 로딩 예상 0.5~3초, 실제 4.998초"
+   ]
+  }
+ }
+}

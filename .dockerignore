@@ -1,0 +1,23 @@
+# 허용 목록 방식: 전부 제외하고 서비스에 필요한 것만 되돌린다.
+#
+# 거부 목록으로 두면 새 폴더가 생길 때마다 빌드 컨텍스트에 조용히 섞인다.
+# 이 저장소는 공개이고 data/ 에 원자료가 있어, 빠뜨리는 쪽이 더 위험하다.
+# (제외 전 기준: data 247M · artifacts 66M · tmp 1.2G · .venv* 1.9G)
+*
+
+!deployment/requirements-serve.txt
+!src/egfr_lab/__init__.py
+!src/egfr_lab/config.py
+!src/egfr_lab/labels.py
+!src/egfr_lab/agent
+!src/egfr_lab/serving
+!configs/serving_m6.json
+!artifacts/agent_predictor_20261021
+
+# 되돌린 경로 안에서 다시 걸러낸다.
+**/__pycache__
+**/*.pyc
+**/.DS_Store
+**/*api_key*
+**/*_key.txt
+**/secrets

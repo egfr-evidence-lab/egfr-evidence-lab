@@ -1,0 +1,128 @@
+{
+  "version": "benchmark-repro-sampl-v1",
+  "frozen_on": "2026-10-21",
+  "status": "frozen_before_execution",
+  "milestone": "M3",
+  "execution_choice": "C (환경 교체 + 예산 축소)",
+  "claim": "원 논문과 동일 조건 재현이 아니다. 축소 조건에서의 결과로만 서술한다",
+
+  "target": {
+    "paper_doi": "10.1021/acs.jcim.3c01250",
+    "benchmark": "sampl (물-옥탄올 logP, SAMPL6/7/9 예측)",
+    "author_script": "chemprop_benchmark/scripts/sampl.sh",
+    "author_repo_commit": "247f3eee19ae66e05374bd6ef23ffd6d900ff213",
+    "source_evidence": "data/raw/benchmark_source_20261020/manifest.json"
+  },
+
+  "data": {
+    "dir": "data/raw/benchmark_data_20261021",
+    "zenodo_record": "10078142",
+    "archive_md5_expected": "57fef6993e9539ed8751a630c337e841",
+    "archive_md5_verified": true,
+    "archive_bytes_streamed": 1632346035,
+    "verification_note": "1.63GB 전체를 스트리밍하며 MD5를 계산해 Zenodo 공개값과 일치 확인. 디스크에는 logP 7개 파일만 저장",
+    "rows": {"train": 18776, "val": 2347, "test": 2346, "logP_without_overlap": 23469,
+             "sampl6": 11, "sampl7": 22, "sampl9": 15},
+    "split_unchanged": true,
+    "split_note": "저자가 배포한 train/val/test 파일을 그대로 사용한다. 다시 나누지 않는다"
+  },
+
+  "author_original_settings": {
+    "hyperparameter_search": "hyperparameter_optimization.py --num_iters 30 --epochs 50, 탐색 대상 depth/ffn_num_layers/hidden_size/ffn_hidden_size/dropout",
+    "split_training": "--epochs 50 --aggregation norm --ensemble_size 5 --extra_metrics mae, hyperopt config 사용",
+    "production_training": "--epochs 40 --aggregation norm --ensemble_size 5, 전체 logP_without_overlap.csv",
+    "prediction": "production 앙상블로 sampl6/7/9 예측 후 RMSE",
+    "environment": "python 3.7.6 / torch 1.7.1 / cudatoolkit 10.2 / numpy 1.18.1 / scikit-learn 0.22.2.post1 (Linux, NVIDIA GPU)"
+  },
+
+  "reduced_settings": {
+    "hyperparameter_search": false,
+    "hyperparameter_source": "Chemprop v1.6.1 기본값 (depth 3, hidden_size 300, ffn_num_layers 2, dropout 0)",
+    "epochs_split": 50,
+    "epochs_production": 40,
+    "ensemble_size": 1,
+    "aggregation": "norm",
+    "seed": 0,
+    "seed_note": "저자 스크립트는 --seed를 지정하지 않아 Chemprop 기본값 0이 적용된다. 같은 값을 명시적으로 지정했다"
+  },
+
+  "deviations": [
+    {
+      "item": "하이퍼파라미터 탐색",
+      "author": "30회 탐색(각 50 epoch)",
+      "ours": "생략, 기본값 사용",
+      "reason": "이 기기 측정 기준 1 epoch 약 3분 34초(피처화 포함). 30x50 epoch는 현실적으로 불가능",
+      "impact": "저자가 찾은 최적 하이퍼파라미터를 쓰지 못하므로 성능이 낮게 나올 수 있다"
+    },
+    {
+      "item": "앙상블 크기",
+      "author": 5,
+      "ours": 1,
+      "reason": "계산량 5배 축소",
+      "impact": "앙상블 평균 효과가 없어 분산이 크고 성능이 낮게 나올 수 있다"
+    },
+    {
+      "item": "epoch 수",
+      "author": "split 50 / production 40",
+      "ours": "split 50 / production 40",
+      "reason": "축소하지 않음",
+      "impact": "없음 (저자와 동일)"
+    },
+    {
+      "item": "실행 환경",
+      "author": "python 3.7.6 / torch 1.7.1 / CUDA 10.2 / numpy 1.18.1 / sklearn 0.22.2 (Linux, GPU)",
+      "ours": "python 3.12.14 / torch 2.5.1 / numpy 1.26.4 / sklearn 1.5.2 (macOS arm64, CPU)",
+      "reason": "저자 환경은 Apple Silicon에 설치 불가(torch 1.7.1 빌드 없음, CUDA 없음)",
+      "impact": "수치 연산·난수 구현 차이로 결과가 달라질 수 있다"
+    },
+    {
+      "item": "저자 코드 수정",
+      "author": "-",
+      "ours": "없음",
+      "reason": "환경 버전 선택으로 비호환을 해결함. numpy<2(VisibleDeprecationWarning 유지), torch<2.6(torch.load weights_only 기본값), scikit-learn 1.5.x(mean_squared_error의 squared 인자 유지)",
+      "impact": "chemprop v1.6.1 소스는 그대로다"
+    }
+  ],
+
+  "environment_actual": {
+    "python": "3.12.14",
+    "chemprop": "1.6.1",
+    "torch": "2.5.1",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit-learn": "1.5.2",
+    "pandas": "2.2.3",
+    "rdkit": "2026.9.1",
+    "hyperopt": "0.3.0",
+    "tensorboardx": "2.6.5",
+    "venv": ".venv-repro (주 프로젝트 .venv/.venv-ml과 분리)",
+    "device": "CPU (CUDA 없음, chemprop v1은 MPS 미사용)"
+  },
+
+  "timing_probe": {
+    "run": "1 epoch, 저자 분할",
+    "elapsed": "0:03:34",
+    "includes": "데이터 로딩·피처화·1 epoch 학습·테스트 평가",
+    "probe_score_discarded": true,
+    "probe_score_note": "타이밍 측정용 실행의 테스트 RMSE는 설정 결정에 사용하지 않았고 결과로도 보고하지 않는다"
+  },
+
+  "evaluation": {
+    "primary": "SAMPL6/7/9 실험값 대비 RMSE (저자 스크립트와 동일 컬럼)",
+    "columns": {
+      "SAMPL6": {"file": "sampl6_experimental.csv", "smiles": "Isomeric SMILES", "truth": "logP mean"},
+      "SAMPL7": {"file": "sampl7_experimental.csv", "smiles": "Isomeric SMILES", "truth": "logP mean"},
+      "SAMPL9": {"file": "sampl9_experimental.csv", "smiles": "smiles", "truth": "new_logPexp_reviewed"}
+    },
+    "secondary": "저자 분할 테스트셋의 RMSE·MAE",
+    "author_reported_for_comparison": {"SAMPL6": 0.27, "SAMPL7": 0.49, "SAMPL9": 1.11, "random_test_set": 0.53},
+    "tolerance_defined": false,
+    "tolerance_note": "축소 조건이므로 합격/불합격 허용 오차를 정의하지 않는다. 차이를 그대로 보고하고 원인을 축소 항목과 함께 설명한다"
+  },
+
+  "forbidden": [
+    "이 결과를 원 논문 재현 성공으로 서술하는 것",
+    "축소 조건을 밝히지 않고 저자 수치와 나란히 비교하는 것",
+    "결과를 본 뒤 이 설정을 수정해 다시 돌리고 그것을 최초 결과처럼 쓰는 것"
+  ]
+}

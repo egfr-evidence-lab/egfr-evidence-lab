@@ -19,6 +19,10 @@ dense = ["sentence-transformers", "faiss-cpu"]
 agent = ["langgraph", "pydantic"]
 tracking = ["mlflow"]
 app = ["fastapi", "uvicorn", "streamlit"]
+# M6 추론 서비스. 버전은 deployment/requirements-serve.txt 에 고정한다.
+# 모델을 저장할 때 쓴 scikit-learn·joblib·numpy 버전과 같아야 한다.
+serve = ["fastapi", "uvicorn", "pydantic", "scikit-learn", "rdkit", "joblib",
+         "numpy", "scipy", "httpx"]
 cloud = ["boto3"]
 pdf = ["reportlab", "pypdf", "pillow"]
 

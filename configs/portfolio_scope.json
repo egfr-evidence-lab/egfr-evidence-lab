@@ -1,53 +1,507 @@
 {
-  "version": "portfolio-scope-v1",
-  "accepted_on": "2026-10-20",
-  "authorization": "사용자가 적합성 보고서의 추가 범위를 프로젝트에 포함하고 순서대로 진행하도록 요청",
-  "active_milestone": "M1",
-  "milestones": [
-    {
-      "id": "M1", "name": "확정 데이터와 기준 모델 실험", "phases": ["P0", "P1"],
-      "status": "in_progress", "depends_on": [],
-      "completion_evidence": ["원문 근거가 연결된 코호트 결정과 제외·보류표", "분자·scaffold 누출 검사와 고정 분할", "Dummy와 Morgan-RF의 동일 시험 자료 평가", "오차·불확실성·실패 사례·적용 범위 보고"],
-      "current_limit": "45건 상세법·human유래 대기. OA 연결은 ChEMBL 파생 데이터셋으로 원문 검증 아님. WT특허64건의 원MS35관측 점검 중13질량 경보. 자료·3분할·구조거리 진단 완료, 새 학습 승인0건. M1 완료 아님",
-      "progress_report": "reports/cohort_scope_evidence_ko.md",
-      "acquisition_report": "reports/main_cohort_acquisition_ko.md",
-      "educational_baseline_report": "reports/apsel_review_and_baseline_ko.md",
-      "prior_review_report": "reports/wt_expansion_review_ko.md",
-      "source_review_holds_path": "configs/source_review_holds.json"
+ "version": "portfolio-scope-v1",
+ "accepted_on": "2026-10-20",
+ "authorization": "사용자가 적합성 보고서의 추가 범위를 프로젝트에 포함하고 순서대로 진행하도록 요청",
+ "active_milestone": "M4",
+ "sequence_change_20261020": {
+  "change": "M2(D-MPNN 비교)와 M3(공개 benchmark 재현)의 순서를 바꾼다. M3를 먼저 수행한다",
+  "reason": "승인된 코호트가 22건이라 그 위에서 D-MPNN을 돌리면 어떤 모델도 이길 수 없고 '딥러닝 실행 역량'의 증거가 되지 않는다. 데이터 규모가 충분한 공개 benchmark에서 먼저 실행 증거를 만든 뒤, 같은 환경으로 pilot22 D-MPNN을 각주로 덧붙인다",
+  "authorized_by": "사용자 2026-10-20",
+  "unchanged": "M2의 완료 기준 자체는 바꾸지 않는다. 동일 데이터·분할·지표, 명시적 튜닝 예산, 성능 우세를 전제하지 않는 해석"
+ },
+ "milestones": [
+  {
+   "id": "M1",
+   "name": "확정 데이터와 기준 모델 실험",
+   "phases": [
+    "P0",
+    "P1"
+   ],
+   "status": "complete_scope_limited",
+   "depends_on": [],
+   "completed_on": "2026-10-20",
+   "approval_path": "configs/main_cohort_approval.json",
+   "completion_evidence": [
+    "원문 근거가 연결된 코호트 결정과 제외·보류표",
+    "분자·scaffold 누출 검사와 고정 분할",
+    "Dummy와 Morgan-RF의 동일 시험 자료 평가",
+    "오차·불확실성·실패 사례·적용 범위 보고"
+   ],
+   "completion_evidence_paths": {
+    "코호트 결정과 보류표": "reports/cohort_definition_evidence.md, configs/source_review_holds.json, data/interim/audit_chembl_full_20261020/manual_review_queue.csv",
+    "누출 검사와 고정 분할": "data/interim/cohort_scope_diagnostics_20261020/prospective_fold_metrics.csv (pilot22 scaffold 3-fold 골격중복 0)",
+    "Dummy와 RF 평가": "reports/baseline_pilot_20261020_v2/, artifacts/baseline_pilot_20261020_v2/, reports/baseline_pilot_validation.json",
+    "오차·한계 보고": "reports/apsel_review_and_baseline_ko.md, reports/dataset_card.md, reports/candidate_fit_review_ko.md",
+    "후보 선정 근거": "reports/candidate_fit_review_ko.md (242 assay 중 9게이트 전부 통과 1건)"
+   },
+   "current_limit": "승인 코호트는 22건·12 scaffold·단일 문헌이다. 일반 EGFR 성능·RF 우위(CI가 0 포함)·새 계열 일반화를 주장하지 않는다. furan45·patent64·Apsel209·981건·BLU-945는 보류 유지, cross-assay pooling 0쌍",
+   "progress_report": "reports/cohort_scope_evidence_ko.md",
+   "acquisition_report": "reports/main_cohort_acquisition_ko.md",
+   "educational_baseline_report": "reports/apsel_review_and_baseline_ko.md",
+   "prior_review_report": "reports/wt_expansion_review_ko.md",
+   "source_review_holds_path": "configs/source_review_holds.json"
+  },
+  {
+   "id": "M2",
+   "name": "D-MPNN 비교",
+   "phases": [
+    "P2"
+   ],
+   "status": "complete_scope_limited",
+   "depends_on": [
+    "M1",
+    "M3"
+   ],
+   "completed_on": "2026-10-21",
+   "implementation": "Chemprop v1.6.1 (.venv-repro, M3 환경 재사용). 사용자 2026-10-21 선택",
+   "result_summary": {
+    "headline": "고정 분할·고정 지표에서 D-MPNN 은 Dummy 와 구별되지 않았다. 12개 paired 비교 중 11개의 95% 구간이 0을 포함",
+    "scaffold_MAE": {
+     "Dummy": 0.3096,
+     "DMPNN": [
+      0.3111,
+      0.309,
+      0.3091
+     ],
+     "RandomForest": [
+      0.295,
+      0.3001,
+      0.2925
+     ]
     },
-    {
-      "id": "M2", "name": "D-MPNN 비교", "phases": ["P2"],
-      "status": "planned", "depends_on": ["M1"],
-      "completion_evidence": ["M1과 같은 데이터·분할·평가 지표", "검증 자료만 사용한 명시적 튜닝 예산", "seed·학습 시간·환경·RF 대비 paired 차이 기록", "성능 우세를 전제하지 않는 결과 해석"]
+    "scaffold_spearman": {
+     "Dummy": -0.1015,
+     "DMPNN": [
+      -0.299,
+      -0.2018,
+      -0.0718
+     ],
+     "RandomForest": [
+      0.2687,
+      0.2418,
+      0.2582
+     ]
     },
-    {
-      "id": "M3", "name": "저자 공개 벤치마크 한 개 재현", "phases": ["P2"],
-      "status": "planned", "depends_on": ["M2"],
-      "completion_evidence": ["저자 데이터·분할·commit·환경·설정 출처", "단일 벤치마크의 실제 실행 기록", "원 결과와 재현 결과의 차이와 한계", "주 프로젝트의 방법 적용과 분리된 재현 환경"]
+    "only_ci_excluding_zero": "random_molecule seed42 의 DMPNN-RF (+0.0631, 구간 +0.0013~+0.1179). 나머지 2개 seed 는 0 포함이므로 RF 우세의 근거로 쓰지 않는다",
+    "root_cause": "모델이 거의 상수를 예측한다. scaffold 예측 표준편차 0.011~0.036 대 관측 0.377, 예측 폭 0.05 대 관측 폭 1.65",
+    "interpretation": "D-MPNN 의 성능 평가가 아니라 규모 한계의 측정이다. 학습 fold 가 8~13개뿐이다"
+   },
+   "report_path": "reports/dmpnn_pilot22_20261021_v2/dmpnn_pilot22_report_ko.md",
+   "frozen_config": "configs/dmpnn_pilot22.json",
+   "runner": "scripts/run_dmpnn_pilot22.py",
+   "scorer": "scripts/score_dmpnn_pilot22.py (M1 의 metrics()·paired_cluster_ci() 를 import)",
+   "prior_expectation_outcome": "실행 전에 'D-MPNN 이 Dummy 보다 나쁠 것'으로 고정했다. MAE 부호는 seed 마다 갈려 예상이 부분적으로 빗나갔고, 정확한 결론은 '더 나쁘다'가 아니라 '구별되지 않는다'다. 예상의 근거였던 규모 부족은 상수 붕괴로 직접 확인됐다",
+   "asymmetry_disclosed": "M1 의 Dummy·RF 는 학습 fold 전체를 썼지만 D-MPNN 은 조기 종료용 검증 자료 3~4개를 떼어 실제 학습 분자가 더 적다(scaffold 11/16/17 → 8/12/13). D-MPNN 에 불리한 조건이며 기록에 남겼다",
+   "implementation_correction": {
+    "defect": "1차 실행은 --pytorch_seed 를 넘기지 않아 세 seed 가 같은 초기 가중치를 썼다. seed 간 예측 차이가 7.2e-05 로 부동소수점 잡음 수준이었다",
+    "cause": "chemprop v1 의 --seed 는 데이터 분할 시드이고, 분할 파일을 직접 주는 이 실험에서는 효과가 없다. 가중치 초기화는 --pytorch_seed(기본 0)가 맡는다",
+    "fix": "--pytorch_seed 를 model_seeds 와 같은 값으로 전달. seed 간 예측 차이 7.2e-05 → 4.0e-02",
+    "disclosure": "1차 지표를 본 뒤 수정했으나 근거는 점수가 아니라 chemprop 문서와 '세 seed 결과 동일' 관찰이다. 1차 산출물 reports/dmpnn_pilot22_20261021/ 보존",
+    "conclusion_unchanged": "1차에서는 12개 비교 전부 0을 포함했다. 결론은 같다"
+   },
+   "must_not_claim": [
+    "D-MPNN 이 RF 보다 낫거나 못하다는 일반화",
+    "22건 결과를 일반 EGFR 성능의 근거로 쓰는 것",
+    "random_molecule seed42 한 건을 RF 우세의 증거로 쓰는 것",
+    "이 결과를 이유로 원 자료의 training_ready=False 를 바꾸는 것",
+    "보류 중인 assay 를 끌어와 표본을 늘리는 것"
+   ],
+   "next_requirement": "이 과제에서 D-MPNN 을 의미 있게 평가하려면 표본을 늘려야 한다. 막힌 경로는 configs/source_review_holds.json 의 보류 항목이며, 새 원문 근거 없이 보류를 풀지 않는다",
+   "sequence_note": "순서 변경으로 M3 이후에 수행한다. M3에서 구축한 딥러닝 환경을 재사용하고, 22건에서의 결과는 규모 한계를 보이는 각주로 다룬다",
+   "completion_evidence": [
+    "M1과 같은 데이터·분할·평가 지표",
+    "검증 자료만 사용한 명시적 튜닝 예산",
+    "seed·학습 시간·환경·RF 대비 paired 차이 기록",
+    "성능 우세를 전제하지 않는 결과 해석"
+   ]
+  },
+  {
+   "id": "M3",
+   "name": "저자 공개 벤치마크 한 개 재현",
+   "phases": [
+    "P2"
+   ],
+   "status": "complete_scope_limited",
+   "depends_on": [
+    "M1"
+   ],
+   "completed_on": "2026-10-21",
+   "result_summary": {
+    "claim": "축소 조건에서의 결과다. 원 논문과 동일 조건 재현이 아니다",
+    "sampl_rmse_ours": {
+     "SAMPL6": 0.3666,
+     "SAMPL7": 0.6843,
+     "SAMPL9": 1.053
     },
-    {
-      "id": "M4", "name": "기업 관련 EGFR 내성·분해제 문헌 사례", "phases": ["P0", "P3"],
-      "status": "in_progress", "depends_on": [],
-      "completion_evidence": ["원문 또는 SI의 세포·변이·시간·지표 정의와 근거 위치", "WT·변이 및 IC50·GI50·DC50·Dmax 구분", "기전 대조 실험과 미확인 항목 기록", "초록 확인·문헌 해석·실험 재현의 구분"],
-      "current_limit": "HBE-843 초록·메타데이터 카드까지만 확인; 본문·SI 전체 검토 전"
+    "sampl_rmse_author_reported": {
+     "SAMPL6": 0.27,
+     "SAMPL7": 0.49,
+     "SAMPL9": 1.11
     },
-    {
-      "id": "M5", "name": "근거 조회와 도구 선택 Agent", "phases": ["P3", "P4"],
-      "status": "planned", "depends_on": ["M3", "M4"],
-      "completion_evidence": ["예측·측정 조회·문헌 검색의 실제 도구 연결", "개발·최종 평가 질문 분리", "도구 선택·주장별 인용·정보 부족·오류·종료 평가", "호출 trace와 모델·prompt·출처 버전 기록"]
+    "sampl_rmse_ci95_bootstrap": {
+     "SAMPL6": [
+      0.2424,
+      0.4724
+     ],
+     "SAMPL7": [
+      0.3945,
+      0.9495
+     ],
+     "SAMPL9": [
+      0.7324,
+      1.3481
+     ]
     },
-    {
-      "id": "M6", "name": "컨테이너 추론 API와 클라우드 실행", "phases": ["P5"],
-      "status": "planned", "depends_on": ["M5"],
-      "completion_evidence": ["버전이 고정된 추론 API·컨테이너", "실제 클라우드 요청·응답과 모델 버전", "오류·로그·재시작·지연시간·비용 기록"],
-      "current_limit": "클라우드 계정·리소스·실제 비용 조건은 미구성"
+    "author_values_inside_our_ci": "3/3 세트 모두 포함. 평가 세트가 11·22·16개 분자라 두 결과를 구별할 수 없다",
+    "author_split_test": {
+     "rmse": 0.5636,
+     "mae": 0.335,
+     "author_reported_random_test": 0.53
+    },
+    "total_runtime": "약 55분 (split 20.9분 + production 33.4분 + 예측 0.3분)",
+    "all_stages_clean_exit": true
+   },
+   "report_path": "reports/sampl_repro_20261021_v2/benchmark_repro_report_ko.md",
+   "result_json": "reports/sampl_repro_20261021_v2/sampl_repro_result.json",
+   "metrics_json": "reports/sampl_repro_20261021_v2/metrics_detail.json",
+   "frozen_config": "configs/benchmark_repro_v2.json",
+   "runner": "scripts/run_sampl_repro_v2.py",
+   "independent_check": "scripts/analyze_sampl_repro.py (SMILES 정렬 검증 + 부트스트랩 구간)",
+   "must_not_claim": [
+    "원 논문 재현 성공",
+    "저자 모델보다 우세하거나 열세라는 결론",
+    "SAMPL9 에서의 우세 (구간 폭 안의 변동이다)",
+    "이 모델의 EGFR 과제 적용 가능성 (대상 물성이 물-옥탄올 logP 로 다르다)"
+   ],
+   "incident_record": {
+    "what": "v1 설정(데이터로더 워커 저자 기본값 8)에서 split 학습이 계산을 완료한 뒤 chemprop_train 프로세스가 종료되지 않아 파이프라인이 약 2시간 정지",
+    "diagnosis": "macOS sample 네이티브 스택에서 Py_FinalizeEx -> slot_tp_finalize -> os_waitpid -> __wait4 블록 확인. 인터프리터 종료 처리 중 자식 프로세스 대기",
+    "controlled_test": "전체 데이터 1 epoch: 워커 8 → 3분 34초 미종료 / 워커 0 → 29초 정상 종료 (약 7배 빠름)",
+    "resolution": "워커 0 으로 고정(v2)하고 단계별 종료 감시 추가. 저자 코드는 수정하지 않음",
+    "v1_preserved": "artifacts/sampl_repro_20261021/split_model/ 와 configs/benchmark_repro.json 보존. v1 split RMSE 0.5662 대 v2 0.5636 (차이 0.5%) 를 함께 보고",
+    "disclosure": "워커 변경은 v1 split 점수를 본 뒤 결정했다. 점수 개선 목적이 아닌 환경 결함 대응이며, v1 결과를 숨기지 않는다"
+   },
+   "known_record_correction": "configs 의 data.rows.sampl9 를 15 로 잘못 기재했다(실제 16행). 파일 끝 개행이 없어 wc -l 이 1 적게 센 것이 원인. 실행은 pandas 로 16행 전부를 사용했고 결과에 영향 없다. 결과 JSON 의 config_sha256 검증 가능성을 지키기 위해 설정 파일은 수정하지 않고 보고서 §7.1 에 정정을 남겼다",
+   "sequence_note": "순서 변경으로 M2보다 먼저 수행한다. 딥러닝 실행 증거를 충분한 규모의 자료에서 먼저 만든다",
+   "preconditions": [
+    "저자 공개 데이터·분할·commit·환경 설정을 먼저 확보하고 해시로 보존",
+    "원 결과 수치를 확인하기 전에 목표 수치를 만들지 않는다",
+    "재현 환경을 주 프로젝트 .venv-ml과 분리한다"
+   ],
+   "step1_source_acquisition": {
+    "status": "complete",
+    "completed_on": "2026-10-20",
+    "evidence_path": "data/raw/benchmark_source_20261020/manifest.json",
+    "doc_table_filled": "docs/04_reproduction.md"
+   },
+   "execution_choice": {
+    "chosen": "C",
+    "chosen_on": "2026-10-20",
+    "authorized_by": "사용자",
+    "definition": "저자 코드(Chemprop v1.6.1)·데이터·분할은 그대로 두고, 환경을 최신 python/torch CPU로 교체하며, 하이퍼파라미터 탐색과 앙상블 크기를 축소해 실행한다",
+    "why_not_A": "저자 환경(python3.7.6/torch1.7.1/CUDA10.2)이 Apple Silicon에 설치 불가하고, 전체 예산(hyperopt 30회x50epoch + 앙상블 5x50 + production 5x40)은 CPU에서 과도하다",
+    "why_not_B": "linux/amd64 컨테이너 에뮬레이션은 이 기기에서 비현실적으로 느리다",
+    "must_record_when_executed": [
+     "실제 사용한 python·torch·chemprop·scikit-learn 버전",
+     "축소한 항목과 축소 전 저자 설정값(hyperopt 반복수, epoch, ensemble_size)",
+     "sklearn squared=False 제거에 따른 RMSE 계산 방식 변경 내용",
+     "저자 보고값(SAMPL6 0.27 / SAMPL7 0.49 / SAMPL9 1.11)과 우리 결과의 차이",
+     "동일 조건 재현이 아니라는 명시"
+    ],
+    "forbidden": "축소 실행 결과를 원 논문과 공정한 동일 조건 비교로 서술하는 것"
+   },
+   "completion_evidence": [
+    "저자 데이터·분할·commit·환경·설정 출처",
+    "단일 벤치마크의 실제 실행 기록",
+    "원 결과와 재현 결과의 차이와 한계",
+    "주 프로젝트의 방법 적용과 분리된 재현 환경"
+   ]
+  },
+  {
+   "id": "M4",
+   "name": "기업 관련 EGFR 내성·분해제 문헌 사례",
+   "phases": [
+    "P0",
+    "P3"
+   ],
+   "status": "blocked_source_unavailable",
+   "depends_on": [],
+   "blocked_on": "2026-10-21",
+   "blocker": {
+    "what": "대상 문헌(Baig 등, Archiv der Pharmazie 2026, DOI 10.1002/ardp.70193, PMID 41635121)의 본문·SI 를 자동 접근으로 확보할 수 없다",
+    "evidence_path": "data/raw/m4_access_evidence_20261021/manifest.json",
+    "agreeing_sources": "Crossref(라이선스 vor/tdm, CC 아님) · OpenAlex(is_oa false, oa_status closed, 공개 위치 0개) · Europe PMC(isOpenAccess N, inPMC N, 전문 링크가 'Subscription required') · Semantic Scholar(openAccessPdf status CLOSED) · PubMed LinkOut(무료 전문 속성 없음)",
+    "wiley_403_note": "Wiley 페이지는 403 이지만 내용이 'Just a moment... Enable JavaScript and cookies to continue' 인 Cloudflare 봇 차단이다. 유료화의 증거가 아니라 자동 접근 차단의 증거이므로 구분해 기록했다",
+    "alternatives_checked": "프리프린트·다른 버전 없음(OpenAlex 제목 검색 1건). 기업 특허 경로 없음(BNJ Biopharma 특허 2건은 모두 약물설계 방법·장치, Handok 4건은 무관). KAIST 리포지터리는 JS 렌더링 때문에 자동 조회 불가로 unverified",
+    "impact": "M4 완료 조건 4개 중 3개(원문·SI 의 조건 정의, 변이별 endpoint 배정, 기전 대조 실험)가 본문에 의존한다. 조건 4(초록 확인·해석·재현의 구분)만 현재 카드로 충족",
+    "unblock_paths": [
+     "사용자가 브라우저·소속 기관 구독으로 본문 PDF 를 확보해 전달",
+     "사용자가 KAIST KOASAS 를 브라우저로 직접 확인",
+     "공개 전문이 있는 대체 문헌으로 교체 (기업 연관성 조건은 달라짐)"
+    ],
+    "forbidden": "유료 콘텐츠를 비공식 경로로 받지 않는다. 초록의 범위값을 특정 변이·세포주의 단일값으로 배정하지 않는다"
+   },
+   "current_limit": "HBE-843 초록·메타데이터 카드까지만 확인; 본문·SI 전체 검토 전",
+   "completion_evidence": [
+    "원문 또는 SI의 세포·변이·시간·지표 정의와 근거 위치",
+    "WT·변이 및 IC50·GI50·DC50·Dmax 구분",
+    "기전 대조 실험과 미확인 항목 기록",
+    "초록 확인·문헌 해석·실험 재현의 구분"
+   ]
+  },
+  {
+   "id": "M5",
+   "name": "근거 조회와 도구 선택 Agent",
+   "phases": [
+    "P3",
+    "P4"
+   ],
+   "status": "complete_scope_limited",
+   "depends_on": [
+    "M3"
+   ],
+   "started_on": "2026-10-21",
+   "dependency_change_20261021": {
+    "change": "depends_on 에서 M4 를 뺀다. 원래 [M3, M4] 였다",
+    "reason": "M4 가 원문 확보 불가로 보류됐다(blocked_source_unavailable). M5 는 도구 연결·평가 설계가 핵심이라 M4 의 문헌 사례가 없어도 수행할 수 있다",
+    "authorized_by": "사용자 2026-10-21 (선택지 C)",
+    "what_is_lost": "M4 가 제공했을 '기업 문헌 사례'를 Agent 의 문헌 검색 평가 질문에 쓰지 못한다. 대신 이미 확보한 공개 근거(pilot22 코호트·ChEMBL·Europe PMC)로 질문을 구성한다",
+    "m4_not_cancelled": "M4 는 취소가 아니라 보류다. 본문이 확보되면 재개한다"
+   },
+   "execution_precondition_checked_20261021": {
+    "llm_api_key": "없음 — ANTHROPIC_API_KEY·OPENAI_API_KEY 모두 미설정 확인",
+    "existing_code": "src/egfr_lab/agent/ 는 74바이트 빈 스텁이다. 처음부터 만든다",
+    "plan": "키가 없어도 만들 수 있는 부분(실제 도구 4개 연결, 호출 trace, 개발·최종 질문 분리, 평가 하네스)을 먼저 완성하고, 정책(policy)을 교체 가능하게 설계한다. 규칙 기반 정책으로 하네스를 검증한 뒤 LLM 정책은 키가 생기면 같은 인터페이스로 끼운다",
+    "honesty_rule": "LLM 을 실제로 돌리지 않은 상태에서 'LLM Agent 를 평가했다'고 쓰지 않는다. 규칙 기반 정책의 결과는 그렇게 명시한다"
+   },
+   "completion_evidence": [
+    "예측·측정 조회·문헌 검색의 실제 도구 연결",
+    "개발·최종 평가 질문 분리",
+    "도구 선택·주장별 인용·정보 부족·오류·종료 평가",
+    "호출 trace와 모델·prompt·출처 버전 기록"
+   ],
+   "progress_20261021": {
+    "completed": [
+     "도구 4개 실제 연결(predict_activity·lookup_measurements·search_literature·fetch_evidence)",
+     "실행기의 예산·출처 강제·종료 처리",
+     "개발(6문항)·최종(8문항) 질문 분리와 평가 하네스",
+     "규칙 기반 정책으로 하네스 검증"
+    ],
+    "not_completed": [
+     "LLM 정책 실제 실행 — API 키 없음. 완료 조건 4번의 모델·prompt 기록이 None 으로 남아 있다"
+    ],
+    "dev_result": "6/6 (정책을 2회 수정한 뒤)",
+    "final_result": "8/8 (6개 채점 축 모두)",
+    "score_caveat": "직접 만든 질문에 결정적 규칙 정책이 만점을 받은 것은 Agent 품질의 증거가 아니다. 의미 있는 것은 실행기가 지어낸 수치를 실제로 막는다는 음성 테스트 결과다",
+    "policy_is_llm": false,
+    "report_path": "reports/agent_eval_20261021_final_v2/agent_report_ko.md",
+    "frozen_config": "configs/agent_eval.json",
+    "tests": "tests/test_agent_runner.py 9개 추가, 전체 61개 통과(PYTHONPATH=src)",
+    "defects_found_and_fixed": [
+     "한국어 질문을 Europe PMC 에 그대로 보내 검색 0건 → 라틴 토큰 추출 + 0건 시 1회 질의 확장",
+     "도구 실패 후 다른 도구로 갈아타 사용자가 묻지 않은 질문에 답함 → 실패를 보고하고 종료",
+     "출처 검증의 거짓 양성: IC50 의 50 을 측정값으로 오인해 정당한 답변을 반려 → 글자에 붙은 숫자 제외. 단위 테스트가 발견"
+    ],
+    "rerun_disclosure": "거짓 양성 수정으로 검증 규칙이 바뀌어 dev·final 을 재실행했다. 점수는 8/8 로 동일했고 두 실행 폴더를 모두 보존한다",
+    "external_source_limit": "ChEMBL·Europe PMC 는 버전 고정이 불가능하다. trace 의 호출 시각과 source_ids 없이 재현 가능하다고 쓰지 않는다"
+   },
+   "completed_on": "2026-10-21",
+   "llm_result_20261021": {
+    "primary_model": "gpt-4.1-2025-04-14 (날짜 고정 ID. 유동 별칭 미사용)",
+    "model_chosen_on": "dev 결과 (gpt-4.1 6/6 vs gpt-5-mini 3/6). 주·보조 구분을 final 결과를 보기 전에 선언했다",
+    "final_scores": {
+     "rule_based": "8/8",
+     "gpt-4.1": "5/8",
+     "gpt-5-mini": "4/8"
+    },
+    "per_axis_final": {
+     "tool_selection": "rule 8 / gpt4.1 8 / mini 8",
+     "citation": "rule 8 / gpt4.1 8 / mini 8",
+     "error_handling": "rule 8 / gpt4.1 8 / mini 8",
+     "insufficient_information": "rule 8 / gpt4.1 6 / mini 8",
+     "required_caveats": "rule 8 / gpt4.1 7 / mini 7",
+     "termination": "rule 8 / gpt4.1 6 / mini 4"
+    },
+    "headline": "실행기의 출처 검증이 실제 LLM 을 상대로 작동했다. gpt-4.1 이 도구가 준 8.055 를 8.06 으로 반올림해 적자 answer_rejected_unsourced 로 반려됐다",
+    "headline_precision": "날조가 아니라 반올림이다. 없는 값을 만든 것이 아니라 있는 값을 바꿔 적었다. 과장해서 LLM 이 수치를 지어냈다고 쓰지 않는다",
+    "main_weakness": "termination. 두 모델 모두 근거를 얻고도 호출을 계속했다. 남은 예산을 매 턴 알려줘도 완전히 해소되지 않았다",
+    "dev_overestimated_final": "gpt-4.1 은 dev 6/6 이었으나 final 5/8 이었다. dev 점수를 성능으로 보고하지 않는다",
+    "do_not_generalize": "규칙 기반이 이겼다고 LLM 보다 낫다고 일반화하지 않는다. 질문 14개를 규칙 정책 설계자와 같은 사람이 만들었고, 규칙 정책은 도구 4개 밖으로 못 나가며, 표본이 8문항이다",
+    "report_path": "reports/agent_eval_20261021_final_openai/agent_llm_report_ko.md"
+   },
+   "my_defects_found_during_dev": [
+    "빈 SMILES 에 pIC50 8.057 이 나옴 — RDKit 이 빈 문자열을 원자 0개 분자로 파싱. 규칙 정책은 드러낼 수 없던 버그이며 LLM 이 예상 밖 호출을 해준 덕에 발견. 회귀 테스트로 고정",
+    "도구 결과를 OpenAI 규약(assistant tool_calls -> role tool)이 아니라 user 메시지로 전달해 모델이 자기 호출을 보지 못하고 6회 반복",
+    "D6 평가 기준이 규칙 정책의 한계(이름->ID 매핑 불가)를 정답으로 굳혀 놓음. 양쪽 허용으로 고치고 규칙 정책도 같은 기준으로 재측정(6/6 유지)"
+   ],
+   "deferred_to_next_iteration": [
+    "반올림 허용 여부 결정. 지금 검증 규칙을 느슨하게 하면 F1 이 통과로 바뀌어 final 점수를 사후 조작하는 것이 된다",
+    "termination 개선",
+    "F2 유형 기준 모호성 정리 — 기록 없음이 정보 부족인가 확인된 사실인가",
+    "질문 집합을 규칙 정책 설계자가 아닌 다른 출처에서 만들기"
+   ]
+  },
+  {
+   "id": "M6",
+   "name": "컨테이너 추론 API와 클라우드 실행",
+   "phases": [
+    "P5"
+   ],
+   "status": "complete_scope_limited",
+   "depends_on": [
+    "M5"
+   ],
+   "completion_evidence": [
+    "버전이 고정된 추론 API·컨테이너",
+    "실제 클라우드 요청·응답과 모델 버전",
+    "오류·로그·재시작·지연시간·비용 기록"
+   ],
+   "current_limit": "과금 금액 미확인(Cloud Billing 반영 지연). 자원은 모두 삭제했으므로 추가 과금은 없다. 지연시간·콜드 스타트는 노트북 1대에서 서울 리전으로 측정한 값이다",
+   "status_meaning": "완료 증거 3개를 모두 채웠다. 과금은 2026-10-22 에 $0 으로 관측했으나 \"0 임을 확정했다\"고는 쓰지 않는다 — 측정과 같은 날 본 0 은 과금 없음과 미반영을 구분하지 못한다. 자원을 삭제했으므로 금액이 늘어날 경로는 없다",
+   "container_result_20261021": {
+    "config": "configs/serving_m6.json (serving-m6-v1, 실행 전 고정)",
+    "report": "reports/serving_m6_20261021/serving_report_ko.md",
+    "image": "egfr-pilot22-inference:v1 · 829MB · linux/arm64 · 베이스 digest 고정",
+    "served_model": "artifacts/agent_predictor_20261021 (M5 와 같은 예측기. 재학습하지 않았다)",
+    "verdicts": {
+     "V1_parity": "pass — 호스트/컨테이너 probe 5개 소수 3자리까지 동일",
+     "V2_model_identity": "pass — 모델·코호트·설정 해시 3개 일치 (양쪽)",
+     "V3_restart": "pass — 재시작 2회 모두 readyz 200, 예측 동일",
+     "V4_error_handling": "pass — 10/10 (양쪽)",
+     "V5_latency": "채점하지 않음 — 합격선을 사전에 정하지 않았다",
+     "V6_logging": "pass — 요청 256줄 전부 처리시간 포함, SMILES 유출 0건"
+    },
+    "latency_p50_ms": {
+     "host": 9.348,
+     "container": 11.61,
+     "ratio": 1.242
+    },
+    "tests": "81개 통과 (기존 63 + serving 18)",
+    "pre_registration_miss": "컨테이너 모델 로딩 0.844초로 사전 예상 하한(1초)보다 빨랐다. 모델 파일이 324KB 인데 하한을 1초로 잡은 것이 느슨했다"
+   },
+   "most_important_finding_20261021": {
+    "what": "적용 범위 밖에서 모델이 사실상 상수를 돌려준다",
+    "evidence": "구조가 크게 다른 분자 10개의 예측값이 8.048~8.143(폭 0.095)에 모였다. 예측 표준편차 0.035 는 학습 라벨 표준편차 0.381 의 9% 다",
+    "why_it_matters": "숫자만 돌려주는 API 였다면 포도당이 pIC50 8.05(IC50 약 9nM)로 보고됐다. 응답에서 적용 범위 판정과 고지를 뺄 수 없게 만든 이유가 이것이다",
+    "same_as_M2": "M2 의 D-MPNN 도 상수 붕괴를 보였다(예측 표준편차 0.011~0.036 대 관측 0.377). 모델 종류가 아니라 22건·12 scaffold 라는 학습 규모가 의심된다",
+    "artifact": "reports/serving_m6_20261021/out_of_domain_observation.json",
+    "post_hoc": "사전 고정한 verification_plan 에 없던 조사다. 통과·실패로 채점하지 않았다"
+   },
+   "cloud_blocked_20261021": {
+    "status": "blocked_no_credentials",
+    "profile": "skn33 (ap-northeast-2, arn:aws:iam::498777149300:user/student)",
+    "error": "Your session has expired. Please reauthenticate using \"aws login\".",
+    "created_no_resources": true,
+    "next": "aws login 후 scripts/check_cloud_access_m6.py 로 권한 23개 점검. 판정이 ready 면 비용 승인을 받은 뒤 배포한다",
+    "cost_estimate_usd": {
+     "verification_1h": 0.0172,
+     "day_24h": 0.396,
+     "month_730h": 12.02,
+     "source": "AWS 공개 가격 API, 응답 SHA-256 보존",
+     "note": "추정이다. 실제 과금은 Cost Explorer 로만 확인된다"
+    },
+    "evidence": "reports/serving_m6_20261021/cloud_access_check.json",
+    "escalation_20261022": {
+     "what_happened": "aws login 을 끝까지 시도했다. 리전 입력(ap-northeast-2)과 브라우저 호출까지 진행됐으나 승인 단계에서 \"Something went wrong / Contact AWS support / appeal system\" 이 떴고 로그인이 완료되지 않았다",
+     "verdict": "blocked_account_level",
+     "why_not_a_permission_problem": "권한 부족이 아니다. 인증 자체가 완료되지 않았다. appeal system 문구는 계정 수준 제한을 뜻하고, 교육용 계정(user/student)이 만료·정지된 것으로 보인다",
+     "cache_evidence": "~/.aws/login/cache 의 토큰이 2026-09-21T05:23:23Z 에 만료된 상태로 갱신되지 않았다. aws sts get-caller-identity 는 계속 session expired 를 돌려준다",
+     "not_resolvable_by_us": "우리 쪽 설정·권한 문제가 아니므로 재시도로 풀리지 않는다. 계정 제한 해제는 AWS 지원 절차이고 이 프로젝트 범위 밖이다",
+     "created_no_resources": true,
+     "decision": "AWS 경로를 보류하고 다른 제공자로 전환을 검토한다"
     }
-  ],
-  "constraints": {
-    "universal_egfr_numeric_passmark": false,
-    "filter_training_labels_at_100nM": false,
-    "pool_inhibition_and_degradation_labels": false,
-    "claim_model_reproduction_from_table_crosscheck": false,
-    "additional_large_scope": "분자 생성·도킹·전체 PK·대규모 다중 Agent는 포함하지 않음"
+   },
+   "incident_20261021": "포트 8000 을 다른 프로세스가 IPv4 로 점유하고 있어 127.0.0.1:8000 요청이 그 프로세스로 갔다. Docker 는 IPv6 로 바인딩했다. 이 상태로 측정하면 엉뚱한 서버를 재게 된다. 포트를 8010 으로 옮기고, 검증 스크립트가 측정 전에 /model-info 해시를 확인하도록 했다",
+   "not_claimed": [
+    "\"EGFR 활성 예측 서비스\"가 아니다. pilot22 범위다",
+    "과금 $0 이라고 말하지 않는다. 금액을 확인하지 못했다",
+    "지연시간은 처리량이 아니다. 순차 200회·배치 1·워커 1 의 측정이다",
+    "클라우드가 느린 원인을 gVisor 로 단정하지 않는다",
+    "콜드 스타트 분포를 주장하지 않는다. 2회 측정이다",
+    "무료 등급 수치를 1차 출처에서 확인했다고 쓰지 않는다"
+   ],
+   "cloud_result_20261022": {
+    "provider": "Google Cloud Run (AWS 계정 차단으로 전환)",
+    "config": "configs/serving_m6_cloud.json (serving-m6-cloud-v1, 실행 전 고정)",
+    "report": "reports/serving_m6_cloud_20261022/cloud_report_ko.md",
+    "project": "project-eb5a476e-cdcf-4277-997",
+    "region": "asia-northeast3",
+    "service": "egfr-pilot22-inference (리비전 00001-wjs, 00002-nwm)",
+    "image_digest": "sha256:e59a355342d178949bab117f47f478e69150b2850e92fbfbbed7b4f90d9141e3",
+    "deployed_by_digest_not_tag": true,
+    "authentication": "require_authentication. 저장소가 PUBLIC 이라 공개 엔드포인트로 두지 않았다",
+    "requests_sent": 241,
+    "verdicts": {
+     "C1_parity": "pass — 로컬 arm64 와 Cloud Run amd64 의 예측이 probe 5/5 완전 일치",
+     "C2_model_identity": "pass — 모델·코호트·설정 해시 3개 일치",
+     "C3_cold_start": "채점 안 함 — 2회 측정. 첫 요청 167ms/135ms, 모델 로딩 5.047s/4.998s",
+     "C4_error_handling": "pass — 10/10",
+     "C5_latency": "채점 안 함 — 합격선 미설정",
+     "C6_usage_and_cost": "사용량 확인, 금액 미확인(반영 지연)",
+     "C7_logs": "pass — 101줄, SMILES 유출 0건"
+    },
+    "latency": {
+     "client_round_trip_p50_ms": 50.019,
+     "server_process_p50_ms": 35.042,
+     "network_and_frontend_p50_ms": 14.977,
+     "warning": "왕복 시간을 서버 성능으로 읽으면 틀린다. 약 15ms 가 네트워크·프런트엔드다"
+    },
+    "teardown": "reports/serving_m6_cloud_20261022/teardown.json — 서비스·레지스트리 삭제 확인",
+    "cost_observation": {
+     "observed_amount_usd": 0,
+     "observed_on": "2026-10-22",
+     "observed_by": "사용자가 Cloud Console 비용 화면에서 직접 확인",
+     "consistent_with_usage": "요청 241건·min-instances=0 은 Cloud Run 무료 등급(요청 200만·vCPU-초 180,000) 안이고, Artifact Registry 173.612MB 도 무료 0.5GB 안이다. 0 과 모순되지 않는다",
+     "not_confirmed": "측정이 2026-10-21~22 였고 Cloud Billing 반영에 하루 이상 걸린다. 같은 날 관측한 0 은 미반영과 구분되지 않는다",
+     "how_to_confirm": "비용 테이블에 Cloud Run / Artifact Registry 행이 나타나면 반영된 것이다. 행이 없으면 미반영이다",
+     "evidence": "reports/serving_m6_cloud_20261022/cost_confirmation.json",
+     "source_is_a_screen_not_an_api": "AWS 단계의 요율은 공개 가격 API 에서 1차로 받아 응답 해시를 보존했다. 이 금액은 사용자가 화면에서 읽은 값이다. 증거 수준이 다르다"
+    }
+   },
+   "cloud_finding_20261022": {
+    "what": "같은 코드·모델·라이브러리 버전으로 클라우드가 3.5~5.9배 느렸다",
+    "runtime": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36 (Cloud Run 은 gVisor 샌드박스)",
+    "numbers": {
+     "model_load": "로컬 컨테이너 0.844s → Cloud Run 4.998s (5.9배)",
+     "server_process_p50": "로컬 컨테이너 10.040ms → Cloud Run 35.042ms (3.5배)"
+    },
+    "cause_not_determined": "gVisor 하나로 단정하지 않는다. CPU 세대·클럭, 플랫폼(arm64→amd64), 샌드박스가 섞여 있고 분리 측정하지 않았다",
+    "platform_parity_held": "그럼에도 예측값은 네 환경(로컬 호스트/arm64 컨테이너/amd64 QEMU/Cloud Run gVisor)에서 소수 3자리까지 같았다. 라이브러리 버전을 전부 고정한 것이 이유로 보인다",
+    "cold_start_lesson": "클라이언트 체감 콜드 스타트(135ms)와 컨테이너 실제 시작 비용(5초)은 다른 값이다. Cloud Run 이 시작 프로브로 컨테이너를 먼저 준비시킨 뒤 트래픽을 넘기기 때문이다. 둘을 하나로 적으면 틀린다"
+   },
+   "pre_registration_misses_20261022": [
+    "콜드 스타트 첫 요청 예상 2~15초, 실제 0.13초 — 예상 모델 자체가 틀렸다",
+    "클라우드 모델 로딩 예상 0.5~3초, 실제 4.998초 — gVisor 비용을 과소평가했다",
+    "이미지 push 예상 3~20분, 실제 약 1분 — 805MB 가 아니라 압축 173.6MB 를 올렸다"
+   ],
+   "my_defects_20261022": [
+    "검증 스크립트가 설정 키를 C1_parity 로 찾았으나 실제 키는 C1_parity_with_local 이었다. KeyError 로 첫 실행이 중단됐고 콜드 스타트 측정을 잃을 뻔했다. 1차 값을 보존하고 새 리비전을 배포해 재측정했다(결과적으로 2회 측정을 얻었다)",
+    "docker image inspect 의 173MB 를 attestation 값이라고 추측했으나 틀렸다. 압축된 레이어 크기였고 Artifact Registry 저장 크기 173.612MB 가 그것을 드러냈다"
+   ],
+   "evidence_level_difference": "AWS 단계에서는 공개 가격 API 에서 1차 요율을 받아 응답 SHA-256 까지 보존했다. GCP 는 가격 페이지 본문을 기계적으로 받지 못해(JS 렌더링) 무료 등급 수치를 2차 출처에 의존했다. 두 단계의 증거 수준이 다르다",
+   "remaining_work": "없다. 2026-10-23 이후 비용 테이블을 다시 보면 $0 이 확정되지만 마일스톤을 막지 않는다",
+   "completed_on": "2026-10-22"
   }
+ ],
+ "constraints": {
+  "universal_egfr_numeric_passmark": false,
+  "filter_training_labels_at_100nM": false,
+  "pool_inhibition_and_degradation_labels": false,
+  "claim_model_reproduction_from_table_crosscheck": false,
+  "additional_large_scope": "분자 생성·도킹·전체 PK·대규모 다중 Agent는 포함하지 않음"
+ },
+ "milestone_summary_20261022": {
+  "complete_scope_limited": [
+   "M1",
+   "M2",
+   "M3",
+   "M5",
+   "M6"
+  ],
+  "blocked": [
+   "M4"
+  ],
+  "m4_reason": "DOI 10.1002/ardp.70193 본문 미확보. 유료 콘텐츠를 우회하지 않는다",
+  "note": "M6 까지 닫혔으므로 남은 계획 항목은 M4 하나다. M4 는 외부 조건(원문 접근)이 바뀌어야 재개된다"
+ }
 }

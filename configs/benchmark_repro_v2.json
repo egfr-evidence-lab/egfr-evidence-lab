@@ -1,0 +1,176 @@
+{
+  "version": "benchmark-repro-sampl-v2",
+  "frozen_on": "2026-10-21",
+  "status": "frozen_before_execution",
+  "supersedes": "configs/benchmark_repro.json (benchmark-repro-sampl-v1)",
+  "milestone": "M3",
+  "execution_choice": "C (환경 교체 + 예산 축소)",
+  "claim": "원 논문과 동일 조건 재현이 아니다. 축소 조건에서의 결과로만 서술한다",
+
+  "why_v2_exists": {
+    "summary": "v1 설정으로 실행한 split 학습이 계산을 완료한 뒤 프로세스가 종료되지 않아 파이프라인이 멈췄다. 원인을 확정하고 데이터로더 워커 수만 바꿔 v2로 고정한다",
+    "incident": {
+      "when": "2026-10-21 10:02 시작, 12:01 계산 완료, 14:03 멈춤 발견 (약 2시간 정지)",
+      "stage": "split_training",
+      "symptom": "verbose.log 에 Elapsed time = 1:58:48 과 test_scores.csv 까지 모두 기록된 뒤에도 chemprop_train 프로세스가 종료되지 않음. CPU 0%, 잔존 자식은 multiprocessing.resource_tracker 하나",
+      "diagnosis_method": "macOS `sample` 로 네이티브 스택 수집",
+      "diagnosis": "Py_Exit -> Py_FinalizeEx -> finalize_modules -> _PyModule_ClearDict -> method_dealloc -> subtype_dealloc -> slot_tp_finalize -> os_waitpid -> __wait4 에서 영구 블록. 학습 코드가 아니라 인터프리터 종료 처리 중 자식 프로세스 대기에서 멈춘 것",
+      "diagnosis_evidence": "scratchpad/hang_sample.txt, artifacts/sampl_repro_20261021/split_model/verbose.log",
+      "also_observed": "2026-10-21 09:48 의 타이밍 측정용 1 epoch 실행에서도 09:51 에 Elapsed time = 0:03:34 까지 출력한 뒤 동일하게 미종료. 전체 데이터 기준 2회 중 2회 재현"
+    },
+    "controlled_test": {
+      "design": "전체 데이터(train 18,776 / val 2,347 / test 2,346) 1 epoch 으로 '정상 종료 여부'만 비교. 워치독 사용",
+      "result_default_workers": "소요 3분 34초, 미종료(멈춤)",
+      "result_num_workers_0": "소요 29초, 정상 종료 rc=0, 잔존 프로세스 없음",
+      "speed_note": "약 7배 빠름. macOS 의 spawn 방식에서 워커 프로세스가 배치마다 피처화를 중복 수행하는 비용으로 보인다",
+      "probe_scores_discarded": true,
+      "probe_scores_note": "두 검증 실행의 테스트 점수(1.2932 / 1.3024)는 1 epoch 값이며 설정 결정에 사용하지 않았고 결과로도 보고하지 않는다"
+    },
+    "what_changed": "reduced_settings.num_workers 만 추가했다. 모델 구조·하이퍼파라미터·epoch·앙상블·집계·seed·데이터·분할은 v1과 동일하다",
+    "disclosure": "이 보정은 v1 split 학습의 테스트 RMSE 0.5662 를 본 뒤에 결정했다. 점수를 개선하려는 변경이 아니라 프로세스가 종료되지 않는 환경 결함에 대한 대응이다. 은폐를 피하기 위해 v1 의 split 점수와 v2 의 split 점수를 모두 보고한다",
+    "forbidden_check": "v1 의 금지 항목 '결과를 본 뒤 설정을 수정해 다시 돌리고 그것을 최초 결과처럼 쓰는 것'에 해당하지 않도록, v1 산출물을 지우지 않고 보존하며 두 실행을 나란히 보고한다"
+  },
+
+  "target": {
+    "paper_doi": "10.1021/acs.jcim.3c01250",
+    "benchmark": "sampl (물-옥탄올 logP, SAMPL6/7/9 예측)",
+    "author_script": "chemprop_benchmark/scripts/sampl.sh",
+    "author_repo_commit": "247f3eee19ae66e05374bd6ef23ffd6d900ff213",
+    "source_evidence": "data/raw/benchmark_source_20261020/manifest.json"
+  },
+
+  "data": {
+    "dir": "data/raw/benchmark_data_20261021",
+    "zenodo_record": "10078142",
+    "archive_md5_expected": "57fef6993e9539ed8751a630c337e841",
+    "archive_md5_verified": true,
+    "archive_bytes_streamed": 1632346035,
+    "verification_note": "1.63GB 전체를 스트리밍하며 MD5를 계산해 Zenodo 공개값과 일치 확인. 디스크에는 logP 7개 파일만 저장",
+    "rows": {"train": 18776, "val": 2347, "test": 2346, "logP_without_overlap": 23469,
+             "sampl6": 11, "sampl7": 22, "sampl9": 15},
+    "split_unchanged": true,
+    "split_note": "저자가 배포한 train/val/test 파일을 그대로 사용한다. 다시 나누지 않는다"
+  },
+
+  "author_original_settings": {
+    "hyperparameter_search": "hyperparameter_optimization.py --num_iters 30 --epochs 50, 탐색 대상 depth/ffn_num_layers/hidden_size/ffn_hidden_size/dropout",
+    "split_training": "--epochs 50 --aggregation norm --ensemble_size 5 --extra_metrics mae, hyperopt config 사용",
+    "production_training": "--epochs 40 --aggregation norm --ensemble_size 5, 전체 logP_without_overlap.csv",
+    "prediction": "production 앙상블로 sampl6/7/9 예측 후 RMSE",
+    "num_workers": "미지정 (chemprop 기본값 8)",
+    "environment": "python 3.7.6 / torch 1.7.1 / cudatoolkit 10.2 / numpy 1.18.1 / scikit-learn 0.22.2.post1 (Linux, NVIDIA GPU)"
+  },
+
+  "reduced_settings": {
+    "hyperparameter_search": false,
+    "hyperparameter_source": "Chemprop v1.6.1 기본값 (depth 3, hidden_size 300, ffn_num_layers 2, dropout 0)",
+    "epochs_split": 50,
+    "epochs_production": 40,
+    "ensemble_size": 1,
+    "aggregation": "norm",
+    "seed": 0,
+    "num_workers": 0,
+    "seed_note": "저자 스크립트는 --seed를 지정하지 않아 Chemprop 기본값 0이 적용된다. 같은 값을 명시적으로 지정했다"
+  },
+
+  "deviations": [
+    {
+      "item": "하이퍼파라미터 탐색",
+      "author": "30회 탐색(각 50 epoch)",
+      "ours": "생략, 기본값 사용",
+      "reason": "전체 데이터 1 epoch 실측 29초 기준으로도 30x50 epoch 탐색은 과도하다. v1 측정(워커 8개, 1 epoch 3분 34초) 기준으로는 더욱 불가능",
+      "impact": "저자가 찾은 최적 하이퍼파라미터를 쓰지 못하므로 성능이 낮게 나올 수 있다"
+    },
+    {
+      "item": "앙상블 크기",
+      "author": 5,
+      "ours": 1,
+      "reason": "계산량 5배 축소",
+      "impact": "앙상블 평균 효과가 없어 분산이 크고 성능이 낮게 나올 수 있다"
+    },
+    {
+      "item": "epoch 수",
+      "author": "split 50 / production 40",
+      "ours": "split 50 / production 40",
+      "reason": "축소하지 않음",
+      "impact": "없음 (저자와 동일)"
+    },
+    {
+      "item": "데이터로더 워커 수 (--num_workers)",
+      "author": "미지정 (기본값 8)",
+      "ours": 0,
+      "reason": "기본값 8에서는 계산 완료 후 프로세스가 종료되지 않아 파이프라인이 진행되지 않는다(전체 데이터 2회 중 2회 재현). 0에서는 정상 종료하며 7배 빠르다",
+      "impact": "데이터 적재 병렬성만 바뀐다. 모델·하이퍼파라미터·데이터·분할·손실은 불변. 다만 배치 구성·난수 소비 순서가 달라져 수치가 비트 단위로 같지는 않다. 1 epoch 검증에서 두 설정의 테스트 RMSE는 1.2932(워커 8) 대 1.3024(워커 0)였다",
+      "note": "저자 환경(Linux, fork 방식)에서는 기본값 8로도 정상 동작했을 것으로 보이며, 이 편차는 macOS 환경 교체(선택 C)의 비용이다"
+    },
+    {
+      "item": "실행 환경",
+      "author": "python 3.7.6 / torch 1.7.1 / CUDA 10.2 / numpy 1.18.1 / sklearn 0.22.2 (Linux, GPU)",
+      "ours": "python 3.12.14 / torch 2.5.1 / numpy 1.26.4 / sklearn 1.5.2 (macOS arm64, CPU)",
+      "reason": "저자 환경은 Apple Silicon에 설치 불가(torch 1.7.1 빌드 없음, CUDA 없음)",
+      "impact": "수치 연산·난수 구현 차이로 결과가 달라질 수 있다"
+    },
+    {
+      "item": "저자 코드 수정",
+      "author": "-",
+      "ours": "없음",
+      "reason": "환경 버전 선택과 공개 CLI 인자(--num_workers)로 비호환을 해결함. numpy<2(VisibleDeprecationWarning 유지), torch<2.6(torch.load weights_only 기본값), scikit-learn 1.5.x(mean_squared_error의 squared 인자 유지)",
+      "impact": "chemprop v1.6.1 소스는 그대로다"
+    }
+  ],
+
+  "environment_actual": {
+    "python": "3.12.14",
+    "chemprop": "1.6.1",
+    "torch": "2.5.1",
+    "numpy": "1.26.4",
+    "scipy": "1.13.1",
+    "scikit-learn": "1.5.2",
+    "pandas": "2.2.3",
+    "rdkit": "2026.9.1",
+    "hyperopt": "0.3.0",
+    "tensorboardx": "2.6.5",
+    "venv": ".venv-repro (주 프로젝트 .venv/.venv-ml과 분리)",
+    "device": "CPU (CUDA 없음, chemprop v1은 MPS 미사용)"
+  },
+
+  "timing_probe": {
+    "run_v1": {"setting": "워커 기본값 8", "scope": "전체 데이터 1 epoch", "elapsed": "0:03:34", "exited": false},
+    "run_v2": {"setting": "--num_workers 0", "scope": "전체 데이터 1 epoch", "elapsed": "0:00:29", "exited": true},
+    "includes": "데이터 로딩·피처화·1 epoch 학습·테스트 평가",
+    "probe_score_discarded": true,
+    "probe_score_note": "타이밍·종료 검증용 실행의 테스트 RMSE는 설정 결정에 사용하지 않았고 결과로도 보고하지 않는다"
+  },
+
+  "safety": {
+    "shutdown_watchdog": true,
+    "shutdown_grace_sec": 180,
+    "watchdog_rule": "단계별 완료 표식(학습: quiet.log 의 'Elapsed time =' 와 test_scores.csv, 예측: 기대 행 수만큼 기록된 예측 파일)을 확인한 뒤에도 유예 시간 안에 프로세스가 종료하지 않으면 종료 전용 멈춤으로 판정해 프로세스를 정리하고 그 사실을 결과에 기록한다",
+    "watchdog_rationale": "num_workers 0 으로 멈춤이 해소되었지만, 같은 종류의 종료 결함이 다시 나타나도 파이프라인이 2시간씩 정지하지 않게 한다",
+    "fail_closed": "완료 표식이 없는 상태에서 프로세스가 끝나면 실패로 처리하고 결과를 쓰지 않는다"
+  },
+
+  "evaluation": {
+    "primary": "SAMPL6/7/9 실험값 대비 RMSE (저자 스크립트와 동일 컬럼)",
+    "columns": {
+      "SAMPL6": {"file": "sampl6_experimental.csv", "smiles": "Isomeric SMILES", "truth": "logP mean"},
+      "SAMPL7": {"file": "sampl7_experimental.csv", "smiles": "Isomeric SMILES", "truth": "logP mean"},
+      "SAMPL9": {"file": "sampl9_experimental.csv", "smiles": "smiles", "truth": "new_logPexp_reviewed"}
+    },
+    "secondary": "저자 분할 테스트셋의 RMSE·MAE",
+    "author_reported_for_comparison": {"SAMPL6": 0.27, "SAMPL7": 0.49, "SAMPL9": 1.11, "random_test_set": 0.53},
+    "v1_split_result_for_comparison": {"test_rmse": 0.5661500743640755, "test_mae": 0.33942467864091336,
+                                       "best_val_rmse": 0.547683, "best_epoch": 43,
+                                       "elapsed": "1:58:48", "num_workers": 8,
+                                       "path": "artifacts/sampl_repro_20261021/split_model/test_scores.csv"},
+    "tolerance_defined": false,
+    "tolerance_note": "축소 조건이므로 합격/불합격 허용 오차를 정의하지 않는다. 차이를 그대로 보고하고 원인을 축소 항목과 함께 설명한다"
+  },
+
+  "forbidden": [
+    "이 결과를 원 논문 재현 성공으로 서술하는 것",
+    "축소 조건을 밝히지 않고 저자 수치와 나란히 비교하는 것",
+    "결과를 본 뒤 이 설정을 수정해 다시 돌리고 그것을 최초 결과처럼 쓰는 것",
+    "v1 실행(워커 8개)의 split 결과를 숨기고 v2 결과만 보고하는 것"
+  ]
+}

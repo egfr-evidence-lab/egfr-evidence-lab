@@ -1,0 +1,141 @@
+{
+  "version": "serving-m6-cloud-v1",
+  "frozen_on": "2026-10-22",
+  "status": "frozen_before_execution",
+  "milestone": "M6",
+  "stage": "cloud_execution",
+
+  "why_a_separate_file": {
+    "rule": "configs/serving_m6.json 을 수정하지 않는다",
+    "reason": "그 파일의 SHA-256 이 reports/serving_m6_20261021/verification.json 에 박혀 있다. 지금 고치면 이미 끝난 컨테이너 검증의 설정 검증 가능성이 깨진다. M3 에서도 같은 이유로 설정을 고치지 않고 보고서에 정정했다",
+    "relationship": "이 파일은 컨테이너 단계 설정을 대체하지 않고 이어붙인다"
+  },
+
+  "provider_history": {
+    "first_choice": "AWS ECS Fargate (ap-northeast-2)",
+    "why_abandoned": "aws login 승인 단계에서 'Something went wrong / Contact AWS support / appeal system' 이 떴다. 권한 부족이 아니라 계정 수준 제한이고 우리가 풀 수 없다",
+    "aws_evidence": "configs/portfolio_scope.json 의 M6.cloud_blocked_20261021.escalation_20261022",
+    "aws_created_resources": 0,
+    "second_choice": "Google Cloud Run",
+    "why": "컨테이너 이미지를 그대로 받고, 사용량 지표를 실측으로 받을 수 있다",
+    "user_decision": "2026-10-22 사용자가 Cloud Run 을 선택했다"
+  },
+
+  "gcp": {
+    "project_id": "project-eb5a476e-cdcf-4277-997",
+    "project_id_source": "사용자가 2026-10-22 생성해 알려준 값. gcloud 로 실제 존재와 접근을 확인한 뒤 쓴다",
+    "region": "asia-northeast3",
+    "region_choice_reason": "서울. 사용량이 검증 수백 회 수준이라 무료 등급 소진 차이가 무의미하고, 한국에서의 왕복 지연이 작아 서버 처리시간과 네트워크 지연을 분리해 보기 쉽다. 무료 등급이 us-central1 가격 기준이라는 2차 출처 언급이 있으나 이 사용량에서는 영향이 없다고 판단했다",
+    "billing_required": "무료 등급이라도 결제 계정 연결이 필수다. 연결 여부를 배포 전에 확인한다"
+  },
+
+  "image": {
+    "platform": "linux/amd64",
+    "why": "Cloud Run 은 x86-64 만 받는다. 컨테이너 단계에서 쓴 linux/arm64 이미지를 그대로 올릴 수 없다",
+    "dockerfile": "deployment/Dockerfile (변경 없음)",
+    "base_image_index_digest": "sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+    "base_image_platform_digests": {
+      "arm64": "sha256:eb5be8e5b4d0a159c237946bbdd06356dda5d19c30fc4f7843e8046d3a590333",
+      "amd64": "sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a"
+    },
+    "dockerfile_change_20261022": {
+      "what": "FROM 을 arm64 플랫폼 digest 에서 manifest 인덱스 digest 로 바꿨다",
+      "why": "한 파일로 두 플랫폼을 고정하려고. --platform 플래그가 인덱스 안에서 플랫폼을 고른다",
+      "safety_check": "바꾼 뒤 arm64 를 재빌드해 기존 이미지와 비교했다. RootFS 레이어 전부 동일, 크기 829238735 바이트 동일. 이미지 ID 는 달랐는데 buildx 가 붙이는 provenance attestation 이 빌드마다 바뀌기 때문이다",
+      "honesty": "이미지 ID 가 다르다는 사실을 숨기지 않는다. 같다고 말할 수 있는 것은 레이어와 크기다"
+    },
+    "latency_must_be_remeasured": "amd64 는 플랫폼이 다르므로 컨테이너 단계의 지연시간 수치를 그대로 쓰지 않는다. 로컬 amd64 는 QEMU 에뮬레이션이라 측정하지 않고, Cloud Run 에서 실측한다"
+  },
+
+  "cloud_run_service": {
+    "name": "egfr-pilot22-inference",
+    "cpu": "1",
+    "memory": "512Mi",
+    "memory_reason": "컨테이너 실측 사용량이 108MiB 다(32개 배치 요청 뒤에도 108.1MiB). 512Mi 는 약 4.7배 여유다. Cloud Run 은 메모리 초과 시 컨테이너를 죽이므로 여유를 둔다",
+    "min_instances": 0,
+    "min_instances_reason": "유휴 과금을 만들지 않는다. min-instances 1 로 두면 1 vCPU 기준 무료 등급(180,000 vCPU-초)을 약 50시간에 소진한다",
+    "max_instances": 2,
+    "max_instances_reason": "비용 폭주 방지. 순차 측정에는 1개로 충분하고 2개는 여유다",
+    "concurrency": 8,
+    "concurrency_reason": "컨테이너의 uvicorn 워커가 1개다. 기본값 80 을 두면 처리할 수 없는 양을 받아 큐에 쌓인다",
+    "timeout_seconds": 60,
+    "authentication": "require_authentication",
+    "authentication_reason": "공개로 두지 않는다. 이 저장소가 PUBLIC 이라 서비스 URL 이 노출될 수 있고, 공개 엔드포인트는 모르는 요청으로 과금될 수 있다. 측정은 gcloud 신원 토큰(Bearer)으로 한다",
+    "env": "없음. 이미지에 설정·모델이 들어 있고 비밀값을 쓰지 않는다"
+  },
+
+  "verification_plan": {
+    "C1_parity_with_local": {
+      "what": "Cloud Run 이 로컬과 같은 입력에 같은 예측값을 내는가",
+      "inputs": "configs/serving_m6.json 의 probe_molecules 5개 (컨테이너 단계와 같은 입력)",
+      "baseline": "reports/serving_m6_20261021/verification.json 의 V1 호스트 결과",
+      "pass_rule": "predicted_pIC50 이 소수 3자리까지 같고 적용 범위 판정도 같다",
+      "if_mismatch": "플랫폼(arm64→amd64) 차이를 원인 후보로 조사하고, 결론이 안 나면 '원인 미확정'으로 쓴다. 차이를 숨기지 않는다"
+    },
+    "C2_model_identity": {
+      "what": "/model-info 의 해시가 고정값과 같은가. 즉 올바른 모델이 서비스되는가",
+      "pass_rule": "model_sha256·cohort_sha256·settings_sha256 3개 일치",
+      "why": "컨테이너 단계에서 포트 혼동으로 다른 서비스를 때릴 뻔했다. 측정 전에 대상을 확인한다"
+    },
+    "C3_cold_start": {
+      "what": "min-instances 0 에서 첫 요청의 지연과 모델 로딩 시간",
+      "procedure": "서비스 배포 직후 또는 유휴 15분 뒤 첫 요청. 3회 반복(사이에 유휴 대기)",
+      "report": "첫 요청 왕복 시간, /readyz 의 load_seconds, 로그의 시작 시각"
+    },
+    "C4_error_handling": {
+      "what": "컨테이너 단계와 같은 오류 10건을 클라우드에서도 같이 처리하는가",
+      "pass_rule": "컨테이너 단계 결과와 상태코드가 일치. 500 이 나거나 값을 만들면 실패"
+    },
+    "C5_latency": {
+      "what": "지연시간",
+      "procedure": "워밍업 20회(버림) 후 측정 200회 순차, 배치 1개",
+      "must_separate": "클라이언트 왕복 시간과 서버 처리시간(X-Process-Time-Ms)을 따로 보고한다. 한국에서 서울 리전이라도 왕복에 네트워크가 섞이고, 그것을 서버 성능으로 쓰면 틀린다",
+      "not_claimed": "처리량·동시 부하 성능이 아니다. 순차 요청의 측정이다"
+    },
+    "C6_usage_and_cost": {
+      "what": "실제 사용량과 과금",
+      "collect": ["Cloud Monitoring 의 요청 수·vCPU-초·GiB-초", "Cloud Billing 의 해당 기간 비용"],
+      "expectation": "무료 등급 안이면 금액은 $0 으로 찍힌다. 그 경우 '과금 없음'으로 적고 '비용을 측정했다'고 쓰지 않는다",
+      "honesty": "금액 0 과 사용량 측정은 다른 것이다. 둘을 구분해 적는다"
+    },
+    "C7_logs": {
+      "what": "Cloud Logging 에 요청·오류가 남고 SMILES 는 남지 않는가",
+      "pass_rule": "요청 경로·상태코드·처리시간이 남고, probe SMILES 문자열이 로그에 없다"
+    }
+  },
+
+  "pre_registered_expectations": {
+    "declared_before_any_cloud_measurement": true,
+    "why": "결과를 본 뒤 '예상대로였다'고 쓰지 않기 위해 먼저 적는다. 틀리면 틀린 대로 남긴다",
+    "parity_with_local": "소수 3자리까지 일치 예상. 다만 arm64→amd64 로 BLAS·부동소수 합산 순서가 달라질 수 있어 어긋날 가능성을 배제하지 않는다",
+    "server_side_p50_ms": "10~40 예상 (로컬 arm64 컨테이너 서버측 p50 이 10.04ms 였다)",
+    "client_round_trip_p50_ms": "30~150 예상 (한국→서울 리전. 네트워크가 지배할 것)",
+    "cold_start_first_request_seconds": "2~15 예상 (이미지 829MB 당겨오기 + 파이썬 시작 + 모델 로딩 0.844초)",
+    "model_load_seconds_in_cloud": "0.5~3 예상",
+    "billed_cost_usd": "0 예상 (무료 등급 안)",
+    "image_push_minutes": "3~20 예상 (829MB 업로드, 가정용 상향 대역폭)"
+  },
+
+  "cost_control": {
+    "free_tier_figures_uncertainty": "Google 가격 페이지 본문을 기계적으로 받지 못했다(JS 렌더링). 무료 등급 수치(요청 200만·vCPU-초 180,000·GiB-초 360,000)는 2차 출처 기반이고 1차 출처로 검증하지 못했다. AWS 때는 공개 가격 API 에서 1차 요율을 받았는데 GCP 는 그러지 못했다는 차이를 밝힌다",
+    "rules": [
+      "min-instances 0 을 유지한다. 유휴 과금을 만들지 않는다",
+      "max-instances 2 로 묶는다",
+      "인증을 요구한다. 공개 엔드포인트로 두지 않는다",
+      "측정이 끝나면 Cloud Run 서비스를 삭제한다",
+      "Artifact Registry 의 이미지를 삭제한다(0.81GB. 무료 0.5GB 를 넘는다)",
+      "삭제한 사실과 시각을 기록한다",
+      "사용량·비용을 수집한 뒤 삭제한다. 삭제가 먼저면 지표를 못 받는다"
+    ],
+    "approval_required_before_creating_resources": true
+  },
+
+  "forbidden": [
+    "클라우드 측정을 보고 사전 예상을 고친 뒤 맞췄다고 쓰는 것",
+    "클라이언트 왕복 시간을 서버 처리시간으로 쓰는 것",
+    "과금 $0 을 '비용을 측정했다'로 쓰는 것",
+    "무료 등급 수치를 1차 출처에서 확인했다고 쓰는 것",
+    "로컬 amd64 QEMU 에뮬레이션 지연시간을 성능으로 쓰는 것",
+    "기존 configs/serving_m6.json 과 reports/serving_m6_20261021/ 을 수정하는 것"
+  ]
+}

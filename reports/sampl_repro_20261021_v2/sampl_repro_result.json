@@ -1,0 +1,187 @@
+{
+ "created_at_utc": "2026-10-21T06:14:34.795843+00:00",
+ "milestone": "M3",
+ "status": "reduced_budget_reproduction_not_equal_condition",
+ "run_version": "v2",
+ "config_path": "configs/benchmark_repro_v2.json",
+ "config_sha256": "42ed00bb0083434222be623b9ed89a61c2b00fd13c7bbd278cf05005a40660ff",
+ "reduced_settings": {
+  "hyperparameter_search": false,
+  "hyperparameter_source": "Chemprop v1.6.1 기본값 (depth 3, hidden_size 300, ffn_num_layers 2, dropout 0)",
+  "epochs_split": 50,
+  "epochs_production": 40,
+  "ensemble_size": 1,
+  "aggregation": "norm",
+  "seed": 0,
+  "num_workers": 0,
+  "seed_note": "저자 스크립트는 --seed를 지정하지 않아 Chemprop 기본값 0이 적용된다. 같은 값을 명시적으로 지정했다"
+ },
+ "author_original_settings": {
+  "hyperparameter_search": "hyperparameter_optimization.py --num_iters 30 --epochs 50, 탐색 대상 depth/ffn_num_layers/hidden_size/ffn_hidden_size/dropout",
+  "split_training": "--epochs 50 --aggregation norm --ensemble_size 5 --extra_metrics mae, hyperopt config 사용",
+  "production_training": "--epochs 40 --aggregation norm --ensemble_size 5, 전체 logP_without_overlap.csv",
+  "prediction": "production 앙상블로 sampl6/7/9 예측 후 RMSE",
+  "num_workers": "미지정 (chemprop 기본값 8)",
+  "environment": "python 3.7.6 / torch 1.7.1 / cudatoolkit 10.2 / numpy 1.18.1 / scikit-learn 0.22.2.post1 (Linux, NVIDIA GPU)"
+ },
+ "deviations": [
+  {
+   "item": "하이퍼파라미터 탐색",
+   "author": "30회 탐색(각 50 epoch)",
+   "ours": "생략, 기본값 사용",
+   "reason": "전체 데이터 1 epoch 실측 29초 기준으로도 30x50 epoch 탐색은 과도하다. v1 측정(워커 8개, 1 epoch 3분 34초) 기준으로는 더욱 불가능",
+   "impact": "저자가 찾은 최적 하이퍼파라미터를 쓰지 못하므로 성능이 낮게 나올 수 있다"
+  },
+  {
+   "item": "앙상블 크기",
+   "author": 5,
+   "ours": 1,
+   "reason": "계산량 5배 축소",
+   "impact": "앙상블 평균 효과가 없어 분산이 크고 성능이 낮게 나올 수 있다"
+  },
+  {
+   "item": "epoch 수",
+   "author": "split 50 / production 40",
+   "ours": "split 50 / production 40",
+   "reason": "축소하지 않음",
+   "impact": "없음 (저자와 동일)"
+  },
+  {
+   "item": "데이터로더 워커 수 (--num_workers)",
+   "author": "미지정 (기본값 8)",
+   "ours": 0,
+   "reason": "기본값 8에서는 계산 완료 후 프로세스가 종료되지 않아 파이프라인이 진행되지 않는다(전체 데이터 2회 중 2회 재현). 0에서는 정상 종료하며 7배 빠르다",
+   "impact": "데이터 적재 병렬성만 바뀐다. 모델·하이퍼파라미터·데이터·분할·손실은 불변. 다만 배치 구성·난수 소비 순서가 달라져 수치가 비트 단위로 같지는 않다. 1 epoch 검증에서 두 설정의 테스트 RMSE는 1.2932(워커 8) 대 1.3024(워커 0)였다",
+   "note": "저자 환경(Linux, fork 방식)에서는 기본값 8로도 정상 동작했을 것으로 보이며, 이 편차는 macOS 환경 교체(선택 C)의 비용이다"
+  },
+  {
+   "item": "실행 환경",
+   "author": "python 3.7.6 / torch 1.7.1 / CUDA 10.2 / numpy 1.18.1 / sklearn 0.22.2 (Linux, GPU)",
+   "ours": "python 3.12.14 / torch 2.5.1 / numpy 1.26.4 / sklearn 1.5.2 (macOS arm64, CPU)",
+   "reason": "저자 환경은 Apple Silicon에 설치 불가(torch 1.7.1 빌드 없음, CUDA 없음)",
+   "impact": "수치 연산·난수 구현 차이로 결과가 달라질 수 있다"
+  },
+  {
+   "item": "저자 코드 수정",
+   "author": "-",
+   "ours": "없음",
+   "reason": "환경 버전 선택과 공개 CLI 인자(--num_workers)로 비호환을 해결함. numpy<2(VisibleDeprecationWarning 유지), torch<2.6(torch.load weights_only 기본값), scikit-learn 1.5.x(mean_squared_error의 squared 인자 유지)",
+   "impact": "chemprop v1.6.1 소스는 그대로다"
+  }
+ ],
+ "environment": {
+  "python": "3.12.14",
+  "platform": "Darwin arm64",
+  "packages": {
+   "python": "3.12.14",
+   "chemprop": "1.6.1",
+   "torch": "2.5.1",
+   "numpy": "1.26.4",
+   "scipy": "1.13.1",
+   "scikit-learn": "1.5.2",
+   "pandas": "2.2.3",
+   "rdkit": "2026.9.1",
+   "hyperopt": "0.3.0",
+   "tensorboardx": "2.6.5",
+   "venv": ".venv-repro (주 프로젝트 .venv/.venv-ml과 분리)",
+   "device": "CPU (CUDA 없음, chemprop v1은 MPS 미사용)"
+  }
+ },
+ "input_sha256": {
+  "train.csv": "8c428d46805f549d4c651375e3e77048308ba006570fd0edfb0eece796380d6c",
+  "val.csv": "3ab17dc3c437016b0ab524375cfce7b7b8f82bffc574640fe446b810e68182a8",
+  "test.csv": "2b6ff60f85ecfb2e2759ccd03c529582694068dafcbe43d7a732213523793a6e",
+  "logP_without_overlap.csv": "72f86bead0b89f2c7ef4a5e66e4080343a2fe202f8e89fa22e3dd32f96b977d8"
+ },
+ "stages": [
+  {
+   "label": "split_training",
+   "elapsed_sec": 1251.0,
+   "termination": "clean_exit",
+   "returncode": 0,
+   "compute_done_at_sec": null
+  },
+  {
+   "label": "production_training",
+   "elapsed_sec": 2006.7,
+   "termination": "clean_exit",
+   "returncode": 0,
+   "compute_done_at_sec": null
+  },
+  {
+   "label": "predict_SAMPL6",
+   "elapsed_sec": 5.0,
+   "termination": "clean_exit",
+   "returncode": 0,
+   "compute_done_at_sec": null
+  },
+  {
+   "label": "predict_SAMPL7",
+   "elapsed_sec": 5.0,
+   "termination": "clean_exit",
+   "returncode": 0,
+   "compute_done_at_sec": null
+  },
+  {
+   "label": "predict_SAMPL9",
+   "elapsed_sec": 5.0,
+   "termination": "clean_exit",
+   "returncode": 0,
+   "compute_done_at_sec": null
+  }
+ ],
+ "author_split_test_scores": {
+  "Mean rmse": 0.5635893672855582,
+  "Mean mae": 0.334994556092586
+ },
+ "sampl_results": {
+  "SAMPL6": {
+   "n": 11,
+   "rmse_ours": 0.3666,
+   "rmse_author_reported": 0.27,
+   "difference": 0.0966
+  },
+  "SAMPL7": {
+   "n": 22,
+   "rmse_ours": 0.6843,
+   "rmse_author_reported": 0.49,
+   "difference": 0.1943
+  },
+  "SAMPL9": {
+   "n": 16,
+   "rmse_ours": 1.053,
+   "rmse_author_reported": 1.11,
+   "difference": -0.057
+  }
+ },
+ "author_reported": {
+  "SAMPL6": 0.27,
+  "SAMPL7": 0.49,
+  "SAMPL9": 1.11,
+  "random_test_set": 0.53
+ },
+ "v1_run_for_comparison": {
+  "test_rmse": 0.5661500743640755,
+  "test_mae": 0.33942467864091336,
+  "best_val_rmse": 0.547683,
+  "best_epoch": 43,
+  "elapsed": "1:58:48",
+  "num_workers": 8,
+  "path": "artifacts/sampl_repro_20261021/split_model/test_scores.csv"
+ },
+ "v1_incident": {
+  "when": "2026-10-21 10:02 시작, 12:01 계산 완료, 14:03 멈춤 발견 (약 2시간 정지)",
+  "stage": "split_training",
+  "symptom": "verbose.log 에 Elapsed time = 1:58:48 과 test_scores.csv 까지 모두 기록된 뒤에도 chemprop_train 프로세스가 종료되지 않음. CPU 0%, 잔존 자식은 multiprocessing.resource_tracker 하나",
+  "diagnosis_method": "macOS `sample` 로 네이티브 스택 수집",
+  "diagnosis": "Py_Exit -> Py_FinalizeEx -> finalize_modules -> _PyModule_ClearDict -> method_dealloc -> subtype_dealloc -> slot_tp_finalize -> os_waitpid -> __wait4 에서 영구 블록. 학습 코드가 아니라 인터프리터 종료 처리 중 자식 프로세스 대기에서 멈춘 것",
+  "diagnosis_evidence": "scratchpad/hang_sample.txt, artifacts/sampl_repro_20261021/split_model/verbose.log",
+  "also_observed": "2026-10-21 09:48 의 타이밍 측정용 1 epoch 실행에서도 09:51 에 Elapsed time = 0:03:34 까지 출력한 뒤 동일하게 미종료. 전체 데이터 기준 2회 중 2회 재현"
+ },
+ "claim_limits": [
+  "하이퍼파라미터 탐색을 생략했고 앙상블 크기를 줄였으므로 원 논문과 동일 조건 비교가 아니다",
+  "환경(python/torch/numpy/sklearn)이 저자 환경과 다르다",
+  "데이터로더 워커 수를 저자 기본값 8에서 0으로 바꿨다. 종료되지 않는 결함 때문이며 배치 구성·난수 소비 순서가 달라진다",
+  "차이가 작더라도 '재현 성공'이 아니라 '축소 조건에서의 결과'로 서술한다"
+ ]
+}

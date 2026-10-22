@@ -42,6 +42,58 @@
     "full_structure_verified_rows": 0,
     "claim_limit": "수치·조건 일치 외에 구조·키·원 특허 자체 분석 자료와의 차이를 해소해야 함. MS 차이만으로 DB 오류나 올바른 대체 구조를 확정하지 않음"
   },
+  "access_block_analysis_20261020": {
+    "evidence_path": "data/raw/scope_evidence_20261020_v3/manifest.json#access_blocked_log",
+    "report_section": "reports/cohort_scope_evidence_ko.md 8-10번",
+    "ref28_block_cause": "ACS(저작권자) 구독 정책. Europe PMC가 'Subscription required'로 공식 등록, 레포지토리(NHRI)는 전문 미보유(색인 전용 안내), ACS 직접 요청은 HTTP403, OpenAlex의 OA링크는 BindingDB 파생 데이터셋으로 순환출처. 우회 접근 시도 안 함",
+    "project_blocked_by_furan45": false,
+    "project_blocked_reason": "configs/project.json의 training_cohort는 특정 후보에 고정 의존하지 않음. M1은 WT 생화학 단일 프로토콜 코호트 1개 확보가 목표이며 특허64·Apsel209·981건 등 독립 후보가 이미 존재. P0 파이프라인·52개 테스트는 furan45를 전제하지 않음",
+    "alternative_candidates_scanned": {
+      "queue_source": "data/interim/main_cohort_inventory_20261020/source_priority_queue.csv (242 assay)",
+      "unique_documents_with_pmid": 134,
+      "europepmc_open_access_count": 4,
+      "europepmc_open_access_note": "4건 중 1건(PMID36749735)은 furan45 자신의 2023년 논문(이미 사용 중), 나머지 3건도 다른 보류 사유(format_not_biochemical/variant_unresolved/target_link) 보유",
+      "patent_rows_total": 79,
+      "patent_rows_with_variant_unresolved_flag": 78,
+      "patent_rows_with_no_hold_reason": 1,
+      "patent_rows_with_no_hold_reason_note": "그 1건이 바로 patent64(CHEMBL5737421), 이미 검토 중",
+      "conclusion": "접근 가능(본문 확보 가능)하면서 다른 보류 사유가 전혀 없는 신규 후보는 큐 내에 없음. 접근성 기준 상위 5개를 reports/cohort_scope_evidence_ko.md 10번 표에 기록"
+    }
+  },
+  "candidate_fit_review_20261020": {
+    "script": "scripts/review_candidate_fit.py",
+    "evidence_path": "data/interim/candidate_fit_review_20261020/manifest.json",
+    "report_path": "reports/candidate_fit_review_ko.md",
+    "method": "configs/cohort_policy.json·project.json·HANDOFF.txt의 불변 규칙에서 9개 게이트를 도출해 242 assay 큐의 동결 수치와 대조. 5개는 CSV에서 기계 계산, 4개는 사람이 확인한 근거를 경로·인용과 함께 명시, 미확인은 unknown 유지",
+    "result_all_gates_passed": ["CHEMBL4258549"],
+    "result_scores": {
+      "CHEMBL4258549": "9 pass / 0 fail / 0 unknown (n=22, scaffold 12, pIC50 폭 1.647)",
+      "CHEMBL5737421": "6 pass / 3 fail (구조보류 64, 부등호 14 혼입, MS 13관측 차이)",
+      "CHEMBL5736995": "5 pass / 4 fail (Cot 표적열 혼입)",
+      "CHEMBL5141216": "4 pass / 4 fail / 1 unknown (신규 발견: DB-원문 충돌)",
+      "CHEMBL1243977": "3 pass / 3 fail / 3 unknown",
+      "CHEMBL5382277": "3 pass / 4 fail / 2 unknown (종 미확정·정량조건 미확인·ref28 본문 차단)"
+    },
+    "queue_population": "242 assay 중 자동 보류 사유가 빈 행 2건(CHEMBL5737421, CHEMBL4258549), WT+biochemical 12건",
+    "new_finding_ref28_curated_in_chembl": {
+      "assays": ["CHEMBL4416105 (WT, 25 정확값)", "CHEMBL4416106 (L858R/T790M, 20 정확값)"],
+      "pmid": "31560541",
+      "description_quote": "Inhibition of GST-tagged human EGFR kinase domain (696 to 1022 residues) using poly(Glu, Tyr) 4:1 substrate incubated for 60 mins by kinase-Glo plus luminescent kinase assay",
+      "significance": "furan45(CHEMBL5382277) 설명과 GST·696-1022·poly(Glu,Tyr)4:1·60분·Kinase-Glo Plus가 일치하고 종 표기만 다름('human' vs '(unknown origin)'). PDB 6JZ0과도 충돌하지 않음",
+      "auto_resolved": false,
+      "auto_resolved_reason": "별개 assay 기록 간 추론이므로 unknown_variant_is_wild_type:false 및 종·변이 추정 금지 규칙에 따라 자동 해제하지 않음. 사람의 독립 검토 대상으로만 등록"
+    },
+    "new_finding_blu945_source_conflict": {
+      "assay": "CHEMBL5141216",
+      "source_fulltext": "data/raw/protocol_discovery_20261020_v2/PMC9340769.xml (오픈액세스, 로컬 보유)",
+      "conflict_1": "기질 펩타이드: 원문 5-FAM-EEPLYWSFPAKKK-CONH2 vs ChEMBL 설명 5-FAM-EEPLYINSFPAKKK-CONH",
+      "conflict_2": "원문 전체에 GST·Sf9·insect 언급 없음(효소는 'WT and mutant EGFR enzymes (SignalChem)'). ChEMBL 설명의 GST/Sf9는 원문 근거 아님",
+      "source_conditions_from_fulltext": "기질 2.5 uM, ATP 1 mM, 10 mM MgCl2, 0.015% Brij-35, 1 mM DTT, 1% DMSO, 100 mM HEPES pH 7.5, 25 C, 억제제 10분 사전배양, Caliper EZReader 2",
+      "resolution": "어느 쪽도 오류로 확정하지 않고 양쪽 보존·보류. ATP 1 mM로 맥락이 달라 다른 assay와 합치지 않음",
+      "note": "자동 보류 사유 format_not_biochemical은 '발현용 Sf9 세포' 언급에 의한 과검출 가능성 - 분류 정확도 미평가"
+    },
+    "training_approved_by_this_review": 0
+  },
   "new_training_approved": 0,
   "new_model_training_executed": false,
   "new_cross_assay_pooling_approved": false,

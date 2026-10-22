@@ -113,3 +113,34 @@ ref28(Lin 등 2019) 본문 자체는 이번에도 확보하지 못했다. Europe
 Lin2019 본문의 참고문헌53번이 "Reaction Biology Corporation Home Page"(상업 kinase assay CRO)인 것은 확인했지만, **이 연구가 실제로 이 CRO를 썼다는 본문 서술 자체는 확인하지 못했다.** Reaction Biology의 공개 EGFR 패널 프로토콜(ATP10µM·poly(Glu:Tyr)4:1 기질)은 참고용 정황일 뿐 이 논문의 실제 조건으로 쓰지 않는다.
 
 **결론:** `configs/cohort_scope_review.json`의 furan45 항목에 `pdb_6JZ0_cross_check`와 `coumar2010_si_checked`를 추가했다. `protocol_fields_still_pending`(ATP농도·효소농도·기질조건·반응시간온도·readout)은 그대로 남아 있고, `training_ready=false`를 유지한다. 새 증거는 `data/raw/scope_evidence_20261020_v3/manifest.json`에 해시와 함께 기록했다. 기존 v2 파일·검토표는 변경하지 않았다.
+
+## 8. 본문 접근 차단 사유 — 인용·경로 기록 (2026-10-20 재검증)
+
+ref28(Lin 등 2019) 본문이 막히는 정확한 지점을 재요청해서 확인했고, 각 경로의 응답을 `data/raw/scope_evidence_20261020_v3/manifest.json`의 `access_blocked_log`에 해시와 함께 저장했다.
+
+1. **ACS 출판사 원문.** `https://doi.org/10.1021/acs.jmedchem.9b00722` → `https://pubs.acs.org/jmcmar/article/62/22/10108/...` 로 리졸브되며 **HTTP 403**. 구독 안내 화면에도 도달하지 못하고 자동화 요청 자체가 거부된다. (`data/raw/scope_evidence_20261020_v3/acs_doi_resolve_403.html`)
+2. **Europe PMC 공식 메타데이터.** `isOpenAccess=N`, `inEPMC=N`, `inPMC=N`, `hasPDF=N`, `fullTextUrlList.availability="Subscription required"`. 출판사가 이 논문을 구독 전용으로 공식 등록했다는 근거다. (`data/raw/scope_evidence_20261020_v2/ref28_epmc.json`)
+3. **NHRI(National Health Research Institutes) 기관 레포지토리.** `https://ir.nhri.edu.tw/bitstream/3990099045/12290/1/NBP2019112001.pdf` 는 HTTP 200이지만 실제로는 472바이트 HTML이며, 인용하면: *"According to right of reproduction and fair use of copyright, the fulltext is only for index and search purpose... The page is going to be redirected to a external link, the original archiving system."* 즉 레포지토리가 전문을 보유하지 않고 원본(ACS)으로 안내만 한다. (`data/raw/scope_evidence_20261020_v3/nhri_bitstream_rights_notice.html`)
+4. **OpenAlex OA 인덱스.** `open_access.oa_url`이 `https://doi.org/10.7270/q21v5jfw`를 가리키지만 실제로는 BindingDB Entry50009645 데이터셋(DataCite가 ChEMBL·원 논문 파생임을 명시)이다. 논문 본문이 아닌 2차 파생 데이터셋이라 순환 출처로 판단, 독립 검증으로 세지 않는다. (`data/raw/scope_evidence_20261020_v2/ref28_openalex.json`)
+
+**결론: 차단은 저작권자(ACS)의 구독 정책에 의한 것이며, 레포지토리·인덱스 쪽에 우회 가능한 합법 사본이 존재하지 않는다.** ACS 구독 접근 우회는 시도하지 않았다(HANDOFF.txt 10번 항목 원칙 준수).
+
+## 9. furan45 없이 프로젝트 진행이 가능한가
+
+**가능하다.** `configs/project.json`의 `training_cohort`는 `pending_manual_assay_review_after_automatic_audit`로, 특정 후보(furan45)에 고정 의존하지 않는다. M1의 목표는 "실험 맥락이 명시된 단일 프로토콜 WT 생화학 IC50 코호트 1개 확보"이며, furan45는 그중 하나의 후보일 뿐이다. 현재 검토 중인 다른 후보들(특허64건 CHEMBL5737421 - 수치 일치, 구조검증 보류 / Apsel209건 - 전부 보류 / 981건 - assay 전체 보류)도 furan45와 독립적으로 존재한다. P0 수집·자동감사, 코드(`data/audit.py`, `data/collection.py` 등), 테스트 52개는 furan45를 전제하지 않고 이미 동작한다. 즉 **furan45가 막혀도 프로젝트 자체(P0/P1 파이프라인, M1 코호트 선정 절차)는 다른 후보로 계속 진행할 수 있다** — 막힌 것은 "45건이라는 특정 후보"이지 "프로젝트의 다음 단계" 자체가 아니다.
+
+## 10. 본문 확보 가능한 대체 후보 5개
+
+`data/interim/main_cohort_inventory_20261020/source_priority_queue.csv`(242 assay 큐) 전체를 다시 스캔했다. PMID가 있는 고유 문헌 134건의 Europe PMC OA 상태를 전수 재조회한 결과 `isOpenAccess=Y`는 **4건뿐**이었고, 그중 1건(PMID36749735)은 furan45 자신의 2023년 논문(이미 사용 중)이었다. 특허(PATENT) 79건은 전문이 항상 공개이지만 79건 중 78건이 `variant_unresolved`(WT/변이 혼합 표라 자동 분리 실패) 플래그를 갖고 있어, "접근 자체는 막히지 않았지만 수작업 분리가 필요한" 범주다. 실제 WT·bio 우선순위이면서 다른 중대 보류사유가 없는 신규 후보는 없었다 — 즉 **대부분의 접근 가능 후보가 "접근 문제가 아닌 다른 이유"로 아직 보류 상태**다.
+
+이를 반영해, 접근성 기준으로 가장 현실적인 5개를 제시한다(모두 **아직 검토·승인 전**, training_ready 아님):
+
+| # | 후보 | 접근 경로 | 규모 | 남은 과제 (접근 문제 아님) |
+|---|---|---|---|---|
+| 1 | CHEMBL5735051 (특허 "2,4-disubstituted pyrimidines useful as kinase inhibitors", doc CHEMBL5727636) | 특허 전문 공개(Google Patents) | 262행 중 정확값159 | Omnia Assay가 EGFR-WT(Invitrogen PV3872)와 EGFR-T790M/L858R(BPS 40350)을 같은 표에 병기 — WT행만 수작업 분리 필요. 구조 확인(struct_hold 260)도 필요 |
+| 2 | CHEMBL5738142 (동일 특허군, doc CHEMBL5729139) | 특허 전문 공개 | 262행 중 정확값139 | 위와 동일한 Omnia Assay WT/변이 분리 과제 |
+| 3 | CHEMBL5736750 (특허 "EGFR proteolysis targeting chimeric molecules", doc CHEMBL5728438) | 특허 전문 공개 | 187행 중 정확값153 | PROTAC(분해제) 계열이라 통상 IC50 회귀와 작용기전이 다름 — pool_ic50_ki_kd 정책과 별도 검토 필요 |
+| 4 | PMID18849971 / CHEMBL1240340 ("Targeted polypharmacology: discovery of dual inhibitors...") | PMC 공식 오픈액세스 전문 | 167행, struct_hold 1(낮음) | 이미 known_source_hold=True로 등록(`target_link`·`variant_unresolved`) — 이중표적(dual) 설계라 EGFR 단일표적 WT로 보기 어려움 |
+| 5 | PMID35838760 / CHEMBL5137066 (BLU-945 관련 논문) | PMC 공식 오픈액세스 전문 | 24행 | `format_not_biochemical` 플래그 — 세포 기반 형식일 가능성, struct_hold 26으로 구조도 대부분 미확인 |
+
+**주의:** 이 5개는 "본문을 읽을 수 있다"는 조건만 만족한 것이며, 어느 것도 furan45보다 검증이 더 진행된 상태는 아니다. 1·2·3번은 본문이 100% 공개라 WT/변이 행 분리 작업만 하면 되는 반면(접근 문제 없음), 4·5번은 공개 논문이지만 기존 자동 검토에서 이미 다른 사유로 보류돼 있다. 어느 것이든 `configs/cohort_policy.json`의 `cross_assay_pooling_requires` 기준 전체를 통과해야 학습 승인된다.

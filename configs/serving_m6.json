@@ -1,0 +1,134 @@
+{
+  "version": "serving-m6-v1",
+  "frozen_on": "2026-10-21",
+  "status": "frozen_before_execution",
+  "milestone": "M6",
+  "freeze_rule": "이 파일은 서비스 구현·측정을 시작하기 전에 고정했다. 측정 결과를 본 뒤 기준이나 사전 예상을 고치지 않는다. 고치면 고친 사실과 이전 값을 함께 남긴다",
+
+  "served_model": {
+    "artifact_dir": "artifacts/agent_predictor_20261021",
+    "model_file": "rf_pilot22.joblib",
+    "model_sha256": "c6538d0d275df81680bc250d08e0f464e6f1debb962c0df39e35c560b70b9869",
+    "cohort_sha256": "c0f5ed9e1d7b0238abc586133a7e0a426972d10e9d9ab54530bb15158f7655e9",
+    "settings_sha256": "29471fccbf051794de497b7d8f66d0320b7b41331c8999ce93c1cb28aa85c2b7",
+    "why_this_artifact": "M5 의 predict_activity 도구가 쓴 것과 같은 예측기다. 서비스용으로 다시 학습하지 않는다. 같은 모델을 두 경로로 재학습하면 두 경로의 출력이 갈라질 수 있다",
+    "reuses_code": "src/egfr_lab/agent/tools.py 의 ActivityPredictor 를 그대로 호출한다. 전처리·적용 범위 판정을 서비스에서 다시 구현하지 않는다",
+    "scope_limit": "pilot22 — 22건·12 scaffold·단일 문헌·단일 assay(CHEMBL4258549)의 정상형(WT) 생화학 IC50. M1 교차검증에서 평균 예측(Dummy)보다 낫다고 확정되지 않았다"
+  },
+
+  "api_contract": {
+    "name": "egfr-pilot22-inference",
+    "api_version": "v1",
+    "endpoints": {
+      "GET /healthz": "프로세스가 살아 있는지. 모델 로딩과 무관하게 200",
+      "GET /readyz": "모델이 로딩되고 해시가 설정과 일치하면 200, 아니면 503",
+      "GET /model-info": "모델 해시·코호트 해시·학습 규모·라벨 범위·필수 고지·런타임 버전",
+      "POST /predict": "SMILES 배열을 받아 분자별 예측·적용 범위 판정·고지를 돌려준다"
+    },
+    "predict_request": {
+      "smiles": "문자열 배열. 1개 이상 max_batch 이하",
+      "max_batch": 32
+    },
+    "predict_response_rules": [
+      "분자마다 성공·실패를 따로 돌려준다. 하나가 실패해도 나머지를 버리지 않는다",
+      "해석 불가 SMILES 는 status=error 로 돌려주고 predicted_pIC50 을 넣지 않는다. 0 이나 평균값으로 채우지 않는다",
+      "모든 성공 응답에 mandatory_caveats 를 넣는다. 응답에서 고지를 뺄 수 있는 옵션을 제공하지 않는다",
+      "모든 성공 응답에 model_sha256 과 api_version 을 넣는다. 어떤 모델이 답했는지 응답만 보고 알 수 있어야 한다",
+      "적용 범위 밖(scaffold 미포함·최대 Tanimoto<0.5·라벨 범위 밖)이면 해당 고지를 추가한다"
+    ],
+    "refused_by_design": [
+      "학습·재학습 엔드포인트 — 서비스는 추론만 한다",
+      "고지 생략 옵션",
+      "변이형·세포 실험·분해제 지표 예측 — 학습 라벨이 WT 생화학 IC50 뿐이다",
+      "예측값을 '측정값'이나 '실측'으로 부르는 필드명"
+    ]
+  },
+
+  "container": {
+    "dockerfile": "deployment/Dockerfile",
+    "base_image_pin": "python:3.12.14-slim-bookworm",
+    "build_platform": "linux/arm64",
+    "build_platform_reason": "로컬 Docker 가 aarch64 다. linux/amd64 를 QEMU 에뮬레이션으로 빌드하면 지연시간 측정이 호스트 에뮬레이션 비용으로 왜곡된다. amd64 로 배포하려면 따로 빌드하고 지연시간을 다시 측정해야 한다",
+    "requirements_file": "deployment/requirements-serve.txt",
+    "pin_rule": "컨테이너 안에서 pip freeze 를 받아 deployment/requirements-serve.lock.txt 로 보존한다. macOS arm64 freeze 를 리눅스 컨테이너의 증거로 쓰지 않는다",
+    "runs_as_non_root": true,
+    "no_secrets_in_image": "이미지에 API 키·자격증명을 넣지 않는다. 모델 파일만 복사한다"
+  },
+
+  "verification_plan": {
+    "V1_parity": {
+      "what": "같은 입력에 호스트 프로세스와 컨테이너가 같은 예측값을 내는가",
+      "inputs": "configs/serving_m6.json 의 probe_molecules 전체",
+      "pass_rule": "모든 분자의 predicted_pIC50 이 소수 3자리까지 같고 적용 범위 판정도 같다",
+      "if_mismatch": "숨기지 않고 차이를 그대로 싣는다. 라이브러리 버전 차이를 원인 후보로 조사하고 결론이 안 나면 '원인 미확정'으로 쓴다"
+    },
+    "V2_model_identity": {
+      "what": "/model-info 가 돌려주는 해시가 설정에 고정한 해시와 같은가",
+      "pass_rule": "model_sha256·cohort_sha256·settings_sha256 3개 모두 일치"
+    },
+    "V3_restart": {
+      "what": "컨테이너를 재시작한 뒤 모델이 다시 로딩되고 같은 값을 내는가",
+      "procedure": "docker restart 2회, 각 재시작 후 /readyz 200 확인하고 probe 재예측",
+      "pass_rule": "2회 모두 readyz 200 이고 예측값이 V1 과 같다"
+    },
+    "V4_error_handling": {
+      "what": "잘못된 입력을 거부하는가",
+      "cases": ["빈 배열", "빈 문자열 SMILES", "해석 불가 문자열", "max_batch 초과", "smiles 필드 없음", "JSON 아닌 본문"],
+      "pass_rule": "모두 4xx 또는 분자별 status=error. 500 이 나거나 숫자를 만들어내면 실패"
+    },
+    "V5_latency": {
+      "what": "지연시간",
+      "measured_on": "Docker Desktop 29.8.0 / aarch64 linux VM / NCPU=8 / MemTotal=8.3GB, 호스트는 macOS 25.5.0 Apple Silicon",
+      "procedure": "단일 분자 요청. 워밍업 20회(버림) 후 측정 200회 순차. 동시 요청은 측정하지 않는다",
+      "report": ["p50", "p95", "최솟값", "최댓값", "표본 수"],
+      "not_claimed": "이 수치는 처리량(throughput)이나 동시 부하 성능이 아니다. 노트북 VM 1대·순차 요청 200회의 측정이고 클라우드 성능을 예측하지 않는다"
+    },
+    "V6_logging": {
+      "what": "요청·오류가 로그에 남는가",
+      "pass_rule": "요청 경로·상태코드·처리시간이 남고, 오류 시 예외 종류가 남는다. SMILES 전체를 로그에 남기지 않는다(입력 보존 범위를 좁게 둔다)"
+    }
+  },
+
+  "pre_registered_expectations": {
+    "declared_before_any_measurement": true,
+    "why": "측정 결과를 본 뒤 '예상대로였다'고 쓰지 않기 위해 먼저 적는다. 틀리면 틀린 대로 남긴다",
+    "host_p50_ms": "5~30 예상",
+    "container_p50_ms": "10~60 예상",
+    "container_vs_host": "컨테이너가 같거나 느릴 것으로 예상. 가상화 비용 때문",
+    "model_load_seconds": "1~5 예상",
+    "parity": "호스트와 컨테이너의 예측값이 소수 3자리까지 같을 것으로 예상. 다만 RandomForest 는 부동소수 합산 순서에 민감할 수 있고 리눅스/macOS 의 BLAS 가 달라 어긋날 가능성을 배제하지 않는다",
+    "image_size_mb": "600~1400 예상 (rdkit·scikit-learn·scipy 포함)"
+  },
+
+  "probe_molecules": [
+    {"id": "P-in-1", "smiles": "C=C=CC(=O)Nc1cc(Nc2nccc(-c3cnn4ccccc34)n2)c(OC)cc1N(C)CCN(C)C", "note": "M5 D1 과 같은 분자. 적용 범위 안쪽 경로"},
+    {"id": "P-out-1", "smiles": "CC(=O)Oc1ccccc1C(=O)O", "note": "아스피린. M5 F1 과 같은 분자. 적용 범위 밖 경로"},
+    {"id": "P-out-2", "smiles": "CCO", "note": "에탄올. 극단적으로 작은 분자"},
+    {"id": "P-bad-1", "smiles": "this-is-not-a-molecule", "note": "해석 불가. 오류 경로"},
+    {"id": "P-bad-2", "smiles": "", "note": "빈 문자열. 원자 0개로 파싱되는 함정(M5 에서 실제로 겪은 결함)"}
+  ],
+
+  "cloud_execution": {
+    "status_at_freeze": "not_configured",
+    "aws_profile_found": "skn33 (ap-northeast-2, arn:aws:iam::498777149300:user/student)",
+    "credentials_present_at_freeze": false,
+    "requirement": "클라우드 실행 증거는 실제 요청·응답·모델 버전·비용 기록이 있어야 완료로 쓴다",
+    "if_not_executed": "M6 를 'complete' 로 쓰지 않는다. 컨테이너까지 끝낸 범위를 명시하고 클라우드 항목은 미충족으로 남긴다",
+    "cost_rule": "리소스를 만들기 전에 사용자 승인을 받는다. 과금되는 자원을 임의로 생성하지 않는다",
+    "teardown_rule": "만든 자원은 측정 후 삭제하고 삭제 사실을 기록한다"
+  },
+
+  "completion_evidence_required": [
+    "버전이 고정된 추론 API·컨테이너",
+    "실제 클라우드 요청·응답과 모델 버전",
+    "오류·로그·재시작·지연시간·비용 기록"
+  ],
+
+  "forbidden": [
+    "지연시간 측정을 보고 사전 예상을 고친 뒤 맞췄다고 쓰는 것",
+    "컨테이너 검증만 하고 '클라우드 배포 완료'라고 쓰는 것",
+    "모델 예측값을 측정값으로 서술하는 것",
+    "22건 학습 모델의 서비스를 'EGFR 활성 예측 서비스'로 범위 없이 부르는 것",
+    "기존 artifacts·reports 폴더를 덮어쓰는 것"
+  ]
+}

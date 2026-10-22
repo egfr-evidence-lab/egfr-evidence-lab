@@ -5,6 +5,153 @@ EGFR Evidence Lab - 터미널 / 새 세션 인수인계
 명령을 전부 일괄 실행하는 스크립트가 아니다. 완료 상태와 다음 작업을 구분한다.
 실제 파일·Git 상태가 이 기록보다 바뀌었다면 최신 상태를 먼저 확인한다.
 
+최신 M3 SAMPL 축소 재현 실행 (2026-10-21, 아래 전체 기록보다 우선):
+- 재현용 환경 .venv-repro 신규(.venv/.venv-ml 무손상). python 3.12.14 기반.
+  chemprop v1.6.1이 끝까지 도는 스택을 찾음:
+  torch 2.5.1 / numpy 1.26.4 / scipy 1.13.1 / scikit-learn 1.5.2 / pandas 2.2.3 / rdkit 2026.9.1.
+  저자 코드는 한 줄도 수정하지 않았고 전부 환경 버전 선택으로 해결:
+   * numpy 2.x에서 np.VisibleDeprecationWarning 삭제 -> numpy 1.26.4 고정
+   * torch 2.6+에서 torch.load weights_only 기본값 True -> 체크포인트 로딩 실패 -> torch 2.5.1
+   * sklearn 1.6+에서 mean_squared_error(squared=) 제거 -> 1.5.2로 고정하니 저자 스크립트 그대로 동작
+  소규모 smoke test로 학습-저장-로딩-평가 전 구간 동작 확인함.
+- 데이터: Zenodo 10078142 data.tar.gz를 스트리밍하며 전체 MD5 계산 -> 공개값
+  57fef6993e9539ed8751a630c337e841과 일치 확인(1,632,346,035바이트 전부 통과).
+  디스크에는 logP 7개 파일만 저장: data/raw/benchmark_data_20261021/.
+  행수 검증 train18,776 + val2,347 + test2,346 = 23,469로 논문 SI와 일치.
+  SAMPL6/7/9 = 11/22/15분자, 컬럼명도 sampl.sh와 일치. 저자 분할 그대로 사용(재분할 안 함).
+- 타이밍 측정: 저자 분할에서 1 epoch = 3분34초(피처화 포함). 이를 근거로 예산 축소 결정.
+  측정 실행의 RMSE는 설정 결정에 쓰지 않았고 결과로도 보고하지 않음(폐기 명시).
+- 설정 고정: configs/benchmark_repro.json (실행 전 frozen).
+  축소 항목 = 하이퍼파라미터 탐색 생략(저자 30회x50epoch), 앙상블 5->1.
+  축소하지 않은 항목 = epoch 수(split 50 / production 40), aggregation norm, seed 0, 저자 분할.
+  허용 오차는 정의하지 않음(축소 조건이므로 합격/불합격 판정을 만들지 않는다).
+  금지사항 3개 명시(재현 성공으로 서술 금지 등).
+- 실행: scripts/run_sampl_repro.py, 출력 artifacts/sampl_repro_20261021/ 및
+  reports/sampl_repro_20261021/. 백그라운드 진행 중(수 시간 예상).
+  비교 대상 저자 보고값: SAMPL6 0.27 / SAMPL7 0.49 / SAMPL9 1.11, 랜덤 테스트셋 0.53.
+- 커밋 안 함.
+
+최신 선택 C 확정·학습노트 PDF (2026-10-20, 아래 전체 기록보다 우선):
+- 사용자가 M3 실행 방식으로 선택 C 확정: 저자 코드·데이터·분할은 유지하고 환경만
+  최신 python/torch CPU로 교체 + 하이퍼파라미터 탐색·앙상블 축소.
+  configs/portfolio_scope.json의 M3.execution_choice에 기록(축소 시 반드시 남길
+  항목 5개와 금지사항 포함). 실제 실행·다운로드·설치는 아직 안 함.
+- 기술 스택·도메인 지식 학습 노트 작성:
+  원고 docs/13_session_tech_domain_notes_ko.md,
+  생성 스크립트 scripts/build_session_notes_pdf.py (제한된 Markdown 부분집합 렌더러),
+  출력 PDF는 사용자 요청대로 바탕화면:
+  ~/Desktop/EGFR_기술스택_도메인정리_20261020.pdf (9쪽, 표 5개, 렌더링 육안 확인함).
+  reportlab이 .venv/.venv-ml 어디에도 없어 기존 환경을 건드리지 않고 scratchpad의
+  임시 venv에 설치해 생성함. 폰트는 /System/Library/Fonts/Supplemental/AppleGothic.ttf.
+  AppleGothic에 없는 글자(µ U+00B5, − U+2212, ₀ U+2080)는 스크립트의 GLYPH_FALLBACK로
+  같은 뜻의 글자(μ, -, 0)로 치환함. 의미를 바꾸는 치환은 없음.
+- 내일 이어서 할 것: 선택 C로 SAMPL 재현 실행.
+  순서는 (1) Zenodo data.tar.gz 1.63GB 내려받아 md5 57fef699... 확인,
+  (2) 재현용 별도 venv에 chemprop v1.6.1 + 최신 torch CPU 설치,
+  (3) 축소 설정 결정·고정(실행 전),
+  (4) 실행 후 저자 보고값과 차이 표로 기록.
+- 커밋 안 함.
+
+최신 M1 종료·M3 착수 (2026-10-20, 아래 전체 기록보다 우선):
+- 사용자가 cfed97b "first commit"으로 직전까지의 작업을 직접 커밋함.
+- M1 종료: pilot22(CHEMBL4258549, 22건)를 주 학습 코호트로 범위 한정 승인.
+  configs/main_cohort_approval.json 신규(승인 근거·적용범위·금지 주장·해시 drift 기록).
+  configs/project.json: training_cohort=approved_scope_limited_pilot22_CHEMBL4258549,
+  P0·P1 status=complete_scope_limited. portfolio_scope.json: M1 complete_scope_limited.
+  pooling 0쌍·다른 후보 보류는 그대로. 52 테스트 통과, check-config 통과.
+- 순서 변경(사용자 승인): M2(D-MPNN)와 M3(공개 benchmark 재현)를 맞바꿔 M3 먼저.
+  이유: 승인 코호트가 22건이라 그 위의 D-MPNN은 딥러닝 실행 역량 증거가 못 됨.
+  M3에서 만든 환경으로 pilot22 D-MPNN을 각주로 덧붙인다. M2 완료기준 자체는 불변.
+- M3 1단계(저자 원 설정·원 결과 확보) 완료. 실행·설치·다운로드는 아직 안 함.
+  data/raw/benchmark_source_20261020/ 에 해시와 함께 보존:
+  논문 PDF(KU Leuven 공개본; ACS 403·PMC PDF는 HTML·MIT DSpace 429였음),
+  SI PDF(figshare 공식, 제공자 MD5 일치, CC BY-NC 4.0), sampl.sh, environment.yml,
+  README, repo commit json, zenodo 레코드 json.
+  저자 원 결과 = SI Table S9: SAMPL6 0.27 / SAMPL7 0.49 / SAMPL9 1.11 RMSE,
+  랜덤 테스트셋 RMSE 0.53. (저자 보고값이며 우리 재현값 아님. 목표수치 만들지 않음)
+  저자 설정 = chemprop_benchmark commit 247f3eee, Chemprop v1.6.1,
+  hyperopt 30iter x 50epoch, 학습 ensemble5 x 50epoch, production ensemble5 x 40epoch,
+  데이터 Zenodo 10078142 data.tar.gz 1.63GB md5 57fef699..., 학습 23,469점 랜덤 80/10/10.
+  docs/04_reproduction.md의 "실행 전에 채울 재현 기록" 표를 실제 값으로 채움.
+- 막힌 지점(결정 필요): 저자 환경은 python3.7.6/torch1.7.1/cudatoolkit10.2(Linux,NVIDIA)라
+  이 Mac(arm64, CUDA 없음)에서 그대로 설치 불가. torch1.7.1은 Apple Silicon 빌드 없음.
+  추가로 sampl.sh의 mean_squared_error(squared=False)는 sklearn 1.6에서 제거되어
+  현재 .venv-ml(1.9.1)에서 그 줄은 실행 안 됨.
+  선택지 A(환경만 최신으로 교체) / B(linux amd64 컨테이너, 에뮬레이션으로 비현실적) /
+  C(A + 튜닝예산·앙상블 축소). 어떤 선택이든 "동일 조건 재현"으로 쓰지 않는다.
+- 커밋 안 함(사용자가 직접 수행).
+
+최신 포트폴리오 적합성 판정·본문추출 종료 (2026-10-20, 아래 전체 기록보다 우선):
+- 사용자 질문: pilot22는 서브 프로젝트이니 지금 포트폴리오로 써도 되는지만 확인.
+- 판정: 사용 가능. 단 헤드라인은 "검증 파이프라인"이지 "예측 모델"이 아님.
+  근거1) configs/portfolio_scope.json의 M1 completion_evidence 4항목 전부 대응
+  산출물 실재(코호트 결정·보류표 / 누출검사·고정분할 / Dummy·RF 동일자료 평가 /
+  오차·불확실성·적용범위 보고). 포트폴리오 보고서 우선순위1번 완료판단 4요소도 충족.
+  근거2) 검증 깔때기(동결자료 직접계산): 원측정 26,600 -> 자동감사 후보 264(0.99%)
+  -> 원문검토 큐 242 assay -> 자동보류 0건 2건 -> 9게이트 전부통과 1건 -> 최종 22건
+  (원 측정의 0.083%). 이 깔때기 자체가 산출물.
+  근거3) 재현성: 테스트52·스크립트27·전 산출물 SHA256 manifest·독립검증 통과·
+  저장모델36개 재로딩 일치.
+  조건) "RF가 더 좋았다"로 쓰면 부적합. RF-Dummy CI[-0.0819,+0.0506]이 0 포함인 것은
+  n=22·최대골격50%에서 예상되는 결과로 먼저 밝히는 편이 낫다.
+  한계) 공고 우대사항 중 딥러닝(M2)·논문재현(M3)·Agent(M5)·클라우드(M6)는 미실행.
+  pilot22로 닫히는 것은 우선순위 1번 하나뿐. agent/evaluation/features/literature는 빈 뼈대.
+- 본문 추출 작업 종료: ref28 본문은 ACS 구독정책으로 확보불가 확정(경로별 인용·해시는
+  scope_evidence_20261020_v3/manifest.json#access_blocked_log). 대신 PDB 6JZ0 +
+  Coumar2010 SI + ChEMBL 큐레이션 기록 확보. 추가 확인: ref28 측정 52건
+  (CHEMBL4416105 WT 26행, CHEMBL4416106 변이 26행, 관계 '='45/'>'7)이 이미
+  동결 수집본 activity_audit.csv에 존재. 본문 PDF는 못 얻었으나 그 논문의 측정값과
+  큐레이션된 조건은 이미 프로젝트 안에 있음. 남는 미확인은 ATP농도·효소량·기질농도·
+  온도·buffer pH이며 본문 전용이므로 접근불가로 확정. 동일 경로 재시도 금지.
+- 보고서 reports/candidate_fit_review_ko.md 6·7절에 기록. 학습 승인 0건 유지. 커밋 안 함.
+
+최신 후보 적합성 검증 (2026-10-20, 아래 전체 기록보다 우선):
+- 사용자 요청: 지금까지 후보 중 어느 것이 가장 잘 맞는지 검증하고 방법·지표·인용과 함께 보고.
+- scripts/review_candidate_fit.py 신규. cohort_policy/project.json/HANDOFF의 불변 규칙에서
+  9개 게이트 도출(변이·형식·종·구조·중복·정확값·원문접근·정량조건·충돌).
+  5개는 동결 CSV에서 기계 계산, 4개는 사람이 확인한 근거를 경로·인용과 함께 명시,
+  확인 안 한 항목은 pass가 아니라 unknown으로 남김. 새 수집·새 학습 없음.
+  출력 data/interim/candidate_fit_review_20261020/ (해시 manifest 포함),
+  보고서 reports/candidate_fit_review_ko.md.
+- 결과: 9게이트 전부 통과는 CHEMBL4258549(pilot22) 1건뿐 (n=22, scaffold12, 폭1.647).
+  patent64 6/3, 981건 5/4, BLU-945 4/4/1, Apsel209 3/3/3, furan45 3/4/2.
+  242 큐 중 자동 보류사유가 빈 행은 2건(patent64, pilot22)뿐.
+- 신규 발견1: 큐에 ref28(pmid 31560541) 본인의 assay가 이미 큐레이션돼 있음.
+  CHEMBL4416105 설명 = "GST-tagged human EGFR kinase domain (696 to 1022 residues),
+  poly(Glu,Tyr)4:1, 60 mins, kinase-Glo plus". furan45 설명과 종 표기만 다르고
+  (human vs unknown origin) 나머지 전부 일치, PDB 6JZ0과도 충돌 없음.
+  → 해소 경로가 2개로 늘었으나 기록 간 추론이므로 자동 해제 안 함. 사람 검토 대상 등록.
+- 신규 발견2: BLU-945(CHEMBL5141216) DB-원문 충돌. 원문 PMC9340769(로컬 보유)에는
+  GST/Sf9/insect 언급이 전혀 없고 효소는 SignalChem으로만 기재, 기질도
+  원문 EEPLYWSFP vs ChEMBL EEPLYINSFP로 불일치. 양쪽 보존·보류.
+  원문 조건은 완전: 기질2.5uM/ATP1mM/HEPES pH7.5/25C/10분 사전배양/Caliper EZReader2.
+  ATP 1mM이라 pilot22(5uM)·patent64(10uM)와 맥락 달라 합치지 않음.
+- 해석: pilot22는 검증이 가장 깨끗하나 다양성은 가장 좁음(22건중 11건이 한 scaffold,
+  inverse Simpson 3.67). 기존 RF-Dummy CI가 0을 포함한 것은 이 표본에서 예상되는 결과로
+  읽는 편이 일관됨(기존 수치 재해석이며 새 실험 아님).
+- 학습 승인 0건 유지, pooling 0쌍 유지. 52개 테스트 통과(변경 없음). 커밋 안 함.
+
+최신 접근 차단 사유 재검증·대체 후보 탐색 (2026-10-20, 아래 전체 기록보다 우선):
+- 사용자 요청: 커밋 명령 먼저 제시(실행은 안 함) + 본문 접근 차단 이유 재검증·인용/경로
+  기록 + furan45 없이 프로젝트 진행 가능한지 확인 + 대체 접근가능 후보 5개 탐색.
+- 재검증 결과(신규 요청, 기존 캐시 아님): doi.org 리졸브→ACS 페이지 HTTP403.
+  Europe PMC는 isOpenAccess=N·"Subscription required"(변동없음). NHRI bitstream은
+  HTTP200이지만 실제 472바이트 HTML 권리안내(이전 세션과 해시 동일, 변화없음).
+  OpenAlex OA링크는 BindingDB 데이터셋 순환출처. 인용·해시·경로를
+  data/raw/scope_evidence_20261020_v3/manifest.json의 access_blocked_log와
+  reports/cohort_scope_evidence_ko.md 8번 섹션에 기록. ACS 우회 시도 안 함.
+- 결론: 프로젝트는 furan45에 고정 의존하지 않음(project_blocked_by_furan45=false).
+  242 assay 큐 전수 재스캔: PMID보유 고유문헌134건 중 EuropePMC OA는4건뿐
+  (1건은 furan45 자신의 2023논문, 이미 사용중). 특허79건 중78건이
+  variant_unresolved(WT/변이 혼합표 수작업분리 필요), 사유없는1건은 이미 검토중인
+  patent64. "접근가능+다른보류사유없음" 신규후보는 없었음.
+  접근성 기준 상위5개(특허 CHEMBL5735051/5738142/5736750, PMC논문
+  PMID18849971/35838760)를 reports/cohort_scope_evidence_ko.md 10번 표와
+  configs/cohort_scope_review.json의 access_block_analysis_20261020에 기록.
+  5개 모두 furan45보다 검증 더 진행된 상태 아님 - 접근 조건만 만족.
+- 커밋 명령은 사용자에게 텍스트로 제시만 함(git add -A && git commit).
+  실행 안 함 - 사용자가 직접 수행.
+
 최신 furan45 PDB 교차확인 (2026-10-20, 아래 전체 기록보다 우선):
 - 사용자 요청: 클로드 코드 인수인계 브리프(~/Downloads)로 세션 재개, M1 중
   furan45(ref28=Lin2019) 1차 문헌 확보를 먼저 진행. git commit은 사용자가 직접 수행.
@@ -720,5 +867,515 @@ P0·P1 진행 중, M1 미완료이며 D-MPNN 일반 성능 비교로 넘어갈 �
 - 완료된 CLI와 정확한 재실행 명령.
 - 테스트 결과와 데이터/모델 결과를 구분한 검증 기록.
 - 아직 해결하지 못한 실험·변이 분류와 다음 작업.
+
+============================================================
+13. 2026-10-21 추가: M3 공개 벤치마크 축소 재현 실행 완료
+============================================================
+
+[무엇을 했나]
+Chemprop 저자 공개 `sampl` 벤치마크(물-옥탄올 logP)를 선택 C(환경 교체 + 예산 축소)로
+끝까지 실행했어. 저자 코드(chemprop v1.6.1)는 수정하지 않았고, 데이터·분할도 저자
+배포본을 그대로 썼어. 설정은 실행 전에 고정했고 결과 JSON의 config_sha256 과 현재
+설정 파일 해시가 일치함을 확인했어(실행 후 설정 수정 없음).
+
+[결과 — 축소 조건에서의 결과이며 동일 조건 재현이 아니다]
+  세트     n    우리RMSE   95%부트스트랩구간      저자보고   저자값이구간안에
+  SAMPL6   11   0.3666     [0.2424, 0.4724]       0.27       예
+  SAMPL7   22   0.6843     [0.3945, 0.9495]       0.49       예
+  SAMPL9   16   1.0530     [0.7324, 1.3481]       1.11       예
+  저자 분할 테스트: RMSE 0.5636 / MAE 0.3350 (저자 보고 랜덤 테스트셋 0.53)
+  최적 검증 RMSE 0.5422 (epoch 43). 총 소요 약 55분, 5단계 모두 정상 종료.
+
+세 세트 모두 저자 보고값이 우리 결과의 95% 구간 안에 들어와. 평가 세트가 11·22·16개
+분자뿐이라 축소 조건의 결과와 저자 결과를 구별할 수 없어. 어느 방향으로도 우열을
+주장하지 마. SAMPL9의 0.95배도 구간 폭 안의 변동이야.
+
+[일치하지 않은 조건]
+하이퍼파라미터 탐색 생략(저자 30회x50epoch), 앙상블 5->1, 데이터로더 워커 8->0,
+실행 환경(python3.7.6/torch1.7.1/CUDA -> 3.12.14/2.5.1/CPU, macOS arm64).
+epoch(split 50 / production 40)과 데이터·분할은 저자와 동일해.
+
+[주의 1: production 로그의 test rmse 0.3416 을 성능으로 읽지 마]
+저자 스크립트가 production 학습에서 val/test 경로에 학습 자료와 같은 파일을 지정해.
+그 값은 내부 적합도(in-sample)야. 일반화 추정치는 저자 분할 테스트(0.5636)와 SAMPL 세트야.
+
+[주의 2: 실행 중 장애 — 계산 완료 후 프로세스 미종료]
+v1 설정(워커 저자 기본값 8)에서 split 학습이 12:01에 계산을 전부 끝내고
+test_scores.csv·model.pt 까지 기록한 뒤에도 chemprop_train 프로세스가 종료되지 않아
+파이프라인이 약 2시간 정지했어. macOS `sample` 로 네이티브 스택을 받아
+Py_Exit -> Py_FinalizeEx -> finalize_modules -> slot_tp_finalize -> os_waitpid -> __wait4
+블록을 확인했어. 학습 코드가 아니라 인터프리터 종료 처리 중 자식 프로세스 대기야.
+전체 데이터 기준 2회 중 2회 재현됐어.
+통제 비교(전체 데이터 1 epoch): 워커 8 -> 3분34초·미종료 / 워커 0 -> 29초·정상 종료.
+워커 0에서 멈춤이 사라지고 약 7배 빨라져. 저자 Linux/fork 환경에서는 없었을 문제이고
+이건 환경 교체(선택 C)의 비용이야.
+대응: 워커 0 으로 고정(v2) + 단계별 종료 감시 추가. 완료 표식 확인 후 180초 내
+미종료면 정리하고 기록, 완료 표식 없는 종료는 실패 처리(fail-closed).
+
+[투명성 — 이 부분을 지워서 보고하지 마]
+워커 변경은 v1 split 점수(0.5662)를 본 뒤에 결정했어. 점수 개선 목적이 아니라
+프로세스가 종료되지 않는 환경 결함 대응이야. 체리피킹 의혹을 막기 위해
+v1(워커8) 0.5662 와 v2(워커0) 0.5636 을 함께 보고해(차이 0.5%, 최적 epoch 둘 다 43).
+v1 산출물 artifacts/sampl_repro_20261021/split_model/ 과 configs/benchmark_repro.json 은
+삭제하지 말고 보존해.
+
+[기록 정정]
+configs 의 data.rows.sampl9 를 15로 잘못 적었어. 실제는 16행이야.
+sampl9_experimental.csv 가 파일 끝 개행 없이 끝나 wc -l 이 1 적게 셌고 거기서
+헤더 1을 뺀 값을 적은 거야. 실행은 pandas 로 16행 전부를 썼으니 수치는 영향 없어.
+결과 JSON 의 config_sha256 검증 가능성을 지키려고 설정 파일은 수정하지 않고
+보고서 §7.1 에 정정을 남겼어.
+
+[검증한 것]
+아카이브 MD5 공개값 일치(1,632,346,035바이트), 입력 4파일 SHA-256 기록,
+설정 해시 일치 확인, 예측-실험값의 SMILES 행 단위 정렬 전부 일치(결측 0),
+분자 수준 부트스트랩 2000회(seed 0)로 RMSE 95% 구간 산출.
+독립 검산 스크립트 scripts/analyze_sampl_repro.py 가 러너와 같은 값을 재현했어.
+
+[산출물]
+  configs/benchmark_repro_v2.json          실행 전 고정 설정 + 장애·통제비교 기록
+  scripts/run_sampl_repro_v2.py            러너 (종료 감시 포함)
+  scripts/analyze_sampl_repro.py           독립 검산 (정렬 검증 + 부트스트랩)
+  reports/sampl_repro_20261021_v2/benchmark_repro_report_ko.md   본 보고서
+  reports/sampl_repro_20261021_v2/sampl_repro_result.json        결과·해시·단계별 기록
+  reports/sampl_repro_20261021_v2/metrics_detail.json            상세 지표·구간
+  artifacts/sampl_repro_20261021_v2/       체크포인트·예측 CSV·chemprop 로그
+  artifacts/sampl_repro_20261021/          v1 산출물 (보존)
+  scripts/run_sampl_repro.py               v1 러너 (보존)
+
+[재실행 명령]
+  .venv-repro/bin/python scripts/run_sampl_repro_v2.py \
+      --config configs/benchmark_repro_v2.json \
+      --data-dir data/raw/benchmark_data_20261021 \
+      --output-dir artifacts/sampl_repro_20261021_v3 \
+      --report-dir reports/sampl_repro_20261021_v3
+  (출력 폴더가 비어 있지 않으면 러너가 거부해. 새 버전 경로를 써.)
+
+  .venv-repro/bin/python scripts/analyze_sampl_repro.py \
+      --data-dir data/raw/benchmark_data_20261021 \
+      --artifact-dir artifacts/sampl_repro_20261021_v2 \
+      --out reports/sampl_repro_20261021_v2/metrics_detail.json
+
+[다음 작업]
+active_milestone 이 M2 로 넘어갔어 (M2 의 depends_on M1·M3 둘 다 complete_scope_limited).
+M2 는 D-MPNN 비교야. 이번에 만든 .venv-repro 환경과 종료 감시 방식을 재사용하되,
+승인 코호트가 22건(12 scaffold, 단일 문헌)뿐이라 어떤 모델도 우위를 보이기 어려워.
+M1 의 RF-Dummy 차이 구간에도 0이 포함돼 있었어. 22건 결과는 규모 한계를 보여주는
+각주로 다루고, 성능 우세를 전제하지 마. 동일 데이터·분할·지표, 검증 자료만 쓴
+명시적 튜닝 예산, seed·학습 시간·환경·RF 대비 paired 차이를 기록해.
+
+============================================================
+14. 2026-10-21 추가: M2 D-MPNN 비교 완료
+============================================================
+
+[선택]
+사용자가 Chemprop v1.6.1(.venv-repro 재사용)로 진행하고, 사전 예상을 실행 전에
+설정에 고정하기로 결정했어(2026-10-21).
+
+[M1 과 똑같이 맞춘 것]
+코호트 context_pilot.csv 22행(SHA-256 c0f5ed9e… 대조), M1 이 만든 고정 분할
+split_assignments.csv 를 그대로 읽어 씀(다시 나누지 않음), 라벨 pIC50,
+seed 42/123/2026, 지표는 src/egfr_lab/modeling/baseline.py 의
+metrics() 와 paired_cluster_ci() 를 **import** 해서 계산했어.
+다시 구현하지 않았다는 게 핵심이야. 학습은 .venv-repro, 채점은 .venv-ml 이고
+두 환경 사이로는 예측값 CSV 만 건넜어.
+
+[결과 — scaffold 분할(주 지표)]
+  모델            MAE                RMSE               Spearman
+  Dummy           0.3096             0.3759             -0.10
+  D-MPNN          0.3090~0.3111      0.3752~0.3804      -0.30~-0.07
+  RandomForest    0.2925~0.3001      0.3624~0.3675      +0.24~+0.27
+
+paired 비교 12개 중 **11개의 95% 구간이 0을 포함**해. 유일한 예외는
+random_molecule seed42 의 DMPNN-RF(+0.0631, 구간 +0.0013~+0.1179)인데
+나머지 두 seed 는 0을 포함하니 RF 우세의 근거로 쓰지 마.
+
+[왜 이런가 — 모델이 거의 상수를 내놓는다]
+scaffold 예측 표준편차 0.011~0.036 대 관측 0.377.
+예측 범위 폭 0.05 대 관측 폭 1.65(6.85~8.50).
+즉 학습 평균 근처만 반복해. Dummy 와 MAE 가 겹치는 건 대등해서가 아니라
+Dummy 를 흉내내게 된 거야.
+Spearman 은 6개 설정(2분할x3seed) **전부 음수**야. 남은 미세 변동이 실제 순위와
+반대 방향이라는 뜻이고 신호가 아니라 잡음이야. 같은 자료에서 RF 는 +0.24~+0.38 로
+약한 순위 정보를 잡았어. 지문 기반 RF 와 달리 D-MPNN 은 표현을 학습해야 해서
+이 표본 수로는 아무것도 못 잡아.
+
+[사전 예상과 대조 — 포장하지 마]
+실행 전 고정 예상은 'D-MPNN 이 Dummy 보다 나쁠 것'이었어.
+MAE 부호가 seed 마다 갈려서 예상은 **부분적으로 빗나갔어**.
+정확한 결론은 '더 나쁘다'가 아니라 **'구별되지 않는다'** 야.
+다만 예상의 근거였던 규모 부족은 상수 붕괴로 직접 확인됐어.
+
+[숨기지 말 비대칭]
+M1 의 Dummy·RF 는 학습 fold 전체를 썼는데, D-MPNN 은 조기 종료용 검증 자료를
+3~4개 떼야 해서 실제 학습 분자가 더 적어(scaffold 11/16/17 -> 8/12/13).
+D-MPNN 에 불리한 조건이고 설정의 asymmetry_disclosure 에 적어놨어.
+평가 fold 는 학습에도 체크포인트 선택에도 안 썼고 6개 fold 전부 누출 0 확인했어.
+
+[구현 오류와 수정 — 중요]
+1차 실행은 세 seed 지표가 소수점 6자리까지 같았어. 원인은
+chemprop v1 의 --seed 가 **데이터 분할** 시드라서, 분할 파일을 직접 주는
+이 실험에서는 아무 역할도 안 한다는 거야. 가중치 초기화는 --pytorch_seed 가 맡고
+기본값이 0 이라 세 실행이 같은 초기 가중치를 썼어.
+  seed 간 예측 최대 절대차: 7.2e-05(1차) -> 4.0e-02(2차)
+  scaffold MAE 의 seed 간 폭: 0.00000(1차) -> 0.00212(2차)
+--pytorch_seed 를 추가해 새 버전으로 다시 돌렸고, 1차 산출물
+reports/dmpnn_pilot22_20261021/ 과 artifacts/dmpnn_pilot22_20261021/ 은 보존했어.
+이 수정은 1차 지표를 본 뒤에 했지만 근거는 점수가 아니라 chemprop 인자 문서와
+'세 seed 결과가 동일하다'는 관찰이야. 1차에서는 12개 비교가 **전부** 0을 포함했으니
+결론은 안 바뀌어. 두 실행을 함께 보고해.
+
+[산출물]
+  configs/dmpnn_pilot22.json                  실행 전 고정 설정·사전 예상·금지 주장
+  scripts/run_dmpnn_pilot22.py                1단계 학습·예측(.venv-repro)
+  scripts/score_dmpnn_pilot22.py              2단계 채점(.venv-ml, M1 함수 import)
+  reports/dmpnn_pilot22_20261021_v2/          최종 지표·paired·실행기록·보고서
+  reports/dmpnn_pilot22_20261021/             1차 실행 보존(seed 미적용)
+
+[재실행 명령]
+  .venv-repro/bin/python scripts/run_dmpnn_pilot22.py \
+      --config configs/dmpnn_pilot22.json \
+      --output-dir artifacts/dmpnn_pilot22_20261021_v3 \
+      --report-dir reports/dmpnn_pilot22_20261021_v3
+  .venv-ml/bin/python scripts/score_dmpnn_pilot22.py \
+      --config configs/dmpnn_pilot22.json \
+      --dmpnn-predictions reports/dmpnn_pilot22_20261021_v3/dmpnn_predictions.csv \
+      --baseline-predictions reports/baseline_pilot_20261020_v2/predictions.csv \
+      --out-dir reports/dmpnn_pilot22_20261021_v3
+  (출력 폴더가 비어 있지 않으면 러너가 거부해. 새 버전 경로를 써.)
+
+[다음 작업]
+active_milestone 이 M4 로 넘어갔어. M1·M2·M3 가 모두 complete_scope_limited 야.
+M4 는 기업 관련 EGFR 내성·분해제 문헌 사례이고 depends_on 이 비어 있어.
+현재 한계는 'HBE-843 초록·메타데이터 카드까지만 확인, 본문·SI 전체 검토 전'이야.
+WT·변이와 IC50·GI50·DC50·Dmax 를 구분하고, 초록 확인·문헌 해석·실험 재현을
+구분해서 기록해.
+그리고 이 과제에서 D-MPNN 을 의미 있게 평가하려면 표본을 늘리는 수밖에 없어.
+막힌 경로는 configs/source_review_holds.json 의 보류 항목이고,
+새 원문 근거 없이 보류를 풀지 마.
+
+============================================================
+15. 2026-10-21 추가: M5 Agent 평가 완료
+============================================================
+
+[무엇을 했나]
+도구 4개(predict_activity·lookup_measurements·search_literature·fetch_evidence)를
+실제로 연결하고, 규칙 기반 정책과 OpenAI 정책을 같은 질문으로 평가했어.
+개발(dev 6문항)과 최종(final 8문항)을 분리했고 final 은 한 번만 돌렸어.
+
+[결과 — final 8문항, 6개 축]
+  규칙 기반      8/8
+  gpt-4.1       5/8
+  gpt-5-mini    4/8
+도구 선택·주장별 인용·오류 처리는 두 모델 모두 8/8 이었어.
+약점은 termination 한 축에 몰렸어(gpt-4.1 6/8, gpt-5-mini 4/8).
+능력이 아니라 절제의 문제야.
+
+[가장 중요한 것]
+F1 에서 gpt-4.1 의 답변이 answer_rejected_unsourced 로 반려됐어.
+정확히 말하면 날조가 아니라 반올림이야 — 도구가 준 8.055 를 8.06 으로 적었어.
+그래도 막은 게 맞아. 답변의 숫자가 도구의 숫자와 다르면 원 출처로 되짚을 수 없어.
+다만 반올림 하나로 정상 답변 전체가 버려진 건 과한 면도 있어.
+지금 고치지 않았어. 검증 규칙을 느슨하게 하면 final 점수를 사후 조작하는 거야.
+
+[일반화하지 마]
+"규칙 기반이 LLM보다 낫다"고 쓰지 마. 질문 14개를 규칙 정책 설계자와 같은
+사람이 만들었고, 규칙 정책은 도구 4개 밖으로 못 나가고(LLM 은 aspirin→CHEMBL25
+해석을 해냈어), 표본이 8문항이야.
+또 dev 가 final 을 과대평가했어(gpt-4.1 dev 6/6 → final 5/8).
+
+[개발 중 고친 내 결함 3건]
+  빈 SMILES 에 pIC50 8.057    내 도구 버그. 규칙 정책은 드러낼 수 없었고 LLM 이 발견
+  같은 호출 6회 반복           내 프로토콜 오류. OpenAI tool_calls 규약 미준수
+  D6 오답 처리                 내 평가 기준 오류. 규칙 정책의 한계를 정답으로 굳혔음
+
+[산출물]
+  configs/agent_eval.json                              dev 6 / final 8 문항, 6축
+  src/egfr_lab/agent/{tools,runner,policy,credentials,trace}.py
+  scripts/{build_agent_predictor,run_agent_eval}.py
+  artifacts/agent_predictor_20261021/                  예측기(M6 가 이것을 서비스함)
+  reports/agent_eval_20261021_final_openai/agent_llm_report_ko.md
+  tests/test_agent_runner.py
+
+[API 키]
+저장소 밖(~/.config/egfr-evidence-lab/)에 둬. 저장소가 PUBLIC 이야.
+채팅에 붙여넣지 말고, 예외 메시지에 키 값을 싣지 마.
+
+============================================================
+16. 2026-10-21 추가: M6 컨테이너 추론 API 완료 (클라우드 미실행)
+============================================================
+
+[상태 — 완료로 쓰지 마]
+M6 완료 증거 3개 중
+  버전 고정 추론 API·컨테이너           충족
+  실제 클라우드 요청·응답과 모델 버전    미충족 (AWS 세션 만료)
+  오류·로그·재시작·지연시간·비용 기록    부분 충족 (비용은 추정뿐)
+status = container_complete_cloud_pending. "클라우드 배포 완료"라고 쓰지 마.
+
+[무엇을 했나]
+configs/serving_m6.json 을 실행 전에 고정하고 FastAPI 추론 API 를 만들었어.
+모델은 재학습하지 않고 M5 의 artifacts/agent_predictor_20261021 을 그대로 서비스해.
+전처리·적용 범위 판정도 M5 의 ActivityPredictor 를 import 해서 쓰고 다시 구현하지
+않았어. 두 번 구현하면 두 경로의 출력이 갈라져.
+
+[가장 중요한 결과 — 적용 범위 밖에서 모델이 상수를 내놓는다]
+V1 검증 중 아스피린 8.055, 에탄올 8.054 가 나왔어. 0.001 차이야.
+그래서 추가로 조사했어(사후 관찰, 사전 고정 항목 아님).
+구조가 크게 다른 분자 10개의 예측값이 8.048~8.143 (폭 0.095) 에 모였어.
+예측 표준편차 0.035 는 학습 라벨 표준편차 0.381 의 9% 야.
+숫자만 돌려주는 API 였다면 포도당이 pIC50 8.05(IC50 약 9nM)로 보고됐어.
+응답에서 적용 범위 판정과 고지를 뺄 수 없게 만든 이유가 이거야.
+M2 의 D-MPNN 도 같은 현상이었어(예측 표준편차 0.011~0.036 대 관측 0.377).
+모델 종류가 아니라 22건·12 scaffold 라는 규모가 의심돼. 단정하지는 마.
+
+[검증 결과]
+  V1 parity          pass   호스트/컨테이너 probe 5개 소수 3자리까지 동일
+  V2 model identity  pass   모델·코호트·설정 해시 3개 일치 (양쪽)
+  V3 restart         pass   재시작 2회 모두 readyz 200, 예측 동일
+  V4 error handling  pass   10/10 (양쪽)
+  V5 latency         채점 안 함 — 합격선을 사전에 정하지 않았어
+  V6 logging         pass   요청 256줄 전부 처리시간 포함, SMILES 유출 0건
+지연시간 p50: 호스트 9.348ms / 컨테이너 11.610ms (1.24배). 순차 200회, 배치 1.
+처리량·동시 부하 성능이 아니야.
+
+[사전 예상과 대조 — 틀린 것 1개]
+컨테이너 모델 로딩 0.844초로 예상 하한(1초)보다 빨랐어.
+모델 파일이 324KB 인데 하한을 1초로 잡은 게 느슨했어. 예상을 고치지 않고 남겼어.
+
+[겪은 일 — 포트 8000 이 다른 서비스였다]
+-p 8000:8000 으로 띄웠는데 127.0.0.1:8000/readyz 가 Not Found HTML 을 줬어.
+포트 8000 을 다른 프로세스가 IPv4 로 점유 중이었고 Docker 는 IPv6 로 바인딩했어.
+  127.0.0.1:8000 (IPv4)  → 그 다른 프로세스
+  localhost:8000 (IPv6)  → 컨테이너
+이 상태로 측정하면 엉뚱한 서버를 재게 돼. 포트를 8010 으로 옮겼고,
+검증 스크립트가 측정 전에 /model-info 해시를 확인하도록 했어. 8000 을 쓰지 마.
+
+[서비스 계약 — 설계상 거부한 것]
+  학습·재학습 엔드포인트 없음 (/train·/fit·/retrain 모두 404 확인)
+  고지 생략 옵션 없음
+  예측값을 measured·실측으로 부르는 필드명 없음
+  해석 불가 SMILES 에 predicted_pIC50 필드 자체를 넣지 않음 (0·평균값으로 안 메움)
+
+[비용 — 추정뿐이야]
+AWS 공개 가격 API 에서 요율을 받아 응답 SHA-256 과 함께 보존했어.
+손으로 적거나 블로그 수치를 쓰지 않았어.
+  검증 1회(1h)   $0.0172
+  하루(24h)      $0.3960
+  한 달(730h)    $12.02
+시간당 $0.016468 = Fargate $0.011358 + 공용 IPv4 $0.005 + ECR 저장 $0.000111.
+서울 리전 0.25 vCPU / 0.5 GB / ARM64 기준. 실제 과금은 Cost Explorer 로만 확인돼.
+
+[산출물]
+  configs/serving_m6.json                     실행 전 고정 설정
+  src/egfr_lab/serving/{__init__,app}.py      추론 API
+  tests/test_serving_app.py                   18개 (저장소 전체 81개 통과)
+  deployment/Dockerfile                       베이스 digest 고정, non-root
+  deployment/requirements-serve.txt           직접 의존성
+  deployment/requirements-serve.lock.txt      컨테이너 내부 pip freeze 추출
+  .dockerignore                               허용 목록 방식
+  scripts/verify_serving_m6.py                V1~V6 검증
+  scripts/estimate_cloud_cost_m6.py           가격 API 기반 비용 추정
+  scripts/check_cloud_access_m6.py            읽기 전용 권한 점검 (자원 안 만듦)
+  scripts/probe_out_of_domain_m6.py           적용 범위 밖 관찰 (사후)
+  reports/serving_m6_20261021/serving_report_ko.md
+  reports/serving_m6_20261021/{verification,out_of_domain_observation,
+                               cloud_cost_estimate,cloud_access_check}.json
+
+[환경]
+.venv-serve 를 새로 만들었어 (.venv-ml 을 오염시키지 않으려고).
+fastapi 0.157.0 / uvicorn 0.54.0 / pydantic 2.14.1 /
+sklearn 1.9.1 / rdkit 2026.9.1 / joblib 1.6.0 / numpy 2.5.4
+테스트 편의로 pandas 3.0.6 · pyarrow 26.0.0 · pytest 를 추가했어.
+컨테이너 의존성은 deployment/requirements-serve.txt 로 분리돼 있어서 증거가 섞이지 않아.
+
+[재실행 명령]
+  docker build --platform linux/arm64 -f deployment/Dockerfile \
+      -t egfr-pilot22-inference:v1 .
+  docker run -d --name egfr-serve -p 127.0.0.1:8010:8000 egfr-pilot22-inference:v1
+  PYTHONPATH=src .venv-serve/bin/python scripts/verify_serving_m6.py \
+      --container-url http://127.0.0.1:8010 --container-name egfr-serve \
+      --out reports/serving_m6_<새 날짜>
+  (출력 폴더가 비어 있지 않으면 거부해. 새 경로를 써.)
+
+[다음 작업]
+active_milestone 이 M6 야. 남은 건 클라우드 실행 하나고 순서는 이래.
+  1) aws login --profile skn33        사용자가 직접 (브라우저 인증)
+  2) .venv-serve/bin/python scripts/check_cloud_access_m6.py \
+         --profile skn33 --out reports/serving_m6_<새 날짜>
+     읽기 전용이야. 자원을 만들지 않고 필요한 동작 23개를 권한 시뮬레이션으로 점검해.
+     배포를 바로 시도했다가 중간에 실패하면 어디까지 만들어졌는지 추적이 어렵고
+     남은 자원이 과금돼.
+  3) 판정이 ready 면 비용 승인을 받은 뒤 배포·측정·정리
+  4) 막히면 차단 증거를 남기고 보류해 (M4 와 같은 방식)
+계정이 교육용(user/student)이라 iam:PassRole 이나 ECS 권한이 없을 수 있어.
+자원을 만들기 전에 사용자 승인을 받아. 만든 자원은 삭제하고 삭제 사실을 기록해.
+
+M4 는 여전히 blocked_source_unavailable 이야(DOI 10.1002/ardp.70193 본문 미확보).
+사용자가 본문 PDF 를 확보하면 재개할 수 있어. 유료 콘텐츠를 우회하지 마.
+
+M5 의 다음 반복 과제: 반올림 허용 여부, termination 개선, F2 기준 모호성,
+질문 집합을 다른 출처에서 작성.
+
+============================================================
+17. 2026-10-22 추가: M6 Cloud Run 클라우드 실행 완료 (과금 금액만 미확인)
+============================================================
+
+[상태]
+status = complete_scope_limited (2026-10-22 완료)
+완료 증거 3개를 모두 채웠어.
+  1번 버전 고정 API·컨테이너                  충족
+  2번 실제 클라우드 요청·응답과 모델 버전      충족 (요청 241건, digest 배포, 해시 검증)
+  3번 오류·로그·재시작·지연시간·비용 기록      충족
+
+과금은 2026-10-22 에 사용자가 Cloud Console 에서 $0 으로 확인했어.
+그런데 '0 임을 확정했다'고는 쓰지 마. 측정이 10/21~22 였고 Cloud Billing 반영에
+하루 이상 걸려서, 같은 날 본 0 은 '과금 없음'과 '아직 미반영'을 구분하지 못해.
+구분법: 비용 테이블에 Cloud Run / Artifact Registry 행이 나타나면 반영된 거야.
+행이 없으면 미반영이야. 자원은 삭제했으니 금액이 늘어날 경로는 없어.
+기록은 reports/serving_m6_cloud_20261022/cost_confirmation.json.
+
+그리고 이 금액은 API 가 아니라 사용자가 화면에서 읽은 값이야. AWS 단계의 요율은
+공개 가격 API 에서 1차로 받아 응답 해시까지 보존했어. 증거 수준이 달라.
+
+[AWS 가 막혔다 — 제공자를 바꿨다]
+원래 AWS ECS Fargate 로 계획하고 비용 추정까지 1차 출처(공개 가격 API)로 끝냈어.
+aws login 승인 단계에서 'Something went wrong / Contact AWS support / appeal system'
+이 떴어. 권한 부족이 아니라 인증 자체가 안 됐고, 교육용 계정(user/student)의
+계정 수준 제한으로 보여. 우리가 풀 수 없어서 Cloud Run 으로 전환했어.
+AWS 에 자원을 하나도 만들지 않았어.
+
+[무엇을 했나]
+configs/serving_m6_cloud.json 을 실행 전에 고정했어.
+기존 configs/serving_m6.json 은 수정하지 않았어 — 그 파일 SHA-256 이
+reports/serving_m6_20261021/verification.json 에 박혀 있어서 고치면 검증이 깨져.
+M3 에서 쓴 것과 같은 원칙이야.
+
+Cloud Run 은 x86-64 만 받아서 amd64 빌드가 필요했어. Dockerfile 의 FROM 을
+arm64 플랫폼 digest 에서 manifest 인덱스 digest 로 바꿨고, 바꾼 뒤 arm64 를
+재빌드해 기존 이미지와 비교했어 — RootFS 레이어 전부 동일, 크기 829238735 동일.
+이미지 ID 는 달랐는데 buildx 의 provenance attestation 이 빌드마다 바뀌어서야.
+숨기지 마. 같다고 말할 수 있는 건 레이어와 크기야.
+
+[결과]
+  C1 parity          pass   로컬 arm64 와 Cloud Run amd64 예측이 probe 5/5 완전 일치
+  C2 model identity  pass   모델·코호트·설정 해시 3개 일치
+  C3 cold start      채점 안 함 (2회 측정)
+  C4 error handling  pass   10/10
+  C5 latency         채점 안 함 (합격선 미설정)
+  C6 usage and cost  사용량 확인, 금액 미확인
+  C7 logs            pass   101줄, SMILES 유출 0건
+
+지연시간 (한국 → asia-northeast3, 순차 200회, 배치 1):
+  클라이언트 왕복 p50  50.019ms
+  서버 처리      p50  35.042ms   ← 서버 성능은 이걸로 읽어
+  차이(네트워크·TLS·프런트엔드)  14.977ms
+왕복 시간을 서버 성능으로 쓰면 틀려. 약 15ms 가 네트워크야.
+
+[가장 중요한 결과 — 클라우드가 3.5~5.9배 느리다]
+Cloud Run 런타임이 Linux-4.19.0-gvisor-x86_64 야. gVisor 샌드박스에서 돌아.
+  모델 로딩      로컬 컨테이너 0.844s → Cloud Run 4.998s  (5.9배)
+  서버 처리 p50  로컬 컨테이너 10.040ms → Cloud Run 35.042ms (3.5배)
+원인을 gVisor 하나로 단정하지 마. CPU 세대·클럭, 플랫폼(arm64→amd64), 샌드박스가
+섞여 있고 분리 측정을 안 했어.
+
+그런데도 예측값은 네 환경에서 소수 3자리까지 같았어 —
+로컬 호스트(macOS arm64) / arm64 컨테이너 / amd64 QEMU / Cloud Run gVisor.
+라이브러리 버전을 전부 고정한 게 이유로 보여. 클라우드 런타임이 로컬 컨테이너와
+완전히 같았어: python 3.12.14 · numpy 2.5.4 · scipy 1.18.1 · sklearn 1.9.1 ·
+joblib 1.6.0 · rdkit 2026.09.1
+
+[콜드 스타트 — 두 값을 구분해]
+  회차1 (리비전 00001-wjs)  첫 요청 왕복 167ms   모델 로딩 5.047s
+  회차2 (리비전 00002-nwm)  첫 요청 왕복 135ms   모델 로딩 4.998s
+첫 요청 왕복(135ms)이 모델 로딩(5초)보다 짧은 건 모순이 아니야.
+Cloud Run 이 시작 프로브로 컨테이너를 먼저 준비시킨 뒤 트래픽을 넘겨.
+클라이언트 체감 콜드 스타트와 컨테이너 실제 시작 비용은 다른 값이야.
+둘을 하나로 적으면 틀려. 2회뿐이라 분포를 주장하지 마.
+
+[사전 예상과 대조 — 3개 틀렸다]
+  콜드 스타트 첫 요청  예상 2~15초   → 실제 0.13초   내 예상 모델 자체가 틀렸어
+  클라우드 모델 로딩   예상 0.5~3초  → 실제 4.998초  gVisor 비용을 과소평가했어
+  이미지 push 시간     예상 3~20분   → 실제 약 1분   805MB 가 아니라 압축 173.6MB 를 올려
+예상을 고치지 않고 남겼어.
+
+[내 결함 2건]
+  검증 스크립트가 설정 키를 C1_parity 로 찾았는데 실제 키는 C1_parity_with_local 이었어.
+  KeyError 로 첫 실행이 중단되고 콜드 스타트 측정을 잃을 뻔했어. 1차 값을 파일로
+  보존하고 새 리비전을 배포해 재측정했어(결과적으로 2회 측정을 얻었어).
+
+  docker image inspect 의 173MB 를 attestation 값이라고 추측했는데 틀렸어.
+  압축된 레이어 크기였고 Artifact Registry 저장 크기 173.612MB 가 그걸 드러냈어.
+    압축 해제(docker images)  arm64 829MB / amd64 805MB
+    압축(레지스트리 저장)      173.6MB
+
+[증거 수준의 차이 — 밝혀야 해]
+AWS 단계에서는 공개 가격 API 에서 1차 요율을 받아 응답 SHA-256 까지 보존했어.
+GCP 는 가격 페이지 본문을 기계적으로 받지 못해서(JS 렌더링) 무료 등급 수치를
+2차 출처에 의존했어. 1차 출처에서 확인했다고 쓰지 마.
+
+[배포 구성]
+  프로젝트   project-eb5a476e-cdcf-4277-997 (번호 551014461113)
+  리전       asia-northeast3
+  이미지     ...@sha256:e59a355342d178949bab117f47f478e69150b2850e92fbfbbed7b4f90d9141e3
+  배포 방식  태그가 아니라 digest 로 배포했어. 태그는 같은 이름으로 내용이 바뀔 수 있어
+  구성       1 vCPU · 512Mi · min-instances=0 · max-instances=2 · concurrency=8 · 60s
+  인증       require_authentication. 저장소가 PUBLIC 이라 공개 엔드포인트로 두지 않았어
+             호출은 gcloud ID 토큰(Bearer)으로. 토큰을 파일·로그에 싣지 마
+
+메모리는 512Mi 로 잡았어. 실측 사용량이 108MiB(32개 배치에서도 108.1MiB)야.
+
+[정리 완료]
+Cloud Run 서비스와 Artifact Registry 리포지터리를 삭제하고 describe 로 확인했어.
+기록은 reports/serving_m6_cloud_20261022/teardown.json.
+남긴 것: GCP 프로젝트(과금 없음), 활성화한 API(과금 없음), Cloud Logging 로그(증거),
+로컬 docker 이미지(재현용). 추가 과금 위험 없어.
+
+[산출물]
+  configs/serving_m6_cloud.json                            실행 전 고정
+  scripts/verify_serving_cloud_m6.py                       C1~C7 검증
+  reports/serving_m6_cloud_20261022/cloud_report_ko.md     보고서
+  reports/serving_m6_cloud_20261022/cloud_verification.json  전체 결과·콜드 스타트 2회
+  reports/serving_m6_cloud_20261022/teardown.json          삭제 기록
+
+[재실행 명령]
+  export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
+  gcloud auth login && gcloud config set project <프로젝트>
+  gcloud services enable run.googleapis.com artifactregistry.googleapis.com
+  gcloud artifacts repositories create egfr-lab --repository-format=docker \
+      --location=asia-northeast3
+  gcloud auth configure-docker asia-northeast3-docker.pkg.dev
+  docker build --platform linux/amd64 -f deployment/Dockerfile -t <태그> .
+  docker push <태그>
+  gcloud run deploy egfr-pilot22-inference --image <레지스트리>@<digest> \
+      --region asia-northeast3 --no-allow-unauthenticated \
+      --cpu 1 --memory 512Mi --min-instances 0 --max-instances 2 \
+      --concurrency 8 --timeout 60 --port 8000
+  PYTHONPATH=src .venv-serve/bin/python scripts/verify_serving_cloud_m6.py \
+      --url <서비스 URL> --out reports/serving_m6_cloud_<새 날짜>
+  (출력 폴더가 비어 있지 않으면 거부해. 새 경로를 써.)
+  측정이 끝나면 서비스와 리포지터리를 삭제하고 삭제 사실을 기록해.
+
+[다음 작업]
+M6 까지 닫혔어. active_milestone 은 M4 야.
+
+  M1·M2·M3·M5·M6   complete_scope_limited
+  M4               blocked_source_unavailable
+  P0~P5            전부 complete_scope_limited
+
+M4 는 DOI 10.1002/ardp.70193 본문 미확보로 막혀 있어. 외부 조건(원문 접근)이
+바뀌어야 재개돼. 유료 콘텐츠를 우회하지 마. 차단 증거는
+data/raw/m4_access_evidence_20261021/manifest.json 에 있어(API 응답 5개 보존,
+SHA-256 전부 검증). 사용자가 본문 PDF 를 확보하면 거기서 이어가.
+
+선택 과제로 남은 것:
+  2026-10-23 이후 비용 테이블 재확인 → $0 확정 (마일스톤을 막지 않아)
+  M5 다음 반복: 반올림 허용 여부, termination 개선, F2 기준 모호성,
+               질문 집합을 다른 출처에서 작성
+  M2 의 표본 확대 — D-MPNN 을 의미 있게 평가하려면 22건을 늘리는 수밖에 없어.
+               막힌 경로는 configs/source_review_holds.json 의 보류 항목이고,
+               새 원문 근거 없이 보류를 풀지 마.
+
+[커밋]
+사용자가 직접 커밋해. 커밋·푸시하지 마.
 
 끝.
